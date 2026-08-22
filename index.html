@@ -1,0 +1,2176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Kome Seebach — Japanese Takeaway &amp; Delivery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+:root{
+  --bg:#15110E;
+  --surface:#1E1813;
+  --card:#26201A;
+  --card2:#2E271F;
+  --paper:#F6EEE0;
+  --paper-dim:#E8DCC4;
+  --ink:#F4ECDD;
+  --ink-dim:#B7A995;
+  --ink-faint:#8A7C68;
+  --red:#C1392B;
+  --red-deep:#8F2A20;
+  --curry:#E4A339;
+  --curry-deep:#C0821F;
+  --green:#748C63;
+  --border:rgba(244,236,221,0.10);
+  --border-strong:rgba(244,236,221,0.20);
+  --shadow:0 8px 30px rgba(0,0,0,0.45);
+  --radius:14px;
+  --font-display:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;
+  --font-body:'Inter','Noto Sans JP',sans-serif;
+  --font-mono:'JetBrains Mono','Noto Sans JP',monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:78px;
+}
+img{max-width:100%;display:block;}
+button{font-family:inherit;cursor:pointer;}
+a{color:inherit;}
+::selection{background:var(--curry);color:#1a1410;}
+
+/* ---------- Utility stamp / bowl signature elements ---------- */
+.stamp{
+  position:absolute; top:8px; right:8px;
+  border:2px solid var(--red);
+  color:var(--red);
+  font-family:var(--font-display);
+  font-weight:900;
+  font-size:11px;
+  letter-spacing:0.5px;
+  padding:3px 8px;
+  border-radius:3px;
+  transform:rotate(-8deg);
+  background:rgba(193,57,43,0.08);
+  text-transform:uppercase;
+  pointer-events:none;
+}
+.bowl-gauge{width:30px;height:22px;flex:0 0 auto;}
+.bowl-gauge svg{display:block;}
+
+/* ---------- Top bar ---------- */
+.topbar{
+  position:sticky; top:0; z-index:40;
+  background:rgba(21,17,14,0.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+  padding:10px 16px;
+}
+.topbar-row{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  max-width:1180px; margin:0 auto;
+}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-mark{
+  width:38px;height:38px;border-radius:10px;background:var(--red);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-weight:900;color:var(--paper);font-size:18px;
+  flex:0 0 auto;
+}
+.brand-text h1{font-family:var(--font-display);font-size:17px;margin:0;font-weight:700;letter-spacing:0.2px;}
+.brand-text .sub{font-size:11px;color:var(--ink-dim);margin-top:1px;}
+.status-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px;
+  margin-top:3px;font-family:var(--font-mono);
+}
+.status-open{background:rgba(116,140,99,0.18);color:#A9C596;}
+.status-closed{background:rgba(193,57,43,0.18);color:#E58C82;}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+
+.lang-switch{display:flex;gap:4px;flex:0 0 auto;}
+.lang-btn{
+  background:transparent;border:1px solid var(--border);color:var(--ink-dim);
+  font-size:11px;font-weight:700;padding:5px 7px;border-radius:7px;
+}
+.lang-btn.active{background:var(--curry);border-color:var(--curry);color:#1a1410;}
+
+/* ---------- Category tabs ---------- */
+.cat-bar{
+  position:sticky; top:60px; z-index:35;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+  padding:10px 16px;
+  overflow-x:auto; white-space:nowrap;
+  scrollbar-width:none;
+}
+.cat-bar::-webkit-scrollbar{display:none;}
+.cat-inner{max-width:1180px;margin:0 auto;display:flex;gap:8px;}
+.cat-chip{
+  display:inline-block; flex:0 0 auto;
+  background:var(--card); border:1px solid var(--border);
+  color:var(--ink-dim); font-size:13px; font-weight:600;
+  padding:8px 14px; border-radius:20px;
+}
+.cat-chip.active{background:var(--curry);border-color:var(--curry);color:#1a1410;}
+
+/* ---------- Layout ---------- */
+.layout{max-width:1180px;margin:0 auto;padding:16px;display:grid;grid-template-columns:1fr;gap:20px;}
+@media(min-width:960px){
+  .layout{grid-template-columns:1fr 340px;align-items:start;}
+  body{padding-bottom:24px;}
+}
+.menu-col{min-width:0;}
+.category-block{margin-bottom:26px;}
+.category-title{
+  font-family:var(--font-display); font-weight:700; font-size:20px;
+  margin:0 0 12px; padding-left:2px; display:flex; align-items:baseline; gap:8px;
+}
+.category-title .count{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);font-weight:500;}
+.product-grid{display:grid;grid-template-columns:1fr;gap:8px;}
+@media(min-width:720px){.product-grid{grid-template-columns:1fr 1fr;}}
+
+/* ---------- Product row (compact, photo-free) ---------- */
+.product-card{
+  position:relative;
+  background:var(--card); border:1px solid var(--border); border-radius:11px;
+  overflow:hidden; display:flex; flex-direction:column;
+}
+.product-body{padding:9px 12px 10px;display:flex;flex-direction:column;gap:3px;flex:1;}
+.product-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.product-name{font-family:var(--font-display);font-weight:700;font-size:14.5px;margin:0;line-height:1.25;}
+.badge-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:2px;}
+.badge{font-size:9px;font-weight:800;letter-spacing:0.4px;text-transform:uppercase;padding:2px 6px;border-radius:4px;}
+.badge-new{background:rgba(116,140,99,0.2);color:#A9C596;}
+.badge-special{background:rgba(228,163,57,0.2);color:var(--curry);}
+.product-desc{font-size:11.5px;color:var(--ink-dim);line-height:1.35;margin:0;
+  display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;}
+.allergens{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);}
+.price-row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:0 0 auto;}
+.price{font-family:var(--font-mono);font-weight:700;font-size:15px;color:var(--curry);white-space:nowrap;}
+.stock-info{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);white-space:nowrap;}
+
+.quick-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;}
+.btn-quick-add{
+  border:none; border-radius:8px; padding:6px 13px; background:var(--red); color:#FBEFE9;
+  font-weight:800; font-size:12px; font-family:var(--font-display); text-transform:uppercase;
+  letter-spacing:0.3px; flex:0 0 auto;
+}
+.btn-quick-add:active{transform:scale(0.96);}
+.btn-more-options{font-size:11px;color:var(--curry);font-weight:700;background:none;border:none;padding:0;text-align:left;}
+
+.detail-panel{display:none;flex-direction:column;gap:8px;margin-top:8px;padding-top:9px;border-top:1px dashed var(--border);}
+.detail-panel.open{display:flex;}
+.qty-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.stepper{display:flex;align-items:center;gap:0;border:1px solid var(--border-strong);border-radius:10px;overflow:hidden;}
+.stepper button{background:var(--card2);color:var(--ink);border:none;width:32px;height:32px;font-size:16px;font-weight:700;}
+.stepper button:active{background:var(--curry);color:#1a1410;}
+.stepper .val{width:28px;text-align:center;font-family:var(--font-mono);font-weight:700;font-size:14px;}
+.extras-list{display:flex;flex-direction:column;gap:6px;}
+.extra-item{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;gap:8px;}
+.extra-item label{display:flex;align-items:center;gap:7px;color:var(--ink-dim);}
+.extra-price{font-family:var(--font-mono);color:var(--ink-faint);}
+.btn-add{
+  width:100%; border:none; border-radius:10px; padding:11px;
+  background:var(--red); color:#FBEFE9; font-weight:800; font-size:13.5px;
+  letter-spacing:0.3px; text-transform:uppercase; font-family:var(--font-display);
+  transition:transform .08s ease;
+}
+.btn-add:active{transform:scale(0.97);}
+.btn-add:disabled{background:var(--card2);color:var(--ink-faint);cursor:not-allowed;}
+.sold-out-strip{
+  position:absolute; inset:0; background:rgba(21,17,14,0.78); backdrop-filter:blur(1px);
+  display:flex; align-items:center; justify-content:center; flex-direction:row; gap:8px;
+  z-index:5; text-align:center; padding:8px;
+}
+.sold-out-badge{
+  font-family:var(--font-display); font-weight:900; font-size:12.5px; color:var(--red);
+  border:2px solid var(--red); padding:4px 12px; border-radius:6px; transform:rotate(-6deg);
+  text-transform:uppercase; letter-spacing:1px; background:rgba(21,17,14,0.7);
+}
+.sold-out-time{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-dim);}
+
+/* ---------- Cart (desktop sidebar) ---------- */
+.cart-panel{
+  position:sticky; top:120px;
+  background:var(--paper); color:#241D16; border-radius:var(--radius);
+  padding:16px; box-shadow:var(--shadow); display:none;
+}
+@media(min-width:960px){.cart-panel{display:block;}}
+.cart-title{font-family:var(--font-display);font-weight:700;font-size:16px;margin:0 0 10px;display:flex;justify-content:space-between;align-items:center;}
+.cart-items{display:flex;flex-direction:column;gap:10px;max-height:340px;overflow-y:auto;}
+.cart-item{display:flex;justify-content:space-between;gap:8px;font-size:13px;border-bottom:1px dashed #D8C9AC;padding-bottom:8px;}
+.cart-item .ci-name{font-weight:700;}
+.cart-item .ci-extras{font-size:11px;color:#7A6A50;}
+.cart-item .ci-price{font-family:var(--font-mono);font-weight:700;white-space:nowrap;}
+.cart-empty{font-size:12.5px;color:#7A6A50;text-align:center;padding:20px 0;}
+.cart-totals{margin-top:12px;padding-top:10px;border-top:1px solid #D8C9AC;font-size:13px;}
+.cart-totals-row{display:flex;justify-content:space-between;padding:3px 0;}
+.cart-totals-row.grand{font-weight:800;font-size:16px;padding-top:6px;font-family:var(--font-mono);}
+.btn-checkout{
+  width:100%;margin-top:12px;background:var(--red);color:#FBEFE9;border:none;border-radius:10px;
+  padding:13px;font-weight:800;font-family:var(--font-display);font-size:14px;text-transform:uppercase;
+}
+.btn-checkout:disabled{background:#C9BB9E;color:#8A7C64;}
+.btn-whatsapp{
+  width:100%;margin-top:8px;background:#25D366;color:#0b2b17;border:none;border-radius:10px;
+  padding:11px;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;gap:6px;
+}
+
+/* ---------- Daily promotion banner ---------- */
+.promo-banner{
+  max-width:1180px; margin:12px auto 0; padding:0 16px;
+}
+.promo-banner.hidden{display:none;}
+.promo-card{
+  background:linear-gradient(120deg, #3A2A14, #241A0F 65%);
+  border:1.5px solid var(--curry-deep); border-radius:16px;
+  padding:16px 18px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  position:relative; overflow:hidden;
+}
+.promo-card::before{
+  content:''; position:absolute; top:-30px; right:-30px; width:120px; height:120px;
+  background:radial-gradient(circle, rgba(228,163,57,0.25), transparent 70%);
+}
+.promo-tag{
+  font-family:var(--font-display); font-weight:900; font-size:11px; letter-spacing:1px;
+  text-transform:uppercase; color:#1a1410; background:var(--curry); padding:5px 11px; border-radius:20px;
+  flex:0 0 auto; white-space:nowrap;
+}
+.promo-body{flex:1; min-width:180px;}
+.promo-body h3{font-family:var(--font-display);font-weight:700;font-size:16.5px;margin:2px 0 3px;}
+.promo-body p{font-size:12.5px;color:var(--ink-dim);margin:0;line-height:1.4;}
+.promo-price{font-family:var(--font-mono);font-weight:800;font-size:19px;color:var(--curry);flex:0 0 auto;}
+
+/* ---------- Floating quick-order buttons (always visible) ---------- */
+.fab-stack{
+  position:fixed; right:14px; bottom:92px; z-index:45;
+  display:flex; flex-direction:column; gap:10px; align-items:flex-end;
+}
+@media(min-width:960px){.fab-stack{bottom:24px;}}
+.fab-btn{
+  display:flex; align-items:center; gap:8px; border:none; border-radius:26px;
+  padding:11px 16px 11px 12px; font-weight:800; font-size:13px; font-family:var(--font-display);
+  box-shadow:var(--shadow); white-space:nowrap;
+}
+.fab-btn .fab-icon{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:14px;}
+.fab-whatsapp{background:#25D366;color:#0b2b17;}
+
+/* ---------- Mobile sticky bottom bar ---------- */
+.bottom-bar{
+  position:fixed; bottom:0; left:0; right:0; z-index:50;
+  background:var(--surface); border-top:1px solid var(--border);
+  display:flex; padding:8px 10px; gap:8px;
+  padding-bottom:calc(8px + env(safe-area-inset-bottom));
+}
+@media(min-width:960px){.bottom-bar{display:none;}}
+.bb-btn{
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:2px; background:var(--card); border:1px solid var(--border); border-radius:10px;
+  padding:8px 4px; font-size:11px; font-weight:700; color:var(--ink-dim); position:relative;
+}
+.bb-btn.primary{background:var(--curry);color:#1a1410;border-color:var(--curry);}
+.bb-btn .badge-count{
+  position:absolute; top:-6px; right:10px; background:var(--red); color:#fff;
+  font-size:9.5px; font-weight:800; border-radius:10px; padding:1px 5px;
+}
+.bb-icon{font-size:16px;line-height:1;}
+
+/* ---------- Mobile cart drawer ---------- */
+.drawer-backdrop{
+  position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:60; display:none;
+}
+.drawer-backdrop.open{display:block;}
+.drawer{
+  position:fixed; left:0; right:0; bottom:0; z-index:61;
+  background:var(--paper); color:#241D16; border-radius:18px 18px 0 0;
+  max-height:85vh; display:flex; flex-direction:column;
+  transform:translateY(100%); transition:transform .25s ease;
+  padding:16px;
+}
+.drawer.open{transform:translateY(0);}
+.drawer-handle{width:38px;height:4px;background:#D8C9AC;border-radius:3px;margin:0 auto 10px;}
+.drawer-scroll{overflow-y:auto;flex:1;}
+
+/* ---------- Modal ---------- */
+.modal-backdrop{
+  position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:80;
+  display:none; align-items:flex-end; justify-content:center;
+}
+.modal-backdrop.open{display:flex;}
+@media(min-width:640px){.modal-backdrop{align-items:center;}}
+.modal{
+  background:var(--paper); color:#241D16; width:100%; max-width:480px;
+  border-radius:18px 18px 0 0; max-height:92vh; overflow-y:auto; padding:20px;
+}
+@media(min-width:640px){.modal{border-radius:16px;}}
+.modal h2{font-family:var(--font-display);font-size:19px;margin:0 0 14px;}
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:11.5px;font-weight:700;color:#6B5D45;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.3px;}
+.field input, .field select, .field textarea{
+  width:100%; padding:10px 11px; border-radius:9px; border:1.5px solid #D8C9AC; background:#FFFCF5;
+  font-size:14px; font-family:inherit; color:#241D16;
+}
+.field textarea{resize:vertical;min-height:56px;}
+.radio-group{display:flex;gap:8px;}
+.radio-opt{
+  flex:1; border:1.5px solid #D8C9AC; border-radius:10px; padding:10px; text-align:center;
+  font-size:13px; font-weight:700; background:#FFFCF5;
+}
+.radio-opt.selected{background:var(--curry);border-color:var(--curry);color:#1a1410;}
+.info-note{font-size:12px; background:#EFE4CB; border-radius:8px; padding:9px 11px; color:#5A4B32; margin-bottom:12px;}
+.btn-close-modal{position:sticky;top:0;float:right;background:none;border:none;font-size:20px;color:#7A6A50;}
+
+/* ---------- Confirmation ---------- */
+.confirm-icon{width:56px;height:56px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;color:#152012;}
+
+/* ---------- Contact section ---------- */
+.contact-section{
+  max-width:1180px;margin:30px auto 0;padding:16px;
+}
+.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;}
+.contact-card h3{font-family:var(--font-display);margin:0 0 6px;font-size:16px;}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:10px;font-size:13px;color:var(--ink-dim);margin-top:10px;}
+@media(min-width:640px){.contact-grid{grid-template-columns:1fr 1fr;}}
+.contact-grid a{color:var(--curry);font-weight:700;text-decoration:none;}
+
+/* ---------- Admin ---------- */
+#adminRoot{display:none;min-height:100vh;background:#101010;color:#EDEAE4;}
+.admin-login{max-width:340px;margin:80px auto;padding:26px;background:var(--surface);border-radius:16px;border:1px solid var(--border);}
+.admin-login h2{font-family:var(--font-display);margin-top:0;}
+.admin-shell{display:flex;flex-direction:column;min-height:100vh;}
+.admin-header{
+  position:sticky;top:0;z-index:10;background:#151515;border-bottom:1px solid #2A2A2A;
+  padding:10px 16px;display:flex;align-items:center;justify-content:space-between;
+}
+.admin-header .a-title{font-family:var(--font-display);font-weight:700;font-size:15px;}
+.admin-nav{display:flex;gap:4px;overflow-x:auto;padding:8px 16px;background:#161616;border-bottom:1px solid #2A2A2A;scrollbar-width:none;}
+.admin-nav::-webkit-scrollbar{display:none;}
+.a-tab{flex:0 0 auto;background:#232323;border:1px solid #333;color:#B8B2A6;font-size:12.5px;font-weight:700;padding:8px 13px;border-radius:8px;white-space:nowrap;}
+.a-tab.active{background:var(--curry);color:#1a1410;border-color:var(--curry);}
+.admin-body{padding:16px;max-width:1080px;margin:0 auto;width:100%;}
+.a-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+@media(min-width:720px){.a-grid{grid-template-columns:repeat(4,1fr);}}
+.a-stat{background:#1D1D1D;border:1px solid #2E2E2E;border-radius:12px;padding:14px;}
+.a-stat .label{font-size:11px;color:#8F8878;text-transform:uppercase;letter-spacing:0.4px;font-weight:700;}
+.a-stat .val{font-family:var(--font-mono);font-size:22px;font-weight:700;margin-top:4px;}
+.a-section-title{font-family:var(--font-display);font-size:15px;font-weight:700;margin:22px 0 10px;}
+.a-card{background:#1D1D1D;border:1px solid #2E2E2E;border-radius:12px;padding:14px;margin-bottom:10px;}
+.a-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+.a-btn{background:#2C2C2C;border:1px solid #3C3C3C;color:#EDEAE4;padding:7px 12px;border-radius:8px;font-size:12.5px;font-weight:700;}
+.a-btn.primary{background:var(--curry);color:#1a1410;border-color:var(--curry);}
+.a-btn.danger{background:var(--red);color:#FBEFE9;border-color:var(--red);}
+.a-btn.ghost{background:transparent;}
+.a-btn:disabled{opacity:0.4;}
+.a-input, .a-select, .a-textarea{background:#111;border:1px solid #333;color:#EDEAE4;padding:8px 10px;border-radius:7px;font-size:13px;font-family:inherit;width:100%;}
+.a-field{margin-bottom:10px;}
+.a-field label{display:block;font-size:11px;color:#8F8878;margin-bottom:4px;font-weight:700;text-transform:uppercase;}
+.a-order-badge{font-family:var(--font-mono);font-weight:700;font-size:12px;padding:3px 8px;border-radius:6px;}
+.st-new{background:#3A2E1A;color:#E4A339;}
+.st-accepted{background:#243A2A;color:#8FCB9E;}
+.st-preparing{background:#2A2A3A;color:#9EA8E0;}
+.st-ready{background:#3A2A38;color:#E09EC9;}
+.st-out{background:#1A3A3A;color:#7FD9D9;}
+.st-completed{background:#222;color:#888;}
+.st-rejected{background:#3A1A1A;color:#E48282;}
+table.a-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+table.a-table th, table.a-table td{padding:8px 8px;border-bottom:1px solid #2A2A2A;text-align:left;}
+table.a-table th{color:#8F8878;font-weight:700;text-transform:uppercase;font-size:10.5px;}
+.lang-tabs{display:flex;gap:4px;margin-bottom:8px;}
+.lang-tab-btn{background:#232323;border:1px solid #333;color:#B8B2A6;font-size:11px;font-weight:700;padding:5px 9px;border-radius:6px;}
+.lang-tab-btn.active{background:#3D3320;color:var(--curry);border-color:var(--curry);}
+.hidden{display:none !important;}
+.lang-modal-backdrop{
+  position:fixed; inset:0; z-index:300; background:rgba(10,8,6,0.88); backdrop-filter:blur(6px);
+  display:flex; align-items:center; justify-content:center; padding:20px;
+}
+.lang-modal-backdrop.hidden{display:none;}
+.lang-modal{
+  background:var(--surface); border:1px solid var(--border-strong); border-radius:18px;
+  padding:26px 22px; max-width:420px; width:100%; text-align:center; box-shadow:var(--shadow);
+}
+.lang-modal .lm-mark{width:52px;height:52px;border-radius:14px;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:900;color:var(--paper);font-size:24px;margin:0 auto 14px;}
+.lang-modal h2{font-family:var(--font-display);font-weight:700;font-size:18px;margin:0 0 4px;}
+.lang-modal .lm-sub{font-size:12.5px;color:var(--ink-dim);margin:0 0 20px;}
+.lang-option-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.lang-option{
+  background:var(--card); border:1.5px solid var(--border-strong); border-radius:12px;
+  padding:14px 8px; color:var(--ink); font-weight:700; font-size:14px; font-family:var(--font-body);
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+}
+.lang-option .flag{font-size:22px;}
+.lang-option:active{background:var(--curry);color:#1a1410;border-color:var(--curry);}
+.toast{
+  position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:200;
+  background:#1D1D1D;color:#EDEAE4;border:1px solid #333;padding:11px 18px;border-radius:10px;
+  font-size:13px;font-weight:600;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .2s ease, top .2s ease;
+}
+.toast.show{opacity:1;top:24px;}
+.link-btn{background:none;border:none;color:var(--curry);font-weight:700;font-size:12.5px;padding:0;}
+.small-note{font-size:11px;color:var(--ink-faint);margin-top:4px;}
+</style>
+</head>
+<body>
+
+<!-- ============ LANGUAGE SELECTION (first visit) ============ -->
+<div class="lang-modal-backdrop hidden" id="langModalBackdrop">
+  <div class="lang-modal">
+    <div class="lm-mark">米</div>
+    <h2 id="lmTitle">Bitte wählen Sie Ihre Sprache</h2>
+    <p class="lm-sub" id="lmSub">Please choose your language</p>
+    <div class="lang-option-grid">
+      <button class="lang-option" data-pick-lang="de"><span class="flag">🇩🇪</span>Deutsch</button>
+      <button class="lang-option" data-pick-lang="en"><span class="flag">🇬🇧</span>English</button>
+      <button class="lang-option" data-pick-lang="es"><span class="flag">🇪🇸</span>Español</button>
+      <button class="lang-option" data-pick-lang="fr"><span class="flag">🇫🇷</span>Français</button>
+      <button class="lang-option" data-pick-lang="it"><span class="flag">🇮🇹</span>Italiano</button>
+      <button class="lang-option" data-pick-lang="ja"><span class="flag">🇯🇵</span>日本語</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SHOP VIEW ============ -->
+<div id="shopRoot">
+
+  <div class="topbar">
+    <div class="topbar-row">
+      <div class="brand">
+        <div class="brand-mark">米</div>
+        <div class="brand-text">
+          <h1>Kome Seebach</h1>
+          <div class="sub" id="brandSub">Japanese Food — Seebach, Zürich</div>
+          <div class="status-pill" id="statusPill"></div>
+        </div>
+      </div>
+      <div class="lang-switch" id="langSwitch"></div>
+    </div>
+  </div>
+
+  <div class="promo-banner hidden" id="promoBanner"></div>
+
+  <div class="cat-bar">
+    <div class="cat-inner" id="catBar"></div>
+  </div>
+
+  <div class="layout">
+    <div class="menu-col" id="menuCol"></div>
+    <div class="cart-panel" id="cartPanelDesktop"></div>
+  </div>
+
+  <div class="contact-section">
+    <div class="contact-card">
+      <h3 id="contactTitle">Kome Seebach</h3>
+      <p id="contactDesc" style="color:var(--ink-dim);font-size:13px;margin:0;"></p>
+      <div class="contact-grid" id="contactGrid"></div>
+    </div>
+  </div>
+
+  <div class="fab-stack">
+    <button class="fab-btn fab-whatsapp" id="fabWhatsapp"><span class="fab-icon">💬</span><span id="fabWhatsappLabel">WhatsApp</span></button>
+  </div>
+
+  <div class="bottom-bar">
+    <button class="bb-btn" id="bbMenu"><span class="bb-icon">🍱</span><span data-t="nav_menu">Menu</span></button>
+    <button class="bb-btn primary" id="bbCart">
+      <span class="bb-icon">🛒</span><span id="bbCartLabel">Cart</span>
+      <span class="badge-count hidden" id="bbCartBadge">0</span>
+    </button>
+  </div>
+
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <div class="drawer" id="cartDrawer"></div>
+
+  <div class="modal-backdrop" id="checkoutBackdrop">
+    <div class="modal" id="checkoutModal"></div>
+  </div>
+
+  <div class="modal-backdrop" id="confirmBackdrop">
+    <div class="modal" id="confirmModal"></div>
+  </div>
+
+  <div style="text-align:center;padding:18px 0 6px;">
+    <button class="link-btn" id="openAdminLink" style="opacity:0.35;">Admin</button>
+  </div>
+</div>
+
+<!-- ============ ADMIN VIEW ============ -->
+<div id="adminRoot">
+  <div class="admin-login" id="adminLogin">
+    <h2>Admin Login</h2>
+    <div class="a-field"><label>Email</label><input type="email" class="a-input" id="adminEmailInput" autocomplete="username"></div>
+    <div class="a-field"><label>Password</label><input type="password" class="a-input" id="adminPassInput" autocomplete="current-password"></div>
+    <button class="a-btn primary" id="adminLoginBtn" style="width:100%;">Login</button>
+    <p class="small-note" id="adminLoginError" style="color:#E48282;display:none;">Wrong email or password.</p>
+    <p class="small-note">Create your admin account once in Supabase → Authentication → Users, then log in here with that email and password.</p>
+    <button class="link-btn" id="backToShop" style="margin-top:14px;">← Back to shop</button>
+  </div>
+  <div class="admin-shell" id="adminShell" style="display:none;">
+    <div class="admin-header">
+      <div class="a-title">🍱 Kome Seebach — Admin</div>
+      <div style="display:flex;gap:8px;">
+        <button class="a-btn ghost" id="adminViewShop">View shop</button>
+        <button class="a-btn ghost" id="adminLogout">Logout</button>
+      </div>
+    </div>
+    <div class="admin-nav" id="adminNav"></div>
+    <div class="admin-body" id="adminBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================================
+   KOME SEEBACH — JAPANESE TAKEAWAY ORDERING PLATFORM
+   Single-file frontend, deployable as-is on GitHub Pages. Persistence, admin
+   auth, and real-time sync run through Supabase (see supabase_schema.sql) —
+   Row Level Security policies enforce who can read/write what; a SECURITY
+   DEFINER function (place_order) does the atomic, race-condition-safe stock
+   decrement server-side. Fill in SUPABASE_URL / SUPABASE_ANON_KEY below
+   before deploying — see the setup guide for the full checklist.
+   ========================================================================= */
+
+const LANGS = ['de','en','es','fr','it','ja'];
+const LANG_LABELS = {de:'Deutsch',en:'English',es:'Español',fr:'Français',it:'Italiano',ja:'日本語'};
+let LANG = 'de';
+let LANG_CHOSEN = false;
+
+const UI = {
+  de:{nav_menu:'Menü',cart:'Warenkorb',today_menu:'HEUTIGES MENÜ',open_now:'Geöffnet',closed:'Geschlossen',opens_at:'Öffnet um',
+      add:'Bestellen',sold_out:'Ausverkauft',sold_out_today:'Heute ausverkauft',extras:'Extras',qty:'Menge',
+      cart_empty:'Ihr Warenkorb ist leer.',subtotal:'Zwischensumme',delivery_fee:'Liefergebühr',total:'Total',
+      checkout:'Zur Kasse',order_whatsapp:'Per WhatsApp bestellen',send_order_whatsapp:'Bestellung via WhatsApp senden',
+      order_email:'Per E-Mail bestellen',send_order_email:'Bestellung per E-Mail senden',choose_language:'Sprache wählen',continue_lang:'Weiter',
+      delivery:'Lieferung',pickup:'Abholung in Seebach',name:'Name',phone:'Telefon',street:'Strasse / Nr.',
+      postcode:'PLZ',city:'Ort',floor:'Stock / Wohnung',instructions:'Lieferhinweise',pref_time:'Wunschzeit',
+      payment:'Zahlungsart',cash:'Bar bei Lieferung',card:'Karte bei Lieferung',pay_note:'Die Zahlung erfolgt bei Lieferung Ihrer Bestellung.',
+      confirm_order:'Bestellung bestätigen',order_received:'DANKE — IHRE BESTELLUNG WURDE ERHALTEN',order_number:'Bestellnummer',
+      close:'Schliessen',min_order:'Mindestbestellwert',free_delivery_from:'Gratis Lieferung ab',est_time:'Geschätzte Lieferzeit',
+      contact:'Kontakt',opening_hours:'Öffnungszeiten',delivery_areas:'Liefergebiete',paused_msg:'WIR NEHMEN AKTUELL KEINE BESTELLUNGEN AN.',
+      stock_left:'übrig',just_sold_out:'Dieses Produkt ist gerade ausverkauft.',min_order_msg:'Mindestbestellwert nicht erreicht',
+      required:'Bitte alle Pflichtfelder ausfüllen.',asap:'So schnell wie möglich',schedule:'Bestellung für später planen',
+      new:'Neu',special:'Tagesangebot',allergens:'Allergene',ready_in:'Bereit in ca.',min:'Min.',promo_title:'Angebot des Tages',promo_pick:'Speziell heute ausgewählt für Sie',
+      closed_no_schedule:'Wir sind aktuell geschlossen. Bestellungen sind derzeit nicht möglich.',order_type:'Bestellart',
+      view_menu:'Menü ansehen',remove:'Entfernen',each:'Stk.'},
+  en:{nav_menu:'Menu',cart:'Cart',today_menu:"TODAY'S MENU",open_now:'Open now',closed:'Closed',opens_at:'Opens at',
+      add:'Add to order',sold_out:'Sold out',sold_out_today:'Sold out today',extras:'Extras',qty:'Qty',
+      cart_empty:'Your cart is empty.',subtotal:'Subtotal',delivery_fee:'Delivery fee',total:'Total',
+      checkout:'Checkout',order_whatsapp:'Order on WhatsApp',send_order_whatsapp:'Send order via WhatsApp',
+      order_email:'Order by email',send_order_email:'Send order by email',choose_language:'Choose your language',continue_lang:'Continue',
+      delivery:'Delivery',pickup:'Pickup in Seebach',name:'Name',phone:'Phone',street:'Street / house no.',
+      postcode:'Postcode',city:'City',floor:'Floor / apartment',instructions:'Delivery instructions',pref_time:'Preferred time',
+      payment:'Payment method',cash:'Cash on delivery',card:'Card on delivery',pay_note:'Payment is made when your order is delivered.',
+      confirm_order:'Confirm order',order_received:'THANK YOU — YOUR ORDER HAS BEEN RECEIVED',order_number:'Order number',
+      close:'Close',min_order:'Minimum order',free_delivery_from:'Free delivery from',est_time:'Estimated delivery time',
+      contact:'Contact',opening_hours:'Opening hours',delivery_areas:'Delivery areas',paused_msg:'WE ARE TEMPORARILY NOT ACCEPTING NEW ORDERS.',
+      stock_left:'left',just_sold_out:'Sorry, this product has just sold out.',min_order_msg:'Minimum order not reached',
+      required:'Please fill in all required fields.',asap:'As soon as possible',schedule:'Schedule for later',
+      new:'New',special:"Today's special",allergens:'Allergens',ready_in:'Ready in approx.',min:'min',promo_title:"Today's Special Offer",promo_pick:'Hand-picked for today',
+      closed_no_schedule:'We are currently closed. Ordering is not available right now.',order_type:'Order type',
+      view_menu:'View menu',remove:'Remove',each:'ea.'},
+  es:{nav_menu:'Menú',cart:'Carrito',today_menu:'MENÚ DE HOY',open_now:'Abierto ahora',closed:'Cerrado',opens_at:'Abre a las',
+      add:'Añadir al pedido',sold_out:'Agotado',sold_out_today:'Agotado hoy',extras:'Extras',qty:'Cant.',
+      cart_empty:'Tu carrito está vacío.',subtotal:'Subtotal',delivery_fee:'Gastos de envío',total:'Total',
+      checkout:'Finalizar pedido',order_whatsapp:'Pedir por WhatsApp',send_order_whatsapp:'Enviar pedido por WhatsApp',
+      order_email:'Pedir por correo',send_order_email:'Enviar pedido por correo',choose_language:'Elige tu idioma',continue_lang:'Continuar',
+      delivery:'Entrega a domicilio',pickup:'Recoger en Seebach',name:'Nombre',phone:'Teléfono',street:'Calle / número',
+      postcode:'Código postal',city:'Ciudad',floor:'Piso / apartamento',instructions:'Instrucciones de entrega',pref_time:'Hora preferida',
+      payment:'Método de pago',cash:'Efectivo al entregar',card:'Tarjeta al entregar',pay_note:'El pago se realiza al recibir su pedido.',
+      confirm_order:'Confirmar pedido',order_received:'GRACIAS — SU PEDIDO HA SIDO RECIBIDO',order_number:'Número de pedido',
+      close:'Cerrar',min_order:'Pedido mínimo',free_delivery_from:'Envío gratis desde',est_time:'Tiempo estimado de entrega',
+      contact:'Contacto',opening_hours:'Horario',delivery_areas:'Zonas de entrega',paused_msg:'ACTUALMENTE NO ACEPTAMOS NUEVOS PEDIDOS.',
+      stock_left:'restantes',just_sold_out:'Lo sentimos, este producto se acaba de agotar.',min_order_msg:'No se alcanzó el pedido mínimo',
+      required:'Por favor complete todos los campos obligatorios.',asap:'Lo antes posible',schedule:'Programar para más tarde',
+      new:'Novedad',special:'Especial del día',allergens:'Alérgenos',ready_in:'Listo en aprox.',min:'min',promo_title:'Promoción del Día',promo_pick:'Elegida especialmente para hoy',
+      closed_no_schedule:'Actualmente estamos cerrados. No es posible realizar pedidos ahora.',order_type:'Tipo de pedido',
+      view_menu:'Ver menú',remove:'Quitar',each:'c/u'},
+  fr:{nav_menu:'Menu',cart:'Panier',today_menu:"MENU DU JOUR",open_now:'Ouvert',closed:'Fermé',opens_at:'Ouvre à',
+      add:'Ajouter à la commande',sold_out:'Épuisé',sold_out_today:"Épuisé aujourd'hui",extras:'Suppléments',qty:'Qté',
+      cart_empty:'Votre panier est vide.',subtotal:'Sous-total',delivery_fee:'Frais de livraison',total:'Total',
+      checkout:'Commander',order_whatsapp:'Commander via WhatsApp',send_order_whatsapp:'Envoyer la commande via WhatsApp',
+      order_email:'Commander par e-mail',send_order_email:'Envoyer la commande par e-mail',choose_language:'Choisissez votre langue',continue_lang:'Continuer',
+      delivery:'Livraison',pickup:'Retrait à Seebach',name:'Nom',phone:'Téléphone',street:'Rue / numéro',
+      postcode:'NPA',city:'Ville',floor:'Étage / appartement',instructions:'Instructions de livraison',pref_time:'Heure souhaitée',
+      payment:'Mode de paiement',cash:'Espèces à la livraison',card:'Carte à la livraison',pay_note:'Le paiement se fait à la livraison de votre commande.',
+      confirm_order:'Confirmer la commande',order_received:'MERCI — VOTRE COMMANDE A ÉTÉ REÇUE',order_number:'Numéro de commande',
+      close:'Fermer',min_order:'Commande minimum',free_delivery_from:'Livraison gratuite dès',est_time:'Délai de livraison estimé',
+      contact:'Contact',opening_hours:"Horaires d'ouverture",delivery_areas:'Zones de livraison',paused_msg:'NOUS N’ACCEPTONS TEMPORAIREMENT PAS DE NOUVELLES COMMANDES.',
+      stock_left:'restant(s)',just_sold_out:'Désolé, ce produit vient d’être épuisé.',min_order_msg:'Commande minimum non atteinte',
+      required:'Veuillez remplir tous les champs obligatoires.',asap:'Dès que possible',schedule:'Planifier pour plus tard',
+      new:'Nouveau',special:'Spécial du jour',allergens:'Allergènes',ready_in:'Prêt en env.',min:'min',promo_title:'Promotion du Jour',promo_pick:"Sélectionnée spécialement pour aujourd'hui",
+      closed_no_schedule:"Nous sommes actuellement fermés. Les commandes ne sont pas possibles pour le moment.",order_type:'Type de commande',
+      view_menu:'Voir le menu',remove:'Retirer',each:'ch.'},
+  it:{nav_menu:'Menù',cart:'Carrello',today_menu:"MENÙ DI OGGI",open_now:'Aperto ora',closed:'Chiuso',opens_at:'Apre alle',
+      add:'Aggiungi all’ordine',sold_out:'Esaurito',sold_out_today:'Esaurito oggi',extras:'Extra',qty:'Qtà',
+      cart_empty:'Il tuo carrello è vuoto.',subtotal:'Subtotale',delivery_fee:'Costo di consegna',total:'Totale',
+      checkout:'Vai alla cassa',order_whatsapp:'Ordina su WhatsApp',send_order_whatsapp:'Invia ordine via WhatsApp',
+      order_email:'Ordina via email',send_order_email:"Invia l'ordine via email",choose_language:'Scegli la tua lingua',continue_lang:'Continua',
+      delivery:'Consegna a domicilio',pickup:'Ritiro a Seebach',name:'Nome',phone:'Telefono',street:'Via / numero',
+      postcode:'CAP',city:'Città',floor:'Piano / appartamento',instructions:'Istruzioni di consegna',pref_time:'Orario preferito',
+      payment:'Metodo di pagamento',cash:'Contanti alla consegna',card:'Carta alla consegna',pay_note:'Il pagamento avviene alla consegna del tuo ordine.',
+      confirm_order:'Conferma ordine',order_received:'GRAZIE — IL TUO ORDINE È STATO RICEVUTO',order_number:'Numero ordine',
+      close:'Chiudi',min_order:'Ordine minimo',free_delivery_from:'Consegna gratuita da',est_time:'Tempo di consegna stimato',
+      contact:'Contatto',opening_hours:'Orari di apertura',delivery_areas:'Zone di consegna',paused_msg:'AL MOMENTO NON ACCETTIAMO NUOVI ORDINI.',
+      stock_left:'rimasti',just_sold_out:'Siamo spiacenti, questo prodotto è appena esaurito.',min_order_msg:'Ordine minimo non raggiunto',
+      required:'Si prega di compilare tutti i campi obbligatori.',asap:'Il prima possibile',schedule:'Pianifica per dopo',
+      new:'Novità',special:'Speciale del giorno',allergens:'Allergeni',ready_in:'Pronto in circa',min:'min',promo_title:'Promozione del Giorno',promo_pick:'Scelta speciale per oggi',
+      closed_no_schedule:'Al momento siamo chiusi. Non è possibile ordinare in questo momento.',order_type:'Tipo di ordine',
+      view_menu:'Vedi il menù',remove:'Rimuovi',each:'cad.'},
+  ja:{nav_menu:'メニュー',cart:'カート',today_menu:'本日のメニュー',open_now:'営業中',closed:'営業時間外',opens_at:'開店時間',
+      add:'注文に追加',sold_out:'売り切れ',sold_out_today:'本日売り切れ',extras:'トッピング',qty:'数量',
+      cart_empty:'カートは空です。',subtotal:'小計',delivery_fee:'配達料',total:'合計',
+      checkout:'注文手続きへ',order_whatsapp:'WhatsAppで注文',send_order_whatsapp:'WhatsAppで注文を送る',
+      order_email:'メールで注文',send_order_email:'メールで注文を送る',choose_language:'言語を選択してください',continue_lang:'次へ',
+      delivery:'配達',pickup:'ゼーバッハで受け取り',name:'お名前',phone:'電話番号',street:'通り名・番地',
+      postcode:'郵便番号',city:'市区町村',floor:'階・部屋番号',instructions:'配達に関するご要望',pref_time:'希望時間',
+      payment:'お支払い方法',cash:'配達時に現金払い',card:'配達時にカード払い',pay_note:'お支払いは商品お届け時にお願いします。',
+      confirm_order:'注文を確定する',order_received:'ご注文ありがとうございます',order_number:'注文番号',
+      close:'閉じる',min_order:'最低注文金額',free_delivery_from:'配達無料になる金額',est_time:'配達予想時間',
+      contact:'お問い合わせ',opening_hours:'営業時間',delivery_areas:'配達エリア',paused_msg:'現在、新しいご注文をお受けしておりません。',
+      stock_left:'個 残り',just_sold_out:'申し訳ございません。この商品はちょうど売り切れました。',min_order_msg:'最低注文金額に達していません',
+      required:'必須項目をすべて入力してください。',asap:'できるだけ早く',schedule:'時間を指定する',
+      new:'新登場',special:'本日のおすすめ',allergens:'アレルゲン',ready_in:'調理時間目安',min:'分',promo_title:'本日のプロモーション',promo_pick:'本日限定のおすすめ',
+      closed_no_schedule:'現在は営業時間外です。ただいまご注文いただけません。',order_type:'注文方法',
+      view_menu:'メニューを見る',remove:'削除',each:'個'}
+};
+function t(key){ return (UI[LANG] && UI[LANG][key]) || UI.en[key] || key; }
+function lf(obj){ return (obj && (obj[LANG] || obj.en)) || ''; }
+
+const ALLERGEN_LABELS = {
+  gluten:{de:'Gluten',en:'Gluten',es:'Gluten',fr:'Gluten',it:'Glutine',ja:'グルテン'},
+  soy:{de:'Soja',en:'Soy',es:'Soja',fr:'Soja',it:'Soia',ja:'大豆'},
+  egg:{de:'Ei',en:'Egg',es:'Huevo',fr:'Œuf',it:'Uovo',ja:'卵'},
+  sesame:{de:'Sesam',en:'Sesame',es:'Sésamo',fr:'Sésame',it:'Sesamo',ja:'ごま'},
+  milk:{de:'Milch',en:'Milk',es:'Leche',fr:'Lait',it:'Latte',ja:'乳'},
+  fish:{de:'Fisch',en:'Fish',es:'Pescado',fr:'Poisson',it:'Pesce',ja:'魚'},
+  peanuts:{de:'Erdnuss',en:'Peanuts',es:'Cacahuete',fr:'Arachide',it:'Arachidi',ja:'ピーナッツ'}
+};
+const CATEGORIES = ['curry','yakisoba','bento','karaage_full','sando','sides','drinks'];
+const CATEGORY_LABELS = {
+  curry:{de:'Japanisches Curry',en:'Japanese Curry',es:'Curry Japonés',fr:'Curry Japonais',it:'Curry Giapponese',ja:'カレーライス'},
+  yakisoba:{de:'Yakisoba',en:'Yakisoba',es:'Yakisoba',fr:'Yakisoba',it:'Yakisoba',ja:'焼きそば'},
+  bento:{de:'Bento',en:'Bento',es:'Bento',fr:'Bento',it:'Bento',ja:'弁当'},
+  karaage_full:{de:'Karaage Hähnchen (Ganz)',en:'Karaage Whole Chicken',es:'Pollo Karaage Completo',fr:'Poulet Karaage Entier',it:'Pollo Karaage Intero',ja:'唐揚げチキン（丸ごと）'},
+  sando:{de:'Japanische Sandwiches',en:'Japanese Sandwiches',es:'Sándwiches Japoneses',fr:'Sandwichs Japonais',it:'Panini Giapponesi',ja:'サンド'},
+  sides:{de:'Beilagen',en:'Sides',es:'Acompañamientos',fr:'Accompagnements',it:'Contorni',ja:'サイドメニュー'},
+  drinks:{de:'Getränke',en:'Drinks',es:'Bebidas',fr:'Boissons',it:'Bevande',ja:'ドリンク'}
+};
+
+function extra(name, price){ return {id:'ex_'+Math.random().toString(36).slice(2,9), name, price}; }
+const EX_CHICKEN = extra({de:'Extra Hähnchen',en:'Extra chicken',es:'Extra pollo',fr:'Supplément poulet',it:'Extra pollo',ja:'チキン追加'}, 4.00);
+const EX_RICE = extra({de:'Extra Reis',en:'Extra rice',es:'Extra arroz',fr:'Supplément riz',it:'Extra riso',ja:'ライス追加'}, 2.50);
+const EX_MISO = extra({de:'Miso-Suppe',en:'Miso soup',es:'Sopa de miso',fr:'Soupe miso',it:'Zuppa di miso',ja:'味噌汁'}, 4.50);
+const EX_SAUCE = extra({de:'Extra Sauce',en:'Extra sauce',es:'Extra salsa',fr:'Supplément sauce',it:'Extra salsa',ja:'ソース追加'}, 1.50);
+const EX_EGG = extra({de:'Extra Ei',en:'Extra egg',es:'Extra huevo',fr:'Supplément œuf',it:'Extra uovo',ja:'卵追加'}, 1.50);
+
+function defaultProducts(){
+  return [
+    {id:'p1',category:'curry',price:16.90,stockToday:50,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Chicken Curry Rice',en:'Chicken Curry Rice',es:'Curry de Pollo con Arroz',fr:'Curry de Poulet et Riz',it:'Curry di Pollo con Riso',ja:'チキンカレーライス'},
+      desc:{de:'Japanisches Curry, Reis, Hähnchen und Gemüse.',en:'Japanese curry, rice, chicken and vegetables.',es:'Curry japonés, arroz, pollo y verduras.',fr:'Curry japonais, riz, poulet et légumes.',it:'Curry giapponese, riso, pollo e verdure.',ja:'日本風カレー、ライス、鶏肉と野菜。'},
+      allergens:['gluten','soy'], image:'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=800&auto=format&fit=crop',
+      extras:[EX_CHICKEN,EX_RICE,EX_MISO]},
+    {id:'p2',category:'curry',price:18.50,stockToday:35,sold:0,soldOut:false,soldOutTime:null,label:'special',archived:false,
+      name:{de:'Katsu Curry Rice',en:'Katsu Curry Rice',es:'Curry Katsu con Arroz',fr:'Curry Katsu et Riz',it:'Curry Katsu con Riso',ja:'カツカレーライス'},
+      desc:{de:'Knuspriges Schweineschnitzel mit hausgemachtem Curry und Reis.',en:'Crispy pork cutlet with house-made curry and rice.',es:'Chuleta de cerdo crujiente con curry casero y arroz.',fr:'Escalope de porc croustillante, curry maison et riz.',it:'Cotoletta di maiale croccante con curry fatto in casa e riso.',ja:'サクサクの豚カツと自家製カレー、ライス。'},
+      allergens:['gluten','egg'], image:'https://images.unsplash.com/photo-1631709497146-a239ef373cf1?q=80&w=800&auto=format&fit=crop',
+      extras:[EX_RICE,EX_SAUCE,EX_MISO]},
+    {id:'p3',category:'curry',price:15.50,stockToday:30,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Gemüse Curry Rice',en:'Vegetable Curry Rice',es:'Curry Vegetal con Arroz',fr:'Curry de Légumes et Riz',it:'Curry di Verdure con Riso',ja:'野菜カレーライス'},
+      desc:{de:'Mildes Curry mit Saisongemüse und Reis. Vegan.',en:'Mild curry with seasonal vegetables and rice. Vegan.',es:'Curry suave con verduras de temporada y arroz. Vegano.',fr:'Curry doux aux légumes de saison et riz. Végane.',it:'Curry delicato con verdure di stagione e riso. Vegano.',ja:'季節の野菜を使ったマイルドなカレーとライス。ヴィーガン。'},
+      allergens:['soy'], image:'https://images.unsplash.com/photo-1547592180-85f173990554?q=80&w=800&auto=format&fit=crop',
+      extras:[EX_RICE,EX_MISO]},
+    {id:'p4',category:'yakisoba',price:15.90,stockToday:40,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Yakisoba Hähnchen',en:'Yakisoba Chicken',es:'Yakisoba de Pollo',fr:'Yakisoba au Poulet',it:'Yakisoba con Pollo',ja:'鶏肉焼きそば'},
+      desc:{de:'Gebratene Nudeln mit Hähnchen, Kohl und Yakisoba-Sauce.',en:'Stir-fried noodles with chicken, cabbage and yakisoba sauce.',es:'Fideos salteados con pollo, col y salsa yakisoba.',fr:'Nouilles sautées au poulet, chou et sauce yakisoba.',it:'Noodle saltati con pollo, cavolo e salsa yakisoba.',ja:'鶏肉とキャベツ入り焼きそば、焼きそばソース。'},
+      allergens:['gluten','soy','sesame'], image:'https://images.unsplash.com/photo-1552611052-33e04de081de?q=80&w=800&auto=format&fit=crop',
+      extras:[EX_CHICKEN,EX_EGG]},
+    {id:'p5',category:'yakisoba',price:14.50,stockToday:25,sold:0,soldOut:false,soldOutTime:null,label:'new',archived:false,
+      name:{de:'Yakisoba Gemüse',en:'Yakisoba Vegetable',es:'Yakisoba de Verduras',fr:'Yakisoba aux Légumes',it:'Yakisoba con Verdure',ja:'野菜焼きそば'},
+      desc:{de:'Gebratene Nudeln mit Saisongemüse. Vegan.',en:'Stir-fried noodles with seasonal vegetables. Vegan.',es:'Fideos salteados con verduras de temporada. Vegano.',fr:'Nouilles sautées aux légumes de saison. Végane.',it:'Noodle saltati con verdure di stagione. Vegano.',ja:'季節の野菜を使った焼きそば。ヴィーガン。'},
+      allergens:['gluten','soy','sesame'], image:'https://images.unsplash.com/photo-1585032226651-759b368d7246?q=80&w=800&auto=format&fit=crop',
+      extras:[EX_EGG]},
+    {id:'p6',category:'bento',price:17.90,stockToday:30,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Chicken Karaage Bento',en:'Chicken Karaage Bento',es:'Bento de Karaage de Pollo',fr:'Bento Karaage au Poulet',it:'Bento Karaage di Pollo',ja:'鶏の唐揚げ弁当'},
+      desc:{de:'Frittiertes Hähnchen, Reis, Salat und Beilagen.',en:'Japanese fried chicken, rice, salad and sides.',es:'Pollo frito japonés, arroz, ensalada y acompañamientos.',fr:'Poulet frit japonais, riz, salade et accompagnements.',it:'Pollo fritto giapponese, riso, insalata e contorni.',ja:'唐揚げ、ライス、サラダ、副菜の弁当。'},
+      allergens:['gluten','soy','egg'], image:'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop',
+      extras:[EX_RICE,EX_SAUCE]},
+    {id:'p7',category:'bento',price:19.50,stockToday:22,sold:0,soldOut:false,soldOutTime:null,label:'special',archived:false,
+      name:{de:'Lachs Teriyaki Bento',en:'Salmon Teriyaki Bento',es:'Bento de Salmón Teriyaki',fr:'Bento Saumon Teriyaki',it:'Bento Salmone Teriyaki',ja:'鮭の照り焼き弁当'},
+      desc:{de:'Gegrillter Lachs mit Teriyaki-Sauce, Reis und Gemüse.',en:'Grilled salmon with teriyaki sauce, rice and vegetables.',es:'Salmón a la parrilla con salsa teriyaki, arroz y verduras.',fr:'Saumon grillé sauce teriyaki, riz et légumes.',it:'Salmone alla griglia con salsa teriyaki, riso e verdure.',ja:'照り焼きソースの焼き鮭、ライスと野菜。'},
+      allergens:['fish','soy','sesame'], image:'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?q=80&w=800&auto=format&fit=crop',
+      extras:[EX_RICE]},
+    {id:'p8',category:'karaage_full',price:30.00,stockToday:15,sold:0,soldOut:false,soldOutTime:null,label:'special',archived:false,
+      name:{de:'Karaage Hähnchen — Ganz',en:'Karaage Whole Chicken',es:'Pollo Karaage Completo',fr:'Poulet Karaage Entier',it:'Pollo Karaage Intero',ja:'唐揚げチキン丸ごと1羽'},
+      desc:{de:'Ein ganzes, knusprig frittiertes Hähnchen nach japanischer Karaage-Art, ideal zum Teilen. Serviert mit Sauce.',en:'A whole crispy Japanese-style fried chicken, perfect for sharing. Served with dipping sauce.',es:'Un pollo entero frito y crujiente al estilo japonés karaage, ideal para compartir. Servido con salsa.',fr:'Un poulet entier frit et croustillant façon karaage japonais, idéal à partager. Servi avec sa sauce.',it:'Un pollo intero fritto e croccante in stile karaage giapponese, perfetto da condividere. Servito con salsa.',ja:'シェアにぴったりの、丸ごと1羽のカリッと揚げた唐揚げチキン。タレ付き。'},
+      allergens:['gluten','soy'], image:'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop',
+      extras:[EX_SAUCE,EX_RICE]},
+    {id:'p9',category:'sando',price:8.90,stockToday:25,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Ei Sando',en:'Egg Sando',es:'Sando de Huevo',fr:'Sando à l’Œuf',it:'Sando all’Uovo',ja:'たまごサンド'},
+      desc:{de:'Weiches Milchbrot mit cremigem japanischem Eisalat.',en:'Soft milk bread with creamy Japanese egg salad.',es:'Pan de leche suave con cremosa ensalada de huevo japonesa.',fr:'Pain au lait moelleux et salade d’œufs japonaise crémeuse.',it:'Pane al latte morbido con insalata di uova giapponese cremosa.',ja:'柔らかい食パンとクリーミーな卵サラダ。'},
+      allergens:['gluten','egg','milk'], image:'https://images.unsplash.com/photo-1626804475297-411f0a389fdd?q=80&w=800&auto=format&fit=crop',
+      extras:[]},
+    {id:'p9b',category:'sando',price:12.90,stockToday:20,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Katsu Sando',en:'Katsu Sando',es:'Sando de Katsu',fr:'Sando Katsu',it:'Sando Katsu',ja:'カツサンド'},
+      desc:{de:'Knuspriges Schnitzel, Katsu-Sauce, weiches Milchbrot.',en:'Crispy pork cutlet, katsu sauce, soft milk bread.',es:'Chuleta crujiente, salsa katsu, pan de leche suave.',fr:'Escalope croustillante, sauce katsu, pain au lait moelleux.',it:'Cotoletta croccante, salsa katsu, pane al latte morbido.',ja:'サクサクのカツ、カツソース、柔らかい食パン。'},
+      allergens:['gluten','egg'], image:'https://images.unsplash.com/photo-1550507992-eb63ffee0847?q=80&w=800&auto=format&fit=crop',
+      extras:[EX_SAUCE]},
+    {id:'p10',category:'sides',price:5.50,stockToday:60,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Edamame',en:'Edamame',es:'Edamame',fr:'Edamame',it:'Edamame',ja:'枝豆'},
+      desc:{de:'Gedämpfte Sojabohnen mit Meersalz.',en:'Steamed soybeans with sea salt.',es:'Judías de soja al vapor con sal marina.',fr:'Fèves de soja vapeur au sel de mer.',it:'Fagioli di soia al vapore con sale marino.',ja:'塩茹での枝豆。'},
+      allergens:['soy'], image:'https://images.unsplash.com/photo-1622480916113-9000ac49b79d?q=80&w=800&auto=format&fit=crop', extras:[]},
+    {id:'p11',category:'sides',price:8.50,stockToday:40,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Gyoza (5 Stk.)',en:'Gyoza (5 pc.)',es:'Gyoza (5 uds.)',fr:'Gyoza (5 pièces)',it:'Gyoza (5 pz.)',ja:'餃子（5個）'},
+      desc:{de:'Gebratene Teigtaschen mit Hähnchen und Gemüse.',en:'Pan-fried dumplings with chicken and vegetables.',es:'Empanadillas fritas con pollo y verduras.',fr:'Raviolis poêlés au poulet et légumes.',it:'Ravioli saltati con pollo e verdure.',ja:'鶏肉と野菜の焼き餃子。'},
+      allergens:['gluten','soy'], image:'https://images.unsplash.com/photo-1541696490-8744a5dc0228?q=80&w=800&auto=format&fit=crop', extras:[EX_SAUCE]},
+    {id:'p12',category:'sides',price:4.50,stockToday:45,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Miso-Suppe',en:'Miso Soup',es:'Sopa de Miso',fr:'Soupe Miso',it:'Zuppa di Miso',ja:'味噌汁'},
+      desc:{de:'Klassische Miso-Suppe mit Tofu und Wakame.',en:'Classic miso soup with tofu and wakame.',es:'Sopa de miso clásica con tofu y wakame.',fr:'Soupe miso classique au tofu et wakamé.',it:'Zuppa di miso classica con tofu e wakame.',ja:'豆腐とわかめの味噌汁。'},
+      allergens:['soy'], image:'https://images.unsplash.com/photo-1607301405390-d831c242f59b?q=80&w=800&auto=format&fit=crop', extras:[]},
+    {id:'p13',category:'drinks',price:4.50,stockToday:50,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Ramune Original',en:'Ramune Original',es:'Ramune Original',fr:'Ramune Original',it:'Ramune Original',ja:'ラムネ'},
+      desc:{de:'Japanische Limonade in der klassischen Glasflasche.',en:'Japanese soda in the classic marble bottle.',es:'Refresco japonés en la clásica botella de canica.',fr:'Soda japonais dans la bouteille à bille classique.',it:'Bibita giapponese nella classica bottiglia con biglia.',ja:'ビー玉入りの瓶に入った日本のラムネ。'},
+      allergens:[], image:'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?q=80&w=800&auto=format&fit=crop', extras:[]},
+    {id:'p14',category:'drinks',price:3.50,stockToday:60,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Grüntee (Flasche)',en:'Green Tea (bottle)',es:'Té Verde (botella)',fr:'Thé Vert (bouteille)',it:'Tè Verde (bottiglia)',ja:'緑茶（ボトル）'},
+      desc:{de:'Ungesüsster japanischer Grüntee.',en:'Unsweetened Japanese green tea.',es:'Té verde japonés sin azúcar.',fr:'Thé vert japonais non sucré.',it:'Tè verde giapponese non zuccherato.',ja:'無糖の日本の緑茶。'},
+      allergens:[], image:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=800&auto=format&fit=crop', extras:[]},
+    {id:'p15',category:'drinks',price:2.50,stockToday:80,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Wasser',en:'Water',es:'Agua',fr:'Eau',it:'Acqua',ja:'お水'},
+      desc:{de:'Stilles oder mit Kohlensäure, 0.5l.',en:'Still or sparkling, 0.5l.',es:'Con o sin gas, 0,5l.',fr:'Plate ou gazeuse, 0,5l.',it:'Naturale o frizzante, 0,5l.',ja:'炭酸有り無し、0.5リットル。'},
+      allergens:[], image:'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?q=80&w=800&auto=format&fit=crop', extras:[]}
+  ];
+}
+
+function defaultSettings(){
+  return {
+    restaurantName:'Kome Seebach',
+    address:'Wallisellenstrasse 12, 8052 Zürich (Seebach)',
+    phone:'+41 44 000 00 00',
+    whatsapp:'41780000000',
+    email:'hallo@kome-seebach.ch',
+    instagram:'',
+    mapsUrl:'https://maps.google.com/?q=Seebach+Zurich',
+    openingHours:{
+      0:{closed:false, open:'12:00', close:'21:00'},
+      1:{closed:false, open:'11:00', close:'21:30'},
+      2:{closed:false, open:'11:00', close:'21:30'},
+      3:{closed:false, open:'11:00', close:'21:30'},
+      4:{closed:false, open:'11:00', close:'21:30'},
+      5:{closed:false, open:'11:00', close:'22:00'},
+      6:{closed:false, open:'12:00', close:'22:00'}
+    },
+    deliveryAreas:['8052 Zürich','Seebach','Oerlikon','Affoltern','Glattbrugg'],
+    deliveryFee:3.00,
+    minOrder:20.00,
+    freeDeliveryThreshold:45.00,
+    estDeliveryTimeMin:35,
+    paymentMethods:{cash:true, card:true, twint:false, visa:false, mastercard:false, applepay:false, googlepay:false},
+    ordersPaused:false,
+    allowScheduledWhenClosed:true,
+    autoReactivateNextDay:true,
+    lastResetDate: isoDateOnly(),
+    dailySpecials:[
+      {id:'d1', name:{de:'',en:'',es:'',fr:'',it:'',ja:''}, desc:{de:'',en:'',es:'',fr:'',it:'',ja:''}, price:0},
+      {id:'d2', name:{de:'',en:'',es:'',fr:'',it:'',ja:''}, desc:{de:'',en:'',es:'',fr:'',it:'',ja:''}, price:0},
+      {id:'d3', name:{de:'',en:'',es:'',fr:'',it:'',ja:''}, desc:{de:'',en:'',es:'',fr:'',it:'',ja:''}, price:0}
+    ],
+    activeDailySpecial:null
+  };
+}
+
+/* =========================================================================
+   SUPABASE CONFIG
+   ⚠️ Fill these in with YOUR project's values (Supabase dashboard → Settings
+   → API). The anon key is meant to be public — it is not a secret. Real
+   protection comes from the Row Level Security policies in supabase_schema.sql,
+   not from hiding this key.
+   ========================================================================= */
+const SUPABASE_URL = 'https://ebvrbcehvmzwzqsanthv.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_talVCqk0KQb6HHCK8isL-Q_ILqohhHm';
+const sb = (SUPABASE_URL.includes('YOUR-PROJECT-REF') || typeof supabase === 'undefined')
+  ? null
+  : supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+/* ---------------- App State ---------------- */
+let PRODUCTS = [];
+let SETTINGS = defaultSettings();
+let ORDERS = [];
+let SOLDOUT_HISTORY = [];
+let CART = []; // {productId, qty, extraIds[]}
+let ACTIVE_CATEGORY = 'all';
+let ADMIN_LOGGED_IN = false;
+let ADMIN_TAB = 'dashboard';
+let ADMIN_LANG_TAB = 'de';
+let PENDING_CHECKOUT_TYPE = 'delivery';
+
+/* ---------------- Supabase <-> app-model mappers ---------------- */
+function dbToProduct(row){
+  return {
+    id: row.id, category: row.category, price: Number(row.price),
+    stockToday: row.stock_today, sold: row.sold, soldOut: row.sold_out, soldOutTime: row.sold_out_time,
+    label: row.label, archived: row.archived,
+    name: row.name || {}, desc: row.description || {}, allergens: row.allergens || [],
+    image: row.image || '', extras: row.extras || []
+  };
+}
+function productToDb(p){
+  return {
+    id: p.id, category: p.category, price: p.price, stock_today: p.stockToday, sold: p.sold,
+    sold_out: p.soldOut, sold_out_time: p.soldOutTime, label: p.label, archived: p.archived,
+    name: p.name, description: p.desc, allergens: p.allergens||[], image: p.image, extras: p.extras||[]
+  };
+}
+function dbToOrder(row){
+  return {
+    id: row.id, items: row.items, subtotal: Number(row.subtotal), deliveryFee: Number(row.delivery_fee),
+    total: Number(row.total), type: row.type, customer: row.customer, payment: row.payment,
+    status: row.status, timestamp: row.created_at,
+    timeDisplay: new Date(row.created_at).toLocaleString('de-CH')
+  };
+}
+function isoDateOnly(d){ return (d||new Date()).toISOString().slice(0,10); }
+
+/* ---------------- Local (non-shared) helpers: cart + language ---------------- */
+function localGet(key){ try{ const v = localStorage.getItem(key); return v ? JSON.parse(v) : null; }catch(e){ return null; } }
+function localSet(key, value){ try{ localStorage.setItem(key, JSON.stringify(value)); }catch(e){ /* ignore */ } }
+
+/* ---------------- Load from Supabase ---------------- */
+async function loadAll(){
+  if(!sb){
+    console.warn('Supabase is not configured — fill in SUPABASE_URL / SUPABASE_ANON_KEY. Running with local defaults only; nothing will sync or save.');
+    PRODUCTS = defaultProducts();
+    SETTINGS = defaultSettings();
+    CART = localGet('cart') || [];
+    return;
+  }
+  const [{data: productRows, error: pErr}, {data: settingsRow, error: sErr}] = await Promise.all([
+    sb.from('products').select('*').order('category').order('id'),
+    sb.from('settings').select('data').eq('id', 1).maybeSingle()
+  ]);
+  if(pErr) console.error('Failed to load products', pErr);
+  if(sErr) console.error('Failed to load settings', sErr);
+  if(productRows && productRows.length){
+    PRODUCTS = productRows.map(dbToProduct);
+  }else{
+    // First run against an empty database — seed it with the starter menu.
+    PRODUCTS = defaultProducts();
+    const {error: seedErr} = await sb.from('products').insert(PRODUCTS.map(productToDb));
+    if(seedErr) console.error('Failed to seed starter products', seedErr);
+  }
+  SETTINGS = Object.assign(defaultSettings(), settingsRow ? settingsRow.data : {});
+  if(!settingsRow){
+    const {error: seedSettingsErr} = await sb.from('settings').upsert({id:1, data: SETTINGS});
+    if(seedSettingsErr) console.error('Failed to seed starter settings', seedSettingsErr);
+  }
+  CART = localGet('cart') || [];
+  await checkDailyReset();
+}
+async function loadOrdersAndHistory(){
+  if(!sb || !ADMIN_LOGGED_IN) return;
+  const [{data: orderRows, error: oErr}, {data: histRows, error: hErr}] = await Promise.all([
+    sb.from('orders').select('*').order('created_at', {ascending:false}),
+    sb.from('soldout_history').select('*').order('created_at', {ascending:false})
+  ]);
+  if(oErr) console.error('Failed to load orders', oErr);
+  if(hErr) console.error('Failed to load sold-out history', hErr);
+  ORDERS = (orderRows||[]).map(dbToOrder);
+  SOLDOUT_HISTORY = (histRows||[]).map(r=>({date:r.date, product:r.product, productEn:r.product_en, time:r.time, portionsSold:r.portions_sold}));
+}
+
+async function checkDailyReset(){
+  if(!sb) return;
+  const {error} = await sb.rpc('check_daily_reset');
+  if(error){ console.error('Daily reset check failed', error); return; }
+  // re-pull products/settings since the reset may have changed them server-side
+  const [{data: productRows}, {data: settingsRow}] = await Promise.all([
+    sb.from('products').select('*').order('category').order('id'),
+    sb.from('settings').select('data').eq('id', 1).maybeSingle()
+  ]);
+  if(productRows) PRODUCTS = productRows.map(dbToProduct);
+  if(settingsRow) SETTINGS = Object.assign(defaultSettings(), settingsRow.data);
+}
+
+/* ---------------- Utility ---------------- */
+function fmt(n){ return 'CHF ' + (Math.round(n*100)/100).toFixed(2); }
+function findProduct(id){ return PRODUCTS.find(p=>p.id===id); }
+function findExtra(product, exId){ return (product.extras||[]).find(e=>e.id===exId); }
+function nowStr(){ const d=new Date(); return d.toLocaleDateString('de-CH')+' — '+d.toTimeString().slice(0,5); }
+function timeOnly(){ return new Date().toTimeString().slice(0,5); }
+function dateOnly(){ return new Date().toLocaleDateString('de-CH'); }
+
+function showToast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 2600);
+}
+
+function computeOpenStatus(){
+  const now = new Date();
+  const day = now.getDay();
+  const hrs = SETTINGS.openingHours[day];
+  if(!hrs || hrs.closed) return {open:false, opensAt:null};
+  const [oh,om] = hrs.open.split(':').map(Number);
+  const [ch,cm] = hrs.close.split(':').map(Number);
+  const openMinutes = oh*60+om, closeMinutes = ch*60+cm;
+  const nowMinutes = now.getHours()*60+now.getMinutes();
+  const isOpen = nowMinutes>=openMinutes && nowMinutes<closeMinutes;
+  return {open:isOpen, opensAt:hrs.open};
+}
+
+/* ---------------- Cart logic ---------------- */
+function cartLineTotal(line){
+  const product = findProduct(line.productId);
+  if(!product) return 0;
+  let total = product.price;
+  (line.extraIds||[]).forEach(exId=>{
+    const ex = findExtra(product, exId);
+    if(ex) total += ex.price;
+  });
+  return total * line.qty;
+}
+function cartSubtotal(){ return CART.reduce((sum,l)=>sum+cartLineTotal(l),0); }
+function cartCount(){ return CART.reduce((sum,l)=>sum+l.qty,0); }
+function currentDeliveryFee(type){
+  if(type==='pickup') return 0;
+  if(cartSubtotal() >= SETTINGS.freeDeliveryThreshold) return 0;
+  return SETTINGS.deliveryFee;
+}
+function persistCart(){ localSet('cart', CART); }
+
+function addToCart(productId, qty, extraIds){
+  const existing = CART.find(l=>l.productId===productId && JSON.stringify((l.extraIds||[]).slice().sort())===JSON.stringify((extraIds||[]).slice().sort()));
+  if(existing){ existing.qty += qty; }
+  else{ CART.push({productId, qty, extraIds: extraIds||[]}); }
+  persistCart();
+  renderCartViews();
+  renderBottomBar();
+  showToast('✓ ' + lf(findProduct(productId).name));
+}
+function removeCartLine(idx){ CART.splice(idx,1); persistCart(); renderCartViews(); renderBottomBar(); }
+function changeCartQty(idx, delta){
+  CART[idx].qty += delta;
+  if(CART[idx].qty<=0) CART.splice(idx,1);
+  persistCart(); renderCartViews(); renderBottomBar();
+}
+
+/* ---------------- Rendering: language switch + status ---------------- */
+function renderLangSwitch(){
+  const el = document.getElementById('langSwitch');
+  el.innerHTML = LANGS.map(l=>`<button class="lang-btn ${l===LANG?'active':''}" data-lang="${l}">${l.toUpperCase()}</button>`).join('');
+  el.querySelectorAll('.lang-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ LANG = btn.dataset.lang; localSet('preferredLang', LANG); renderAll(); });
+  });
+}
+function renderStatus(){
+  const st = computeOpenStatus();
+  const pill = document.getElementById('statusPill');
+  if(st.open){
+    pill.className = 'status-pill status-open';
+    pill.innerHTML = `<span class="dot"></span>${t('open_now')}`;
+  }else{
+    pill.className = 'status-pill status-closed';
+    pill.innerHTML = `<span class="dot"></span>${t('closed')}${st.opensAt? ' — '+t('opens_at')+' '+st.opensAt : ''}`;
+  }
+  document.getElementById('brandSub').textContent = SETTINGS.address.split(',')[1] ? 'Japanese Food — Seebach, Zürich' : 'Japanese Food — Seebach, Zürich';
+}
+
+/* ---------------- Rendering: category bar ---------------- */
+function renderCatBar(){
+  const el = document.getElementById('catBar');
+  const cats = ['all', ...CATEGORIES];
+  el.innerHTML = cats.map(c=>{
+    const label = c==='all' ? t('view_menu').replace(/^./, s=>s) : lf(CATEGORY_LABELS[c]);
+    const displayLabel = c==='all' ? '★ ' + t('today_menu').split(' ').slice(-1)[0] : label;
+    return `<button class="cat-chip ${ACTIVE_CATEGORY===c?'active':''}" data-cat="${c}">${c==='all'? '🍽 ' + (LANG==='de'?'Alle':LANG==='en'?'All':LANG==='es'?'Todo':LANG==='fr'?'Tout':'Tutto') : label}</button>`;
+  }).join('');
+  el.querySelectorAll('.cat-chip').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      ACTIVE_CATEGORY = btn.dataset.cat;
+      renderCatBar();
+      const target = document.getElementById('cat-'+ACTIVE_CATEGORY);
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+}
+
+/* ---------------- Rendering: menu / product cards ---------------- */
+function bowlGaugeSVG(pct, soldOut){
+  const fillColor = soldOut ? '#5A5248' : (pct<0.25 ? '#C1392B' : '#E4A339');
+  const h = 16 * pct;
+  return `<div class="bowl-gauge" title="${Math.round(pct*100)}%">
+    <svg viewBox="0 0 30 22" width="30" height="22">
+      <path d="M2 8 H28 A13 13 0 0 1 2 8 Z" fill="none" stroke="#8A7C68" stroke-width="1.4"/>
+      <clipPath id="clip-${Math.random().toString(36).slice(2,7)}"><path d="M3 9 H27 A11.5 11.5 0 0 1 3 9 Z"/></clipPath>
+      <rect x="3" y="${20-h}" width="24" height="${h}" fill="${fillColor}" opacity="0.85"/>
+      <path d="M3 9 H27 A11.5 11.5 0 0 1 3 9 Z" fill="none"/>
+      <ellipse cx="15" cy="8" rx="13" ry="2.6" fill="none" stroke="#8A7C68" stroke-width="1.2"/>
+    </svg>
+  </div>`;
+}
+
+function productCardHTML(p){
+  const remaining = Math.max(p.stockToday - p.sold, 0);
+  const pct = p.stockToday>0 ? remaining/p.stockToday : 0;
+  const soldOut = p.soldOut || remaining<=0;
+  const draftQty = window.__draftQty && window.__draftQty[p.id] || 1;
+  const detailOpen = window.__detailOpen && window.__detailOpen[p.id];
+  const hasExtras = p.extras && p.extras.length;
+  return `
+  <div class="product-card" data-pid="${p.id}">
+    ${soldOut ? `<div class="sold-out-strip">
+        <div class="sold-out-badge">${t('sold_out')}</div>
+        ${p.soldOutTime ? `<div class="sold-out-time">${t('sold_out_today')} — ${p.soldOutTime}</div>` : ''}
+      </div>` : ''}
+    <div class="product-body">
+      <div class="product-top">
+        <div style="min-width:0;">
+          <h3 class="product-name">${lf(p.name)}</h3>
+          <div class="badge-row">
+            ${p.label==='new' ? `<span class="badge badge-new">${t('new')}</span>`:''}
+            ${p.label==='special' ? `<span class="badge badge-special">${t('special')}</span>`:''}
+          </div>
+          <p class="product-desc">${lf(p.desc)}</p>
+          ${p.allergens && p.allergens.length ? `<div class="allergens">${p.allergens.map(a=>lf(ALLERGEN_LABELS[a])).join(' · ')}</div>` : ''}
+        </div>
+        <div class="price-row" style="flex-direction:column;align-items:flex-end;gap:2px;">
+          <span class="price">${fmt(p.price)}</span>
+          <span class="stock-info">${bowlGaugeSVG(pct, soldOut)} ${soldOut ? '' : remaining + ' ' + t('stock_left')}</span>
+        </div>
+      </div>
+      ${!soldOut ? `
+      <div class="quick-row">
+        ${hasExtras ? `<button class="btn-more-options" data-toggle-detail="${p.id}">${detailOpen ? '▲' : '▾'} ${t('extras')} / ${t('qty')}</button>` : `<button class="btn-more-options" data-toggle-detail="${p.id}">${detailOpen ? '▲' : '▾'} ${t('qty')}</button>`}
+        <button class="btn-quick-add" data-quickadd="${p.id}">+ ${t('add')}</button>
+      </div>
+      <div class="detail-panel ${detailOpen?'open':''}" id="detail-${p.id}">
+        <div class="qty-row">
+          <span style="font-size:12px;color:var(--ink-dim);">${t('qty')}</span>
+          <div class="stepper">
+            <button data-act="dec" data-pid="${p.id}">−</button>
+            <span class="val" id="qtyval-${p.id}">${draftQty}</span>
+            <button data-act="inc" data-pid="${p.id}">+</button>
+          </div>
+        </div>
+        ${hasExtras ? `
+        <div class="extras-list">
+          ${p.extras.map(ex=>`
+            <div class="extra-item">
+              <label><input type="checkbox" data-extra-cb="${p.id}" value="${ex.id}"> ${lf(ex.name)}</label>
+              <span class="extra-price">+${fmt(ex.price)}</span>
+            </div>`).join('')}
+        </div>` : ''}
+        <button class="btn-add" data-add="${p.id}">${t('add')}</button>
+      </div>
+      ` : ''}
+    </div>
+  </div>`;
+}
+
+function renderMenu(){
+  const el = document.getElementById('menuCol');
+  const visible = PRODUCTS.filter(p=>!p.archived);
+  let html = '';
+  CATEGORIES.forEach(cat=>{
+    const items = visible.filter(p=>p.category===cat);
+    if(!items.length) return;
+    html += `<div class="category-block" id="cat-${cat}">
+      <h2 class="category-title">${lf(CATEGORY_LABELS[cat])} <span class="count">${items.length}</span></h2>
+      <div class="product-grid">${items.map(productCardHTML).join('')}</div>
+    </div>`;
+  });
+  el.innerHTML = html;
+
+  el.querySelectorAll('[data-act]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const pid = btn.dataset.pid;
+      window.__draftQty = window.__draftQty || {};
+      let q = window.__draftQty[pid] || 1;
+      q += (btn.dataset.act==='inc' ? 1 : -1);
+      if(q<1) q=1;
+      window.__draftQty[pid] = q;
+      document.getElementById('qtyval-'+pid).textContent = q;
+    });
+  });
+  el.querySelectorAll('[data-toggle-detail]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const pid = btn.dataset.toggleDetail;
+      window.__detailOpen = window.__detailOpen || {};
+      window.__detailOpen[pid] = !window.__detailOpen[pid];
+      document.getElementById('detail-'+pid).classList.toggle('open', window.__detailOpen[pid]);
+      btn.textContent = btn.textContent.replace(/^./, window.__detailOpen[pid] ? '▲' : '▾');
+    });
+  });
+  el.querySelectorAll('[data-quickadd]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      addToCart(btn.dataset.quickadd, 1, []);
+    });
+  });
+  el.querySelectorAll('[data-add]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const pid = btn.dataset.add;
+      const qty = (window.__draftQty && window.__draftQty[pid]) || 1;
+      const checkboxes = el.querySelectorAll(`[data-extra-cb="${pid}"]:checked`);
+      const extraIds = Array.from(checkboxes).map(cb=>cb.value);
+      addToCart(pid, qty, extraIds);
+      window.__draftQty[pid] = 1;
+      document.getElementById('qtyval-'+pid).textContent = 1;
+      el.querySelectorAll(`[data-extra-cb="${pid}"]`).forEach(cb=>cb.checked=false);
+      window.__detailOpen[pid] = false;
+      document.getElementById('detail-'+pid).classList.remove('open');
+    });
+  });
+}
+
+/* ---------------- Rendering: cart (shared markup for desktop panel + mobile drawer) ---------------- */
+function cartInnerHTML(){
+  if(CART.length===0){
+    return `<div class="cart-title">${t('cart')}</div><div class="cart-empty">🛒<br>${t('cart_empty')}</div>`;
+  }
+  const subtotal = cartSubtotal();
+  const deliveryFee = currentDeliveryFee(PENDING_CHECKOUT_TYPE);
+  const total = subtotal + deliveryFee;
+  const belowMin = subtotal < SETTINGS.minOrder;
+  return `
+    <div class="cart-title">${t('cart')} <span style="font-family:var(--font-mono);font-size:13px;">${cartCount()}</span></div>
+    <div class="cart-items">
+      ${CART.map((line,idx)=>{
+        const product = findProduct(line.productId);
+        if(!product) return '';
+        const extraNames = (line.extraIds||[]).map(exId=>lf(findExtra(product,exId)?.name||{})).filter(Boolean);
+        return `<div class="cart-item">
+          <div>
+            <div class="ci-name">${line.qty}× ${lf(product.name)}</div>
+            ${extraNames.length ? `<div class="ci-extras">+ ${extraNames.join(', ')}</div>` : ''}
+            <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+              <button class="a-btn ghost" style="padding:2px 8px;font-size:12px;color:#241D16;border-color:#D8C9AC;" data-cart-dec="${idx}">−</button>
+              <button class="a-btn ghost" style="padding:2px 8px;font-size:12px;color:#241D16;border-color:#D8C9AC;" data-cart-inc="${idx}">+</button>
+              <button class="link-btn" style="color:#B0392B;font-size:11px;" data-cart-remove="${idx}">${t('remove')}</button>
+            </div>
+          </div>
+          <div class="ci-price">${fmt(cartLineTotal(line))}</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="cart-totals">
+      <div class="cart-totals-row"><span>${t('subtotal')}</span><span>${fmt(subtotal)}</span></div>
+      <div class="cart-totals-row"><span>${t('delivery_fee')}</span><span>${deliveryFee===0?'—':fmt(deliveryFee)}</span></div>
+      <div class="cart-totals-row grand"><span>${t('total')}</span><span>${fmt(total)}</span></div>
+      ${belowMin ? `<div class="small-note" style="color:#B0392B;">${t('min_order_msg')}: ${fmt(SETTINGS.minOrder)}</div>` : ''}
+    </div>
+    <button class="btn-checkout" id="btnCheckout" ${belowMin?'disabled':''}>${t('checkout')}</button>
+    <button class="btn-whatsapp" id="btnWhatsappCart">💬 ${t('send_order_whatsapp')}</button>
+  `;
+}
+function wireCartButtons(container){
+  container.querySelectorAll('[data-cart-dec]').forEach(b=>b.addEventListener('click',()=>changeCartQty(+b.dataset.cartDec,-1)));
+  container.querySelectorAll('[data-cart-inc]').forEach(b=>b.addEventListener('click',()=>changeCartQty(+b.dataset.cartInc,1)));
+  container.querySelectorAll('[data-cart-remove]').forEach(b=>b.addEventListener('click',()=>removeCartLine(+b.dataset.cartRemove)));
+  const chk = container.querySelector('#btnCheckout');
+  if(chk) chk.addEventListener('click', openCheckoutModal);
+  const wa = container.querySelector('#btnWhatsappCart');
+  if(wa) wa.addEventListener('click', ()=>sendWhatsappOrder(null));
+}
+function renderCartViews(){
+  const desktop = document.getElementById('cartPanelDesktop');
+  desktop.innerHTML = cartInnerHTML();
+  wireCartButtons(desktop);
+  const drawer = document.getElementById('cartDrawer');
+  drawer.innerHTML = `<div class="drawer-handle"></div>` + cartInnerHTML();
+  wireCartButtons(drawer);
+}
+function renderBottomBar(){
+  const count = cartCount();
+  const badge = document.getElementById('bbCartBadge');
+  if(count>0){ badge.classList.remove('hidden'); badge.textContent = count; }
+  else{ badge.classList.add('hidden'); }
+  document.getElementById('bbCartLabel').textContent = count>0 ? fmt(cartSubtotal()) : t('cart');
+}
+
+/* ---------------- Checkout modal ---------------- */
+function openCheckoutModal(){
+  const status = computeOpenStatus();
+  if(SETTINGS.ordersPaused){ showToast(t('paused_msg')); return; }
+  if(!status.open && !SETTINGS.allowScheduledWhenClosed){ showToast(t('closed_no_schedule')); return; }
+  document.getElementById('drawerBackdrop').classList.remove('open');
+  document.getElementById('cartDrawer').classList.remove('open');
+  const modal = document.getElementById('checkoutModal');
+  const subtotal = cartSubtotal();
+  modal.innerHTML = `
+    <button class="btn-close-modal" data-close-checkout>✕</button>
+    <h2>${t('checkout')}</h2>
+    <div class="field">
+      <label>${t('order_type')}</label>
+      <div class="radio-group">
+        <button class="radio-opt selected" data-type="delivery">🚴 ${t('delivery')}</button>
+        <button class="radio-opt" data-type="pickup">🏠 ${t('pickup')}</button>
+      </div>
+    </div>
+    <div id="addressFields">
+      <div class="field"><label>${t('street')} *</label><input id="f_street"></div>
+      <div style="display:flex;gap:8px;">
+        <div class="field" style="flex:1;"><label>${t('postcode')} *</label><input id="f_postcode"></div>
+        <div class="field" style="flex:2;"><label>${t('city')} *</label><input id="f_city" value="Zürich"></div>
+      </div>
+      <div class="field"><label>${t('floor')}</label><input id="f_floor"></div>
+    </div>
+    <div class="field"><label>${t('name')} *</label><input id="f_name"></div>
+    <div class="field"><label>${t('phone')} *</label><input id="f_phone" type="tel"></div>
+    <div class="field"><label>${t('instructions')}</label><textarea id="f_instructions"></textarea></div>
+    <div class="field">
+      <label>${t('pref_time')}</label>
+      <select id="f_time">
+        <option value="asap">${t('asap')} (~${SETTINGS.estDeliveryTimeMin} ${t('min')})</option>
+        <option value="schedule">${t('schedule')}</option>
+      </select>
+    </div>
+    <div class="field hidden" id="scheduleTimeField"><label>${t('pref_time')}</label><input id="f_schedule_time" type="time"></div>
+    <div class="field">
+      <label>${t('payment')}</label>
+      <div class="radio-group">
+        ${SETTINGS.paymentMethods.cash ? `<button class="radio-opt selected" data-pay="cash">💵 ${t('cash')}</button>`:''}
+        ${SETTINGS.paymentMethods.card ? `<button class="radio-opt" data-pay="card">💳 ${t('card')}</button>`:''}
+      </div>
+    </div>
+    <div class="info-note">ℹ️ ${t('pay_note')}</div>
+    <button class="btn-checkout" id="btnConfirmOrder">${t('confirm_order')} — ${fmt(subtotal + currentDeliveryFee('delivery'))}</button>
+  `;
+  PENDING_CHECKOUT_TYPE = 'delivery';
+  let payMethod = SETTINGS.paymentMethods.cash ? 'cash' : 'card';
+
+  modal.querySelectorAll('[data-type]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      modal.querySelectorAll('[data-type]').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      PENDING_CHECKOUT_TYPE = btn.dataset.type;
+      document.getElementById('addressFields').style.display = PENDING_CHECKOUT_TYPE==='pickup' ? 'none' : 'block';
+      updateConfirmTotal();
+    });
+  });
+  modal.querySelectorAll('[data-pay]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      modal.querySelectorAll('[data-pay]').forEach(b=>b.classList.remove('selected'));
+      btn.classList.add('selected');
+      payMethod = btn.dataset.pay;
+    });
+  });
+  modal.querySelector('#f_time').addEventListener('change', (e)=>{
+    document.getElementById('scheduleTimeField').classList.toggle('hidden', e.target.value!=='schedule');
+  });
+  function updateConfirmTotal(){
+    const fee = currentDeliveryFee(PENDING_CHECKOUT_TYPE);
+    modal.querySelector('#btnConfirmOrder').textContent = `${t('confirm_order')} — ${fmt(subtotal+fee)}`;
+  }
+  modal.querySelector('[data-close-checkout]').addEventListener('click', closeCheckoutModal);
+  modal.querySelector('#btnConfirmOrder').addEventListener('click', async ()=>{
+    const name = modal.querySelector('#f_name').value.trim();
+    const phone = modal.querySelector('#f_phone').value.trim();
+    let street='', postcode='', city='', floor='';
+    if(PENDING_CHECKOUT_TYPE==='delivery'){
+      street = modal.querySelector('#f_street').value.trim();
+      postcode = modal.querySelector('#f_postcode').value.trim();
+      city = modal.querySelector('#f_city').value.trim();
+      floor = modal.querySelector('#f_floor').value.trim();
+      if(!name||!phone||!street||!postcode||!city){ showToast(t('required')); return; }
+    }else{
+      if(!name||!phone){ showToast(t('required')); return; }
+    }
+    const timeChoice = modal.querySelector('#f_time').value;
+    const scheduleTime = timeChoice==='schedule' ? modal.querySelector('#f_schedule_time').value : null;
+    const instructions = modal.querySelector('#f_instructions').value.trim();
+    await confirmAndPlaceOrder({name, phone, street, postcode, city, floor, instructions, timeChoice, scheduleTime, payMethod, type:PENDING_CHECKOUT_TYPE});
+  });
+  document.getElementById('checkoutBackdrop').classList.add('open');
+}
+function closeCheckoutModal(){ document.getElementById('checkoutBackdrop').classList.remove('open'); }
+
+async function confirmAndPlaceOrder(details){
+  if(!sb){ showToast('Supabase is not configured yet — orders cannot be saved.'); return; }
+  const subtotal = cartSubtotal();
+  const deliveryFee = currentDeliveryFee(details.type);
+  const items = CART.map(line=>{
+    const product = findProduct(line.productId);
+    return {
+      productId: product.id, qty: line.qty,
+      name: product.name, unitPrice: product.price,
+      extras: (line.extraIds||[]).map(exId=>{ const ex=findExtra(product,exId); return ex?{name:ex.name, price:ex.price}:null; }).filter(Boolean),
+      lineTotal: cartLineTotal(line)
+    };
+  });
+
+  const {data: newOrderId, error} = await sb.rpc('place_order', {
+    p_items: items, p_subtotal: subtotal, p_delivery_fee: deliveryFee, p_total: subtotal+deliveryFee,
+    p_type: details.type, p_customer: details, p_payment: details.payMethod
+  });
+
+  if(error){
+    // The database function raises 'SOLD_OUT:<id>' when a race condition is caught server-side.
+    const msg = error.message || '';
+    if(msg.includes('SOLD_OUT')){
+      const badId = msg.split('SOLD_OUT:')[1];
+      const badProduct = findProduct(badId);
+      showToast(t('just_sold_out') + (badProduct ? ' (' + lf(badProduct.name) + ')' : ''));
+    }else{
+      console.error('place_order failed', error);
+      showToast('Something went wrong placing the order. Please try again.');
+    }
+    await refreshProductsFromServer();
+    renderMenu(); renderCartViews();
+    return;
+  }
+
+  const order = {
+    id: newOrderId, items, subtotal, deliveryFee, total: subtotal+deliveryFee,
+    type: details.type, customer: details, payment: details.payMethod,
+    status: 'new', timestamp: new Date().toISOString(), timeDisplay: nowStr()
+  };
+
+  showOrderConfirmation(order);
+  CART = [];
+  persistCart();
+  await refreshProductsFromServer();
+  renderMenu(); renderCartViews(); renderBottomBar();
+  closeCheckoutModal();
+}
+async function refreshProductsFromServer(){
+  if(!sb) return;
+  const {data} = await sb.from('products').select('*').order('category').order('id');
+  if(data) PRODUCTS = data.map(dbToProduct);
+}
+
+function showOrderConfirmation(order){
+  const modal = document.getElementById('confirmModal');
+  modal.innerHTML = `
+    <div style="text-align:center;">
+      <div class="confirm-icon">✓</div>
+      <h2>${t('order_received')}</h2>
+      <p style="font-family:var(--font-mono);font-weight:700;font-size:15px;">${t('order_number')}: #${order.id}</p>
+    </div>
+    <div class="cart-items" style="margin-top:14px;">
+      ${order.items.map(it=>`<div class="cart-item"><div><div class="ci-name">${it.qty}× ${lf(it.name)}</div>${it.extras.length?`<div class="ci-extras">+ ${it.extras.map(e=>lf(e.name)).join(', ')}</div>`:''}</div><div class="ci-price">${fmt(it.lineTotal)}</div></div>`).join('')}
+    </div>
+    <div class="cart-totals">
+      <div class="cart-totals-row"><span>${t('subtotal')}</span><span>${fmt(order.subtotal)}</span></div>
+      <div class="cart-totals-row"><span>${t('delivery_fee')}</span><span>${order.deliveryFee===0?'—':fmt(order.deliveryFee)}</span></div>
+      <div class="cart-totals-row grand"><span>${t('total')}</span><span>${fmt(order.total)}</span></div>
+    </div>
+    <p style="font-size:13px;color:#5A4B32;margin-top:10px;">
+      ${order.type==='delivery' ? '🚴 '+t('delivery')+': '+order.customer.street+', '+order.customer.postcode+' '+order.customer.city : '🏠 '+t('pickup')}<br>
+      💳 ${order.payment==='cash'?t('cash'):t('card')}
+    </p>
+    <button class="btn-checkout" data-close-confirm>${t('close')}</button>
+  `;
+  modal.querySelector('[data-close-confirm]').addEventListener('click', ()=>{
+    document.getElementById('confirmBackdrop').classList.remove('open');
+  });
+  document.getElementById('confirmBackdrop').classList.add('open');
+}
+
+/* ---------------- WhatsApp order ---------------- */
+function sendWhatsappOrder(){
+  if(CART.length===0){
+    const phone = SETTINGS.whatsapp.replace(/\D/g,'');
+    window.open(`https://wa.me/${phone}`, '_blank');
+    return;
+  }
+  const msg = buildOrderText();
+  const phone = SETTINGS.whatsapp.replace(/\D/g,'');
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+function buildOrderText(){
+  const subtotal = cartSubtotal();
+  const deliveryFee = currentDeliveryFee(PENDING_CHECKOUT_TYPE);
+  let msg = `${t('order_type')}:\n`;
+  CART.forEach(line=>{
+    const product = findProduct(line.productId);
+    const extraNames = (line.extraIds||[]).map(exId=>lf(findExtra(product,exId)?.name||{})).filter(Boolean);
+    msg += `${line.qty}x ${lf(product.name)}${extraNames.length? ' ('+extraNames.join(', ')+')':''} — ${fmt(cartLineTotal(line))}\n`;
+  });
+  msg += `\n${t('delivery_fee')}: ${fmt(deliveryFee)}`;
+  msg += `\n${t('total').toUpperCase()}: ${fmt(subtotal+deliveryFee)}`;
+  msg += `\n\n${t('name')}: \n${t('phone')}: \n${t('delivery')}/${t('pickup')}: \n${t('pref_time')}: \n${t('payment')}: `;
+  return msg;
+}
+function renderPromoBanner(){
+  const el = document.getElementById('promoBanner');
+  const activeId = SETTINGS.activeDailySpecial;
+  const special = activeId ? (SETTINGS.dailySpecials||[]).find(s=>s.id===activeId) : null;
+  const hasContent = special && (lf(special.name) || special.name.en || special.name.de);
+  if(!special || !hasContent){
+    el.classList.add('hidden');
+    el.innerHTML = '';
+    return;
+  }
+  el.classList.remove('hidden');
+  el.innerHTML = `
+    <div class="promo-card">
+      <span class="promo-tag">🔥 ${t('promo_title')}</span>
+      <div class="promo-body">
+        <h3>${lf(special.name)}</h3>
+        <p>${lf(special.desc) || t('promo_pick')}</p>
+      </div>
+      <span class="promo-price">${fmt(special.price)}</span>
+    </div>
+  `;
+}
+
+/* ---------------- Contact section ---------------- */
+function renderContact(){
+  document.getElementById('contactTitle').textContent = SETTINGS.restaurantName;
+  document.getElementById('contactDesc').textContent = {
+    de:'Hausgemachtes japanisches Comfort Food, lokal zubereitet in Zürich Seebach. Erhältlich zum Mitnehmen und für die lokale Lieferung.',
+    en:'Homemade Japanese-style comfort food prepared locally in Zürich Seebach. Available for takeaway and local delivery.',
+    es:'Comida japonesa casera y reconfortante, preparada localmente en Zúrich Seebach. Disponible para llevar y entrega local.',
+    fr:'Cuisine réconfortante japonaise faite maison, préparée localement à Zurich Seebach. Disponible à emporter et en livraison locale.',
+    it:'Cibo giapponese casalingo e confortante, preparato localmente a Zurigo Seebach. Disponibile da asporto e per consegna locale.',
+    ja:'チューリッヒ・ゼーバッハで手作りする、ほっとする日本の家庭料理。テイクアウトと近隣エリアへの配達に対応しています。'
+  }[LANG];
+  const status = computeOpenStatus();
+  const dayNames = {
+    de:['So','Mo','Di','Mi','Do','Fr','Sa'], en:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+    es:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'], fr:['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
+    it:['Dom','Lun','Mar','Mer','Gio','Ven','Sab'], ja:['日','月','火','水','木','金','土']
+  }[LANG];
+  const hoursHtml = [1,2,3,4,5,6,0].map(d=>{
+    const h = SETTINGS.openingHours[d];
+    return `<div style="display:flex;justify-content:space-between;"><span>${dayNames[d]}</span><span>${h.closed? t('closed') : h.open+'–'+h.close}</span></div>`;
+  }).join('');
+  document.getElementById('contactGrid').innerHTML = `
+    <div>
+      <div>📍 ${SETTINGS.address}</div>
+      <div>📞 <a href="tel:${SETTINGS.phone.replace(/\s/g,'')}">${SETTINGS.phone}</a></div>
+      <div>💬 <a href="https://wa.me/${SETTINGS.whatsapp}" target="_blank">WhatsApp</a></div>
+      <div>✉️ <a href="mailto:${SETTINGS.email}">${SETTINGS.email}</a></div>
+      ${SETTINGS.instagram ? `<div>📷 <a href="${SETTINGS.instagram}" target="_blank">Instagram</a></div>`:''}
+      <div>🗺️ <a href="${SETTINGS.mapsUrl}" target="_blank">Google Maps</a></div>
+    </div>
+    <div>
+      <div style="font-weight:700;margin-bottom:4px;">${t('opening_hours')}</div>
+      ${hoursHtml}
+      <div style="margin-top:8px;font-size:12px;">${t('delivery_areas')}: ${SETTINGS.deliveryAreas.join(', ')}</div>
+      <div style="font-size:12px;">${t('min_order')}: ${fmt(SETTINGS.minOrder)} · ${t('free_delivery_from')}: ${fmt(SETTINGS.freeDeliveryThreshold)}</div>
+    </div>
+  `;
+}
+
+/* ---------------- Master render (shop) ---------------- */
+function renderFabLabels(){
+  document.getElementById('fabWhatsappLabel').textContent = t('order_whatsapp');
+}
+function renderAll(){
+  renderLangSwitch();
+  renderFabLabels();
+  renderStatus();
+  renderPromoBanner();
+  renderCatBar();
+  renderMenu();
+  renderCartViews();
+  renderBottomBar();
+  renderContact();
+  if(SETTINGS.ordersPaused){
+    // no-op visual; message shown at checkout attempt
+  }
+}
+
+/* ---------------- Mobile drawer / nav wiring ---------------- */
+document.getElementById('bbMenu').addEventListener('click', ()=>{
+  document.getElementById('menuCol').scrollIntoView({behavior:'smooth'});
+});
+document.getElementById('bbCart').addEventListener('click', ()=>{
+  document.getElementById('drawerBackdrop').classList.add('open');
+  document.getElementById('cartDrawer').classList.add('open');
+});
+document.getElementById('drawerBackdrop').addEventListener('click', ()=>{
+  document.getElementById('drawerBackdrop').classList.remove('open');
+  document.getElementById('cartDrawer').classList.remove('open');
+});
+document.getElementById('fabWhatsapp').addEventListener('click', ()=>sendWhatsappOrder());
+document.getElementById('checkoutBackdrop').addEventListener('click', (e)=>{ if(e.target.id==='checkoutBackdrop') closeCheckoutModal(); });
+document.getElementById('confirmBackdrop').addEventListener('click', (e)=>{ if(e.target.id==='confirmBackdrop') document.getElementById('confirmBackdrop').classList.remove('open'); });
+
+/* =========================================================================
+   ADMIN PANEL
+   ========================================================================= */
+document.getElementById('openAdminLink').addEventListener('click', async ()=>{
+  document.getElementById('shopRoot').style.display='none';
+  document.getElementById('adminRoot').style.display='block';
+  await checkExistingAdminSession();
+});
+document.getElementById('backToShop').addEventListener('click', ()=>{
+  document.getElementById('adminRoot').style.display='none';
+  document.getElementById('shopRoot').style.display='block';
+});
+document.getElementById('adminViewShop').addEventListener('click', ()=>{
+  document.getElementById('adminRoot').style.display='none';
+  document.getElementById('shopRoot').style.display='block';
+});
+document.getElementById('adminLogout').addEventListener('click', async ()=>{
+  if(sb) await sb.auth.signOut();
+  ADMIN_LOGGED_IN = false;
+  document.getElementById('adminShell').style.display='none';
+  document.getElementById('adminLogin').style.display='block';
+});
+document.getElementById('adminLoginBtn').addEventListener('click', doAdminLogin);
+document.getElementById('adminPassInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter') doAdminLogin(); });
+document.getElementById('adminEmailInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter') doAdminLogin(); });
+
+async function checkExistingAdminSession(){
+  if(!sb){ return; }
+  const {data:{session}} = await sb.auth.getSession();
+  if(session){
+    await enterAdminShell();
+  }
+}
+async function enterAdminShell(){
+  ADMIN_LOGGED_IN = true;
+  document.getElementById('adminLoginError').style.display='none';
+  document.getElementById('adminLogin').style.display='none';
+  document.getElementById('adminShell').style.display='flex';
+  await loadOrdersAndHistory();
+  renderAdminNav();
+  renderAdminTab('dashboard');
+}
+async function doAdminLogin(){
+  if(!sb){
+    document.getElementById('adminLoginError').textContent = 'Supabase is not configured yet — fill in SUPABASE_URL / SUPABASE_ANON_KEY in the code.';
+    document.getElementById('adminLoginError').style.display='block';
+    return;
+  }
+  const email = document.getElementById('adminEmailInput').value.trim();
+  const password = document.getElementById('adminPassInput').value;
+  const {error} = await sb.auth.signInWithPassword({email, password});
+  if(error){
+    document.getElementById('adminLoginError').textContent = 'Wrong email or password.';
+    document.getElementById('adminLoginError').style.display='block';
+    return;
+  }
+  await enterAdminShell();
+}
+
+const ADMIN_TABS = [
+  {id:'dashboard', label:'Dashboard'},
+  {id:'orders', label:'Orders'},
+  {id:'stock', label:'Stock'},
+  {id:'products', label:'Products'},
+  {id:'promotions', label:'Promotions'},
+  {id:'sales', label:'Sales'},
+  {id:'history', label:'History'},
+  {id:'settings', label:'Settings'}
+];
+function renderAdminNav(){
+  const el = document.getElementById('adminNav');
+  el.innerHTML = ADMIN_TABS.map(tb=>`<button class="a-tab ${ADMIN_TAB===tb.id?'active':''}" data-tab="${tb.id}">${tb.label}</button>`).join('');
+  el.querySelectorAll('[data-tab]').forEach(btn=>{
+    btn.addEventListener('click', ()=>renderAdminTab(btn.dataset.tab));
+  });
+}
+function renderAdminTab(tabId){
+  ADMIN_TAB = tabId;
+  renderAdminNav();
+  const body = document.getElementById('adminBody');
+  if(tabId==='dashboard') body.innerHTML = adminDashboardHTML();
+  else if(tabId==='orders') body.innerHTML = adminOrdersHTML();
+  else if(tabId==='stock') body.innerHTML = adminStockHTML();
+  else if(tabId==='products') body.innerHTML = adminProductsHTML();
+  else if(tabId==='promotions') body.innerHTML = adminPromotionsHTML();
+  else if(tabId==='sales') body.innerHTML = adminSalesHTML();
+  else if(tabId==='history') body.innerHTML = adminHistoryHTML();
+  else if(tabId==='settings') body.innerHTML = adminSettingsHTML();
+  wireAdminTab(tabId);
+}
+
+function todayOrders(){
+  const today = new Date().toDateString();
+  return ORDERS.filter(o=>new Date(o.timestamp).toDateString()===today);
+}
+function adminDashboardHTML(){
+  const t0 = todayOrders();
+  const sales = t0.reduce((s,o)=>s+o.total,0);
+  const openOrders = ORDERS.filter(o=>['new','accepted','preparing','ready','out'].includes(o.status)).length;
+  const soldOutCount = PRODUCTS.filter(p=>p.soldOut && !p.archived).length;
+  const stockRows = PRODUCTS.filter(p=>!p.archived).map(p=>{
+    const remaining = Math.max(p.stockToday-p.sold,0);
+    return `<div class="a-card">
+      <div class="a-row">
+        <div><strong>${lf(p.name)}</strong><div class="small-note">${p.sold} / ${p.stockToday} sold</div></div>
+        <div style="text-align:right;">
+          ${p.soldOut ? `<span class="a-order-badge st-rejected">SOLD OUT ${p.soldOutTime||''}</span>` : `<span class="a-order-badge st-accepted">${remaining} left</span>`}
+        </div>
+      </div>
+      <div class="a-row" style="margin-top:8px;">
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button class="a-btn" data-stockdelta="${p.id}:-1">−</button>
+          <span style="font-family:var(--font-mono);min-width:24px;text-align:center;">${remaining}</span>
+          <button class="a-btn" data-stockdelta="${p.id}:1">+</button>
+        </div>
+        <button class="a-btn ${p.soldOut?'primary':'danger'}" data-toggle-soldout="${p.id}">${p.soldOut?'Mark available':'Mark as sold out'}</button>
+      </div>
+    </div>`;
+  }).join('');
+  return `
+    <div class="a-grid">
+      <div class="a-stat"><div class="label">Orders today</div><div class="val">${t0.length}</div></div>
+      <div class="a-stat"><div class="label">Sales today</div><div class="val">${fmt(sales)}</div></div>
+      <div class="a-stat"><div class="label">Open orders</div><div class="val">${openOrders}</div></div>
+      <div class="a-stat"><div class="label">Sold out</div><div class="val">${soldOutCount}</div></div>
+    </div>
+    <div class="a-section-title">Stock — quick actions</div>
+    ${stockRows}
+  `;
+}
+
+const STATUS_FLOW = ['new','accepted','preparing','ready','out','completed'];
+const STATUS_LABEL = {new:'New',accepted:'Accepted',preparing:'Preparing',ready:'Ready',out:'Out for delivery',completed:'Completed',rejected:'Rejected'};
+function adminOrdersHTML(){
+  if(ORDERS.length===0) return `<p class="small-note">No orders yet.</p>`;
+  return ORDERS.map(o=>`
+    <div class="a-card">
+      <div class="a-row">
+        <div><strong>#${o.id}</strong> — ${o.timeDisplay || new Date(o.timestamp).toLocaleString()}</div>
+        <span class="a-order-badge st-${o.status}">${STATUS_LABEL[o.status]}</span>
+      </div>
+      <div style="margin-top:8px;font-size:13px;">
+        ${o.items.map(it=>`${it.qty}x ${lf(it.name)}${it.extras.length? ' ('+it.extras.map(e=>lf(e.name)).join(', ')+')':''}`).join('<br>')}
+      </div>
+      <div class="small-note" style="margin-top:6px;">
+        ${o.type==='delivery' ? '🚴 '+o.customer.street+', '+o.customer.postcode+' '+o.customer.city : '🏠 Pickup'} · ${o.customer.name} · ${o.customer.phone} · ${o.payment.toUpperCase()}
+      </div>
+      <div class="a-row" style="margin-top:10px;">
+        <strong style="font-family:var(--font-mono);">${fmt(o.total)}</strong>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          ${o.status==='new' ? `<button class="a-btn primary" data-order-action="${o.id}:accepted">Accept</button><button class="a-btn danger" data-order-action="${o.id}:rejected">Reject</button>` : ''}
+          ${o.status==='accepted' ? `<button class="a-btn primary" data-order-action="${o.id}:preparing">Start preparing</button>` : ''}
+          ${o.status==='preparing' ? `<button class="a-btn primary" data-order-action="${o.id}:ready">Mark ready</button>` : ''}
+          ${o.status==='ready' ? `<button class="a-btn primary" data-order-action="${o.id}:out">Out for delivery</button>` : ''}
+          ${o.status==='out' ? `<button class="a-btn primary" data-order-action="${o.id}:completed">Mark completed</button>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function adminStockHTML(){
+  return `<div class="a-section-title">Today's stock</div>` + PRODUCTS.filter(p=>!p.archived).map(p=>{
+    const remaining = Math.max(p.stockToday-p.sold,0);
+    return `<div class="a-card">
+      <div class="a-row">
+        <strong>${lf(p.name)}</strong>
+        ${p.soldOut? `<span class="a-order-badge st-rejected">SOLD OUT ${p.soldOutTime||''}</span>` : `<span class="a-order-badge st-accepted">${remaining} remaining</span>`}
+      </div>
+      <div class="small-note">Sold: ${p.sold} · Starting stock:
+        <input type="number" min="0" class="a-input" style="width:70px;display:inline-block;margin-left:4px;" value="${p.stockToday}" data-stock-start="${p.id}">
+      </div>
+      <div class="a-row" style="margin-top:8px;">
+        <div style="display:flex;gap:6px;align-items:center;">
+          <button class="a-btn" data-stockdelta="${p.id}:-1">−</button>
+          <span style="font-family:var(--font-mono);min-width:24px;text-align:center;">${remaining}</span>
+          <button class="a-btn" data-stockdelta="${p.id}:1">+</button>
+        </div>
+        <button class="a-btn ${p.soldOut?'primary':'danger'}" data-toggle-soldout="${p.id}">${p.soldOut?'Mark available':'Mark as sold out'}</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function adminProductsHTML(){
+  return `<button class="a-btn primary" id="btnNewProduct" style="margin-bottom:12px;">+ Add product</button>
+    ${PRODUCTS.map(p=>`
+    <div class="a-card">
+      <div class="a-row">
+        <div><strong>${lf(p.name)}</strong> <span class="small-note">${lf(CATEGORY_LABELS[p.category])} · ${fmt(p.price)}</span></div>
+        <div style="display:flex;gap:6px;">
+          <button class="a-btn" data-edit-product="${p.id}">Edit</button>
+          <button class="a-btn ${p.archived?'primary':'danger'}" data-archive-product="${p.id}">${p.archived?'Unarchive':'Archive'}</button>
+        </div>
+      </div>
+    </div>`).join('')}
+    <div id="productEditor"></div>`;
+}
+
+function emptyProductDraft(){
+  return {id:null,category:'curry',price:0,stockToday:20,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+    name:{de:'',en:'',es:'',fr:'',it:'',ja:''}, desc:{de:'',en:'',es:'',fr:'',it:'',ja:''}, allergens:[], image:'', extras:[]};
+}
+let PRODUCT_DRAFT = null;
+function productEditorHTML(draft){
+  ADMIN_LANG_TAB = ADMIN_LANG_TAB || 'de';
+  return `
+  <div class="a-card" style="border-color:var(--curry);">
+    <div class="a-section-title" style="margin-top:0;">${draft.id? 'Edit product' : 'New product'}</div>
+    <div class="lang-tabs">${LANGS.map(l=>`<button class="lang-tab-btn ${ADMIN_LANG_TAB===l?'active':''}" data-plang="${l}">${l.toUpperCase()}</button>`).join('')}</div>
+    <div class="a-field"><label>Name (${ADMIN_LANG_TAB})</label><input class="a-input" id="pf_name" value="${draft.name[ADMIN_LANG_TAB]||''}"></div>
+    <div class="a-field"><label>Description (${ADMIN_LANG_TAB})</label><textarea class="a-textarea" id="pf_desc">${draft.desc[ADMIN_LANG_TAB]||''}</textarea></div>
+    <div style="display:flex;gap:8px;">
+      <div class="a-field" style="flex:1;"><label>Category</label>
+        <select class="a-select" id="pf_category">${CATEGORIES.map(c=>`<option value="${c}" ${draft.category===c?'selected':''}>${lf(CATEGORY_LABELS[c])}</option>`).join('')}</select>
+      </div>
+      <div class="a-field" style="flex:1;"><label>Price (CHF)</label><input type="number" step="0.10" class="a-input" id="pf_price" value="${draft.price}"></div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <div class="a-field" style="flex:1;"><label>Starting stock (today)</label><input type="number" class="a-input" id="pf_stock" value="${draft.stockToday}"></div>
+      <div class="a-field" style="flex:1;"><label>Label</label>
+        <select class="a-select" id="pf_label">
+          <option value="" ${!draft.label?'selected':''}>—</option>
+          <option value="new" ${draft.label==='new'?'selected':''}>New</option>
+          <option value="special" ${draft.label==='special'?'selected':''}>Today's special</option>
+        </select>
+      </div>
+    </div>
+    <div class="a-field"><label>Image URL</label><input class="a-input" id="pf_image" value="${draft.image}"></div>
+    <div class="a-field"><label>Allergens</label>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        ${Object.keys(ALLERGEN_LABELS).map(a=>`<label style="font-size:12px;display:flex;gap:4px;align-items:center;"><input type="checkbox" data-allergen-cb value="${a}" ${draft.allergens.includes(a)?'checked':''}> ${lf(ALLERGEN_LABELS[a])}</label>`).join('')}
+      </div>
+    </div>
+    <div class="a-field"><label>Extras (name in ${ADMIN_LANG_TAB} · price CHF)</label>
+      <div id="extrasEditor">
+        ${draft.extras.map((ex,i)=>`<div style="display:flex;gap:6px;margin-bottom:6px;">
+          <input class="a-input" data-extra-name="${i}" value="${ex.name[ADMIN_LANG_TAB]||''}" placeholder="Name">
+          <input class="a-input" style="width:90px;" type="number" step="0.10" data-extra-price="${i}" value="${ex.price}">
+          <button class="a-btn danger" data-extra-remove="${i}">✕</button>
+        </div>`).join('')}
+      </div>
+      <button class="a-btn" id="btnAddExtra">+ Add extra</button>
+    </div>
+    <div class="a-row" style="margin-top:12px;">
+      <button class="a-btn primary" id="btnSaveProduct">Save</button>
+      <button class="a-btn ghost" id="btnCancelProduct">Cancel</button>
+    </div>
+    <p class="small-note">Fill in the name/description for each language tab — untranslated languages fall back to English on the shop.</p>
+  </div>`;
+}
+function wireProductEditor(){
+  const container = document.getElementById('productEditor');
+  function persistFieldsToDraft(){
+    PRODUCT_DRAFT.name[ADMIN_LANG_TAB] = document.getElementById('pf_name').value;
+    PRODUCT_DRAFT.desc[ADMIN_LANG_TAB] = document.getElementById('pf_desc').value;
+    PRODUCT_DRAFT.category = document.getElementById('pf_category').value;
+    PRODUCT_DRAFT.price = parseFloat(document.getElementById('pf_price').value)||0;
+    PRODUCT_DRAFT.stockToday = parseInt(document.getElementById('pf_stock').value)||0;
+    PRODUCT_DRAFT.label = document.getElementById('pf_label').value || null;
+    PRODUCT_DRAFT.image = document.getElementById('pf_image').value;
+    PRODUCT_DRAFT.allergens = Array.from(document.querySelectorAll('[data-allergen-cb]:checked')).map(cb=>cb.value);
+    document.querySelectorAll('[data-extra-name]').forEach(inp=>{
+      const i = +inp.dataset.extraName;
+      PRODUCT_DRAFT.extras[i].name[ADMIN_LANG_TAB] = inp.value;
+    });
+    document.querySelectorAll('[data-extra-price]').forEach(inp=>{
+      const i = +inp.dataset.extraPrice;
+      PRODUCT_DRAFT.extras[i].price = parseFloat(inp.value)||0;
+    });
+  }
+  container.querySelectorAll('[data-plang]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ persistFieldsToDraft(); ADMIN_LANG_TAB = btn.dataset.plang; container.innerHTML = productEditorHTML(PRODUCT_DRAFT); wireProductEditor(); });
+  });
+  container.querySelector('#btnAddExtra').addEventListener('click', ()=>{
+    persistFieldsToDraft();
+    PRODUCT_DRAFT.extras.push({id:'ex_'+Math.random().toString(36).slice(2,9), name:{de:'',en:'',es:'',fr:'',it:'',ja:''}, price:0});
+    container.innerHTML = productEditorHTML(PRODUCT_DRAFT); wireProductEditor();
+  });
+  container.querySelectorAll('[data-extra-remove]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      persistFieldsToDraft();
+      PRODUCT_DRAFT.extras.splice(+btn.dataset.extraRemove,1);
+      container.innerHTML = productEditorHTML(PRODUCT_DRAFT); wireProductEditor();
+    });
+  });
+  container.querySelector('#btnCancelProduct').addEventListener('click', ()=>{ PRODUCT_DRAFT=null; container.innerHTML=''; });
+  container.querySelector('#btnSaveProduct').addEventListener('click', async ()=>{
+    persistFieldsToDraft();
+    if(!PRODUCT_DRAFT.name.en && !PRODUCT_DRAFT.name.de){ showToast('Please provide at least a name.'); return; }
+    LANGS.forEach(l=>{ if(!PRODUCT_DRAFT.name[l]) PRODUCT_DRAFT.name[l] = PRODUCT_DRAFT.name.en || PRODUCT_DRAFT.name.de; if(!PRODUCT_DRAFT.desc[l]) PRODUCT_DRAFT.desc[l] = PRODUCT_DRAFT.desc.en || PRODUCT_DRAFT.desc.de; });
+    if(!PRODUCT_DRAFT.image) PRODUCT_DRAFT.image = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=800&auto=format&fit=crop';
+    const isNew = !PRODUCT_DRAFT.id;
+    if(!isNew){
+      const idx = PRODUCTS.findIndex(p=>p.id===PRODUCT_DRAFT.id);
+      PRODUCTS[idx] = PRODUCT_DRAFT;
+      await updateProductInDb(PRODUCT_DRAFT);
+    }else{
+      PRODUCT_DRAFT.id = 'p_'+Math.random().toString(36).slice(2,9);
+      PRODUCTS.push(PRODUCT_DRAFT);
+      await insertProductInDb(PRODUCT_DRAFT);
+    }
+    showToast('Product saved.');
+    PRODUCT_DRAFT = null;
+    renderAdminTab('products');
+    renderMenu();
+  });
+}
+
+let PROMO_LANG_TAB = 'de';
+function adminPromotionsHTML(){
+  const specials = SETTINGS.dailySpecials || [];
+  const activeId = SETTINGS.activeDailySpecial;
+  return `
+    <div class="a-card" style="border-color:var(--curry);">
+      <div class="a-row">
+        <div><strong>Today's promotion</strong><div class="small-note">Currently showing on the site: ${activeId ? (specials.find(s=>s.id===activeId)?.name?.en || specials.find(s=>s.id===activeId)?.name?.de || '(unnamed)') : 'None'}</div></div>
+        <button class="a-btn ${!activeId?'primary':'danger'}" id="btnClearPromo">Show no promotion</button>
+      </div>
+    </div>
+    <div class="lang-tabs" style="margin:14px 0 4px;">${LANGS.map(l=>`<button class="lang-tab-btn ${PROMO_LANG_TAB===l?'active':''}" data-promo-lang="${l}">${l.toUpperCase()}</button>`).join('')}</div>
+    ${specials.map((s,i)=>`
+      <div class="a-card">
+        <div class="a-row">
+          <strong>Special ${i+1}</strong>
+          <button class="a-btn ${activeId===s.id?'primary':'ghost'}" data-set-active-promo="${s.id}">${activeId===s.id ? '✓ Active today' : 'Set as today’s promotion'}</button>
+        </div>
+        <div class="a-field" style="margin-top:10px;"><label>Name (${PROMO_LANG_TAB})</label><input class="a-input" data-promo-name="${i}" value="${s.name[PROMO_LANG_TAB]||''}"></div>
+        <div class="a-field"><label>Description (${PROMO_LANG_TAB})</label><textarea class="a-textarea" data-promo-desc="${i}">${s.desc[PROMO_LANG_TAB]||''}</textarea></div>
+        <div class="a-field" style="max-width:160px;"><label>Price (CHF)</label><input type="number" step="0.10" class="a-input" data-promo-price="${i}" value="${s.price}"></div>
+      </div>
+    `).join('')}
+    <button class="a-btn primary" id="btnSavePromotions" style="width:100%;padding:12px;">Save promotions</button>
+    <p class="small-note">Fill in each of the three specials once (per language, using the tabs above), then just tap "Set as today's promotion" on the one you want to feature — no retyping needed day to day.</p>
+  `;
+}
+function wirePromotionsTab(){
+  const body = document.getElementById('adminBody');
+  function persistFieldsLocally(){
+    body.querySelectorAll('[data-promo-name]').forEach(inp=>{ SETTINGS.dailySpecials[+inp.dataset.promoName].name[PROMO_LANG_TAB] = inp.value; });
+    body.querySelectorAll('[data-promo-desc]').forEach(inp=>{ SETTINGS.dailySpecials[+inp.dataset.promoDesc].desc[PROMO_LANG_TAB] = inp.value; });
+    body.querySelectorAll('[data-promo-price]').forEach(inp=>{ SETTINGS.dailySpecials[+inp.dataset.promoPrice].price = parseFloat(inp.value)||0; });
+  }
+  body.querySelectorAll('[data-promo-lang]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ persistFieldsLocally(); PROMO_LANG_TAB = btn.dataset.promoLang; renderAdminTab('promotions'); });
+  });
+  body.querySelectorAll('[data-set-active-promo]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      persistFieldsLocally();
+      SETTINGS.activeDailySpecial = btn.dataset.setActivePromo;
+      await saveSettingsToDb();
+      showToast('Promotion updated on the site.');
+      renderAdminTab('promotions');
+      renderPromoBanner();
+    });
+  });
+  const clearBtn = document.getElementById('btnClearPromo');
+  if(clearBtn) clearBtn.addEventListener('click', async ()=>{
+    persistFieldsLocally();
+    SETTINGS.activeDailySpecial = null;
+    await saveSettingsToDb();
+    showToast('Promotion banner hidden.');
+    renderAdminTab('promotions');
+    renderPromoBanner();
+  });
+  const saveBtn = document.getElementById('btnSavePromotions');
+  if(saveBtn) saveBtn.addEventListener('click', async ()=>{
+    persistFieldsLocally();
+    LANGS.forEach(l=>{
+      SETTINGS.dailySpecials.forEach(s=>{
+        if(!s.name[l]) s.name[l] = s.name.en || s.name.de;
+        if(!s.desc[l]) s.desc[l] = s.desc.en || s.desc.de;
+      });
+    });
+    await saveSettingsToDb();
+    showToast('Promotions saved.');
+    renderPromoBanner();
+  });
+}
+
+function adminSalesHTML(){
+  const t0 = todayOrders();
+  const weekAgo = Date.now() - 7*86400000;
+  const monthAgo = Date.now() - 30*86400000;
+  const weekOrders = ORDERS.filter(o=>new Date(o.timestamp).getTime()>=weekAgo);
+  const monthOrders = ORDERS.filter(o=>new Date(o.timestamp).getTime()>=monthAgo);
+  const salesOf = arr=>arr.reduce((s,o)=>s+o.total,0);
+  const avgOrder = ORDERS.length ? salesOf(ORDERS)/ORDERS.length : 0;
+  const sold = {};
+  ORDERS.forEach(o=>o.items.forEach(it=>{ const key = it.name.en; sold[key] = (sold[key]||0) + it.qty; }));
+  const best = Object.entries(sold).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  return `
+    <div class="a-grid">
+      <div class="a-stat"><div class="label">Today</div><div class="val">${fmt(salesOf(t0))}</div></div>
+      <div class="a-stat"><div class="label">This week</div><div class="val">${fmt(salesOf(weekOrders))}</div></div>
+      <div class="a-stat"><div class="label">This month</div><div class="val">${fmt(salesOf(monthOrders))}</div></div>
+      <div class="a-stat"><div class="label">Avg. order</div><div class="val">${fmt(avgOrder)}</div></div>
+    </div>
+    <div class="a-section-title">Best sellers (all time)</div>
+    <div class="a-card">
+      ${best.length ? best.map(([name,qty],i)=>`<div class="a-row" style="padding:4px 0;"><span>${i+1}. ${name}</span><span style="font-family:var(--font-mono);">${qty}</span></div>`).join('') : '<p class="small-note">No sales yet.</p>'}
+    </div>
+    <div class="a-section-title">Orders — ${ORDERS.length} total</div>
+  `;
+}
+
+function adminHistoryHTML(){
+  if(SOLDOUT_HISTORY.length===0) return `<p class="small-note">No sold-out events recorded yet.</p>`;
+  const rows = SOLDOUT_HISTORY.slice().reverse();
+  return `
+    <table class="a-table">
+      <thead><tr><th>Date</th><th>Product</th><th>Sold out at</th><th>Portions sold</th></tr></thead>
+      <tbody>
+        ${rows.map(r=>`<tr><td>${r.date}</td><td>${r.product}</td><td>${r.time}</td><td>${r.portionsSold}</td></tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+function adminSettingsHTML(){
+  const s = SETTINGS;
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  return `
+    <div class="a-card">
+      <div class="a-section-title" style="margin-top:0;">Restaurant</div>
+      <div class="a-field"><label>Name</label><input class="a-input" id="s_name" value="${s.restaurantName}"></div>
+      <div class="a-field"><label>Address</label><input class="a-input" id="s_address" value="${s.address}"></div>
+      <div class="a-field"><label>Phone</label><input class="a-input" id="s_phone" value="${s.phone}"></div>
+      <div class="a-field"><label>WhatsApp number (digits only, with country code)</label><input class="a-input" id="s_whatsapp" value="${s.whatsapp}"></div>
+      <div class="a-field"><label>Email</label><input class="a-input" id="s_email" value="${s.email}"></div>
+      <div class="a-field"><label>Instagram URL</label><input class="a-input" id="s_instagram" value="${s.instagram}"></div>
+      <div class="a-field"><label>Google Maps URL</label><input class="a-input" id="s_maps" value="${s.mapsUrl}"></div>
+    </div>
+    <div class="a-card">
+      <div class="a-section-title" style="margin-top:0;">Opening hours</div>
+      ${[1,2,3,4,5,6,0].map(d=>`
+        <div class="a-row" style="margin-bottom:6px;">
+          <label style="width:40px;font-weight:700;font-size:12px;">${dayNames[d]}</label>
+          <label style="font-size:11px;display:flex;align-items:center;gap:4px;"><input type="checkbox" data-hr-closed="${d}" ${s.openingHours[d].closed?'checked':''}> Closed</label>
+          <input type="time" class="a-input" style="width:110px;" data-hr-open="${d}" value="${s.openingHours[d].open}">
+          <span>–</span>
+          <input type="time" class="a-input" style="width:110px;" data-hr-close="${d}" value="${s.openingHours[d].close}">
+        </div>`).join('')}
+    </div>
+    <div class="a-card">
+      <div class="a-section-title" style="margin-top:0;">Delivery</div>
+      <div class="a-field"><label>Delivery areas (comma-separated)</label><input class="a-input" id="s_areas" value="${s.deliveryAreas.join(', ')}"></div>
+      <div style="display:flex;gap:8px;">
+        <div class="a-field" style="flex:1;"><label>Delivery fee (CHF)</label><input type="number" step="0.10" class="a-input" id="s_fee" value="${s.deliveryFee}"></div>
+        <div class="a-field" style="flex:1;"><label>Minimum order (CHF)</label><input type="number" step="0.10" class="a-input" id="s_min" value="${s.minOrder}"></div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <div class="a-field" style="flex:1;"><label>Free delivery from (CHF)</label><input type="number" step="0.10" class="a-input" id="s_free" value="${s.freeDeliveryThreshold}"></div>
+        <div class="a-field" style="flex:1;"><label>Est. delivery time (min)</label><input type="number" class="a-input" id="s_esttime" value="${s.estDeliveryTimeMin}"></div>
+      </div>
+      <label style="font-size:12.5px;display:flex;align-items:center;gap:6px;margin-top:6px;"><input type="checkbox" id="s_schedwhenclosed" ${s.allowScheduledWhenClosed?'checked':''}> Allow scheduled orders when closed</label>
+    </div>
+    <div class="a-card">
+      <div class="a-section-title" style="margin-top:0;">Payment methods</div>
+      ${Object.keys(s.paymentMethods).map(k=>`<label style="font-size:12.5px;display:flex;align-items:center;gap:6px;margin-bottom:4px;"><input type="checkbox" data-pay-method="${k}" ${s.paymentMethods[k]?'checked':''}> ${k}</label>`).join('')}
+      <p class="small-note">Cash and card on delivery are always available to the customer as the primary methods; the others are placeholders ready to be wired up to a real payment provider.</p>
+    </div>
+    <div class="a-card">
+      <div class="a-section-title" style="margin-top:0;">Operations</div>
+      <label style="font-size:12.5px;display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input type="checkbox" id="s_autoreset" ${s.autoReactivateNextDay?'checked':''}> Automatically reactivate sold-out products next business day</label>
+      <button class="a-btn ${s.ordersPaused?'primary':'danger'}" id="btnTogglePause">${s.ordersPaused ? 'Resume orders' : 'Pause orders'}</button>
+    </div>
+    <div class="a-card">
+      <div class="a-section-title" style="margin-top:0;">Admin account</div>
+      <p class="small-note">Your admin login is a real, secure Supabase account (email + password, protected by Row Level Security) — manage it from your Supabase dashboard under Authentication → Users. There's nothing to configure here.</p>
+    </div>
+    <button class="a-btn primary" id="btnSaveSettings" style="width:100%;padding:12px;">Save settings</button>
+  `;
+}
+
+function wireAdminTab(tabId){
+  const body = document.getElementById('adminBody');
+  if(tabId==='promotions'){ wirePromotionsTab(); return; }
+  if(tabId==='dashboard' || tabId==='stock'){
+    body.querySelectorAll('[data-stockdelta]').forEach(btn=>{
+      btn.addEventListener('click', async ()=>{
+        const [pid,delta] = btn.dataset.stockdelta.split(':');
+        const p = findProduct(pid);
+        const remaining = Math.max(p.stockToday-p.sold,0);
+        const newRemaining = Math.max(remaining + parseInt(delta), 0);
+        p.sold = p.stockToday - newRemaining;
+        if(p.sold<0) p.sold=0;
+        if(newRemaining>0 && p.soldOut){ p.soldOut=false; p.soldOutTime=null; }
+        if(newRemaining<=0 && !p.soldOut){ p.soldOut=true; p.soldOutTime=timeOnly(); await insertSoldOutHistory({date:dateOnly(),product:lf(p.name),productEn:p.name.en,time:p.soldOutTime,portionsSold:p.sold}); }
+        await updateProductInDb(p);
+        renderAdminTab(tabId); renderMenu();
+      });
+    });
+    body.querySelectorAll('[data-toggle-soldout]').forEach(btn=>{
+      btn.addEventListener('click', async ()=>{
+        const p = findProduct(btn.dataset.toggleSoldout);
+        p.soldOut = !p.soldOut;
+        if(p.soldOut){ p.soldOutTime = timeOnly(); await insertSoldOutHistory({date:dateOnly(),product:lf(p.name),productEn:p.name.en,time:p.soldOutTime,portionsSold:p.sold}); }
+        else{ p.soldOutTime = null; }
+        await updateProductInDb(p);
+        renderAdminTab(tabId); renderMenu();
+      });
+    });
+    body.querySelectorAll('[data-stock-start]').forEach(inp=>{
+      inp.addEventListener('change', async ()=>{
+        const p = findProduct(inp.dataset.stockStart);
+        p.stockToday = parseInt(inp.value)||0;
+        const remaining = p.stockToday - p.sold;
+        if(remaining>0 && p.soldOut){ p.soldOut=false; p.soldOutTime=null; }
+        await updateProductInDb(p);
+        renderAdminTab(tabId); renderMenu();
+      });
+    });
+  }
+  if(tabId==='orders'){
+    body.querySelectorAll('[data-order-action]').forEach(btn=>{
+      btn.addEventListener('click', async ()=>{
+        const [id,status] = btn.dataset.orderAction.split(':');
+        const order = ORDERS.find(o=>o.id===+id);
+        order.status = status;
+        await updateOrderStatusInDb(order.id, status);
+        renderAdminTab('orders');
+      });
+    });
+  }
+  if(tabId==='products'){
+    const newBtn = document.getElementById('btnNewProduct');
+    if(newBtn) newBtn.addEventListener('click', ()=>{
+      PRODUCT_DRAFT = emptyProductDraft();
+      ADMIN_LANG_TAB = 'de';
+      document.getElementById('productEditor').innerHTML = productEditorHTML(PRODUCT_DRAFT);
+      wireProductEditor();
+      document.getElementById('productEditor').scrollIntoView({behavior:'smooth'});
+    });
+    body.querySelectorAll('[data-edit-product]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const p = findProduct(btn.dataset.editProduct);
+        PRODUCT_DRAFT = JSON.parse(JSON.stringify(p));
+        ADMIN_LANG_TAB = 'de';
+        document.getElementById('productEditor').innerHTML = productEditorHTML(PRODUCT_DRAFT);
+        wireProductEditor();
+        document.getElementById('productEditor').scrollIntoView({behavior:'smooth'});
+      });
+    });
+    body.querySelectorAll('[data-archive-product]').forEach(btn=>{
+      btn.addEventListener('click', async ()=>{
+        const p = findProduct(btn.dataset.archiveProduct);
+        p.archived = !p.archived;
+        await updateProductInDb(p);
+        renderAdminTab('products'); renderMenu();
+      });
+    });
+  }
+  if(tabId==='settings'){
+    body.querySelectorAll('[data-hr-closed]').forEach(cb=>cb.addEventListener('change', ()=>{ SETTINGS.openingHours[cb.dataset.hrClosed].closed = cb.checked; }));
+    body.querySelectorAll('[data-hr-open]').forEach(inp=>inp.addEventListener('change', ()=>{ SETTINGS.openingHours[inp.dataset.hrOpen].open = inp.value; }));
+    body.querySelectorAll('[data-hr-close]').forEach(inp=>inp.addEventListener('change', ()=>{ SETTINGS.openingHours[inp.dataset.hrClose].close = inp.value; }));
+    body.querySelectorAll('[data-pay-method]').forEach(cb=>cb.addEventListener('change', ()=>{ SETTINGS.paymentMethods[cb.dataset.payMethod] = cb.checked; }));
+    const pauseBtn = document.getElementById('btnTogglePause');
+    if(pauseBtn) pauseBtn.addEventListener('click', async ()=>{
+      SETTINGS.ordersPaused = !SETTINGS.ordersPaused;
+      await saveSettingsToDb();
+      renderAdminTab('settings');
+      showToast(SETTINGS.ordersPaused ? 'Orders paused.' : 'Orders resumed.');
+    });
+    document.getElementById('btnSaveSettings').addEventListener('click', async ()=>{
+      SETTINGS.restaurantName = document.getElementById('s_name').value;
+      SETTINGS.address = document.getElementById('s_address').value;
+      SETTINGS.phone = document.getElementById('s_phone').value;
+      SETTINGS.whatsapp = document.getElementById('s_whatsapp').value.replace(/\D/g,'');
+      SETTINGS.email = document.getElementById('s_email').value;
+      SETTINGS.instagram = document.getElementById('s_instagram').value;
+      SETTINGS.mapsUrl = document.getElementById('s_maps').value;
+      SETTINGS.deliveryAreas = document.getElementById('s_areas').value.split(',').map(x=>x.trim()).filter(Boolean);
+      SETTINGS.deliveryFee = parseFloat(document.getElementById('s_fee').value)||0;
+      SETTINGS.minOrder = parseFloat(document.getElementById('s_min').value)||0;
+      SETTINGS.freeDeliveryThreshold = parseFloat(document.getElementById('s_free').value)||0;
+      SETTINGS.estDeliveryTimeMin = parseInt(document.getElementById('s_esttime').value)||0;
+      SETTINGS.allowScheduledWhenClosed = document.getElementById('s_schedwhenclosed').checked;
+      SETTINGS.autoReactivateNextDay = document.getElementById('s_autoreset').checked;
+      await saveSettingsToDb();
+      showToast('Settings saved.');
+      renderAll();
+    });
+  }
+}
+
+/* ---------------- Supabase write helpers (admin-only; enforced by RLS) ---------------- */
+async function saveSettingsToDb(){
+  if(!sb) return;
+  const {error} = await sb.from('settings').upsert({id:1, data: SETTINGS});
+  if(error) console.error('Failed to save settings', error);
+}
+async function updateProductInDb(product){
+  if(!sb) return;
+  const {error} = await sb.from('products').update(productToDb(product)).eq('id', product.id);
+  if(error) console.error('Failed to update product', error);
+}
+async function insertProductInDb(product){
+  if(!sb) return;
+  const {error} = await sb.from('products').insert(productToDb(product));
+  if(error) console.error('Failed to insert product', error);
+}
+async function insertSoldOutHistory(entry){
+  if(!sb) return;
+  const {error} = await sb.from('soldout_history').insert({date:entry.date, product:entry.product, product_en:entry.productEn, time:entry.time, portions_sold:entry.portionsSold});
+  if(error) console.error('Failed to log sold-out history', error);
+  SOLDOUT_HISTORY.unshift(entry);
+}
+async function updateOrderStatusInDb(id, status){
+  if(!sb) return;
+  const {error} = await sb.from('orders').update({status}).eq('id', id);
+  if(error) console.error('Failed to update order status', error);
+}
+
+/* ---------------- Realtime sync between admin & shop (with a light fallback poll) ---------------- */
+if(sb){
+  sb.channel('public-products-changes')
+    .on('postgres_changes', {event:'*', schema:'public', table:'products'}, async ()=>{
+      await refreshProductsFromServer();
+      if(document.getElementById('shopRoot').style.display!=='none'){ renderMenu(); renderStatus(); renderCartViews(); }
+      if(ADMIN_LOGGED_IN) renderAdminTab(ADMIN_TAB);
+    })
+    .subscribe();
+  sb.channel('public-settings-changes')
+    .on('postgres_changes', {event:'*', schema:'public', table:'settings'}, async (payload)=>{
+      if(payload.new && payload.new.data) SETTINGS = Object.assign(defaultSettings(), payload.new.data);
+      if(document.getElementById('shopRoot').style.display!=='none'){ renderStatus(); renderContact(); renderPromoBanner(); renderCartViews(); }
+      if(ADMIN_LOGGED_IN) renderAdminTab(ADMIN_TAB);
+    })
+    .subscribe();
+  sb.channel('admin-orders-changes')
+    .on('postgres_changes', {event:'*', schema:'public', table:'orders'}, async ()=>{
+      if(ADMIN_LOGGED_IN){ await loadOrdersAndHistory(); if(ADMIN_TAB==='orders'||ADMIN_TAB==='dashboard'||ADMIN_TAB==='sales') renderAdminTab(ADMIN_TAB); }
+    })
+    .subscribe();
+}
+// Fallback poll in case a realtime connection drops — cheap, and harmless if realtime is already current.
+setInterval(async ()=>{
+  if(!sb) return;
+  await refreshProductsFromServer();
+  if(document.getElementById('shopRoot').style.display!=='none'){ renderMenu(); renderStatus(); renderCartViews(); }
+  await checkDailyReset();
+}, 30000);
+
+/* ---------------- Init ---------------- */
+function showLanguageModal(){
+  document.getElementById('langModalBackdrop').classList.remove('hidden');
+}
+function hideLanguageModal(){
+  document.getElementById('langModalBackdrop').classList.add('hidden');
+}
+document.querySelectorAll('[data-pick-lang]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    LANG = btn.dataset.pickLang;
+    LANG_CHOSEN = true;
+    localSet('preferredLang', LANG);
+    hideLanguageModal();
+    renderAll();
+  });
+});
+document.getElementById('langModalBackdrop').addEventListener('click', ()=>{ /* modal is intentionally not dismissible without a choice */ });
+
+(async function init(){
+  await loadAll();
+  const savedLang = localGet('preferredLang');
+  if(savedLang && LANGS.includes(savedLang)){
+    LANG = savedLang;
+    renderAll();
+  }else{
+    // Render the shop underneath in a sensible default language while the person chooses.
+    renderAll();
+    showLanguageModal();
+  }
+})();
+</script>
+</body>
+</html>
