@@ -971,15 +971,18 @@ async function loadAll(){
   if(productRows && productRows.length){
     PRODUCTS = productRows.map(dbToProduct);
   }else{
-    // First run against an empty database — seed it with the starter menu.
+    // First run against an empty database — seed it via the narrow RPC door
+    // (anonymous visitors have no direct INSERT rights on products, by design).
     PRODUCTS = defaultProducts();
-    const {error: seedErr} = await sb.from('products').insert(PRODUCTS.map(productToDb));
+    const {error: seedErr} = await sb.rpc('seed_products_if_empty', { p_products: PRODUCTS.map(productToDb) });
     if(seedErr) console.error('Failed to seed starter products', seedErr);
   }
   SETTINGS = Object.assign(defaultSettings(), settingsRow ? settingsRow.data : {});
   if(!settingsRow){
-    const {error: seedSettingsErr} = await sb.from('settings').upsert({id:1, data: SETTINGS});
-    if(seedSettingsErr) console.error('Failed to seed starter settings', seedSettingsErr);
+    // Anonymous visitors can't write to settings (by design — see RLS policies).
+    // The settings row should already exist from running supabase_schema.sql;
+    // if it's missing, that SQL step needs to be (re-)run.
+    console.warn('No settings row found in Supabase — re-run supabase_schema.sql to seed it.');
   }
   CART = localGet('cart') || [];
   await checkDailyReset();
