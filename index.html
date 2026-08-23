@@ -3,33 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-<title>Kome Seebach — Japanese Takeaway &amp; Delivery</title>
+<title>練馬の秘密の台所 — Hausgemachte Japanische Küche | Seebach, Zürich</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 :root{
-  --bg:#15110E;
-  --surface:#1E1813;
-  --card:#26201A;
-  --card2:#2E271F;
-  --paper:#F6EEE0;
-  --paper-dim:#E8DCC4;
-  --ink:#F4ECDD;
-  --ink-dim:#B7A995;
-  --ink-faint:#8A7C68;
-  --red:#C1392B;
+  --bg:#F7F1E3;
+  --surface:#FBF7EC;
+  --card:#FFFFFF;
+  --card2:#F1E8D3;
+  --paper:#FFFDF6;
+  --paper-dim:#EFE4CB;
+  --ink:#332821;
+  --ink-dim:#6E5F4C;
+  --ink-faint:#9C8E77;
+  --red:#BE3A2B;
   --red-deep:#8F2A20;
-  --curry:#E4A339;
-  --curry-deep:#C0821F;
-  --green:#748C63;
+  --curry:#D99A2B;
+  --curry-deep:#A97418;
+  --green:#5E7A4E;
   --indigo:#2A4759;
   --indigo-deep:#1B303D;
-  --gold:#C9A24B;
-  --border:rgba(244,236,221,0.10);
-  --border-strong:rgba(244,236,221,0.20);
-  --shadow:0 8px 30px rgba(0,0,0,0.45);
+  --gold:#B9862F;
+  --border:rgba(51,40,33,0.12);
+  --border-strong:rgba(51,40,33,0.22);
+  --shadow:0 8px 24px rgba(80,60,30,0.12);
   --radius:14px;
   --font-display:'Zen Kaku Gothic New','Noto Sans JP',sans-serif;
   --font-body:'Inter','Noto Sans JP',sans-serif;
@@ -41,13 +41,13 @@ html,body{margin:0;padding:0;}
 /* ---------- Japanese decorative motifs ---------- */
 .wave-divider{
   height:14px; width:100%;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='14' viewBox='0 0 60 14'%3E%3Cpath d='M0 14 Q7.5 0 15 14 T30 14 T45 14 T60 14' fill='none' stroke='%23C9A24B' stroke-opacity='0.55' stroke-width='1.4'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='14' viewBox='0 0 60 14'%3E%3Cpath d='M0 14 Q7.5 0 15 14 T30 14 T45 14 T60 14' fill='none' stroke='%23A97418' stroke-opacity='0.65' stroke-width='1.6'/%3E%3C/svg%3E");
   background-repeat:repeat-x; background-size:60px 14px;
-  opacity:0.7;
+  opacity:0.85;
 }
 .kanji-watermark{
   position:absolute; font-family:var(--font-display); font-weight:900;
-  color:rgba(244,236,221,0.045); pointer-events:none; user-select:none; line-height:1;
+  color:rgba(51,40,33,0.05); pointer-events:none; user-select:none; line-height:1;
   z-index:0;
 }
 .hanko-seal{
@@ -90,7 +90,7 @@ a{color:inherit;}
 /* ---------- Top bar ---------- */
 .topbar{
   position:sticky; top:0; z-index:40;
-  background:rgba(21,17,14,0.92);
+  background:rgba(247,241,227,0.92);
   backdrop-filter:blur(10px);
   padding:10px 0 0;
 }
@@ -112,8 +112,8 @@ a{color:inherit;}
   font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px;
   margin-top:3px;font-family:var(--font-mono);
 }
-.status-open{background:rgba(116,140,99,0.18);color:#A9C596;}
-.status-closed{background:rgba(193,57,43,0.18);color:#E58C82;}
+.status-open{background:rgba(94,122,78,0.14);color:#3E5A32;}
+.status-closed{background:rgba(190,58,43,0.14);color:#8F2A20;}
 .dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
 
 .lang-switch{display:flex;gap:4px;flex:0 0 auto;}
@@ -169,13 +169,13 @@ a{color:inherit;}
 .product-name{font-family:var(--font-display);font-weight:700;font-size:14.5px;margin:0;line-height:1.25;}
 .badge-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:2px;}
 .badge{font-size:9px;font-weight:800;letter-spacing:0.4px;text-transform:uppercase;padding:2px 6px;border-radius:4px;}
-.badge-new{background:rgba(116,140,99,0.2);color:#A9C596;}
-.badge-special{background:rgba(228,163,57,0.2);color:var(--curry);}
+.badge-new{background:rgba(94,122,78,0.16);color:#3E5A32;}
+.badge-special{background:rgba(185,134,47,0.18);color:#8A611F;}
 .product-desc{font-size:11.5px;color:var(--ink-dim);line-height:1.35;margin:0;
   display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;}
 .allergens{font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);}
 .price-row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex:0 0 auto;}
-.price{font-family:var(--font-mono);font-weight:700;font-size:15px;color:var(--curry);white-space:nowrap;}
+.price{font-family:var(--font-mono);font-weight:700;font-size:15px;color:var(--curry-deep);white-space:nowrap;}
 .stock-info{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--ink-faint);font-family:var(--font-mono);white-space:nowrap;}
 
 .quick-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;}
@@ -185,7 +185,7 @@ a{color:inherit;}
   letter-spacing:0.3px; flex:0 0 auto;
 }
 .btn-quick-add:active{transform:scale(0.96);}
-.btn-more-options{font-size:11px;color:var(--curry);font-weight:700;background:none;border:none;padding:0;text-align:left;}
+.btn-more-options{font-size:11px;color:var(--curry-deep);font-weight:700;background:none;border:none;padding:0;text-align:left;}
 
 .detail-panel{display:none;flex-direction:column;gap:8px;margin-top:8px;padding-top:9px;border-top:1px dashed var(--border);}
 .detail-panel.open{display:flex;}
@@ -207,14 +207,14 @@ a{color:inherit;}
 .btn-add:active{transform:scale(0.97);}
 .btn-add:disabled{background:var(--card2);color:var(--ink-faint);cursor:not-allowed;}
 .sold-out-strip{
-  position:absolute; inset:0; background:rgba(21,17,14,0.78); backdrop-filter:blur(1px);
+  position:absolute; inset:0; background:rgba(247,241,227,0.86); backdrop-filter:blur(1px);
   display:flex; align-items:center; justify-content:center; flex-direction:row; gap:8px;
   z-index:5; text-align:center; padding:8px;
 }
 .sold-out-badge{
   font-family:var(--font-display); font-weight:900; font-size:12.5px; color:var(--red);
   border:2px solid var(--red); padding:4px 12px; border-radius:6px; transform:rotate(-6deg);
-  text-transform:uppercase; letter-spacing:1px; background:rgba(21,17,14,0.7);
+  text-transform:uppercase; letter-spacing:1px; background:rgba(255,255,255,0.85);
 }
 .sold-out-time{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-dim);}
 
@@ -254,7 +254,7 @@ a{color:inherit;}
   background:linear-gradient(120deg, #3A2A14, #241A0F 65%);
   border:1.5px solid var(--curry-deep); border-radius:16px;
   padding:16px 18px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
-  position:relative; overflow:hidden;
+  position:relative; overflow:hidden; color:#F4ECDD;
 }
 .promo-card::before{
   content:''; position:absolute; top:-30px; right:-30px; width:120px; height:120px;
@@ -267,7 +267,7 @@ a{color:inherit;}
 }
 .promo-body{flex:1; min-width:180px;}
 .promo-body h3{font-family:var(--font-display);font-weight:700;font-size:16.5px;margin:2px 0 3px;}
-.promo-body p{font-size:12.5px;color:var(--ink-dim);margin:0;line-height:1.4;}
+.promo-body p{font-size:12.5px;color:rgba(244,236,221,0.78);margin:0;line-height:1.4;}
 .promo-price{font-family:var(--font-mono);font-weight:800;font-size:19px;color:var(--curry);flex:0 0 auto;}
 
 /* ---------- Floating quick-order buttons (always visible) ---------- */
@@ -380,7 +380,7 @@ a{color:inherit;}
 .contact-card h3{font-family:var(--font-display);margin:0 0 6px;font-size:16px;}
 .contact-grid{display:grid;grid-template-columns:1fr;gap:10px;font-size:13px;color:var(--ink-dim);margin-top:10px;}
 @media(min-width:640px){.contact-grid{grid-template-columns:1fr 1fr;}}
-.contact-grid a{color:var(--curry);font-weight:700;text-decoration:none;}
+.contact-grid a{color:var(--curry-deep);font-weight:700;text-decoration:none;}
 
 /* ---------- Admin ---------- */
 #adminRoot{display:none;min-height:100vh;background:#101010;color:#EDEAE4;}
@@ -454,7 +454,7 @@ table.a-table th{color:#8F8878;font-weight:700;text-transform:uppercase;font-siz
   font-size:13px;font-weight:600;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .2s ease, top .2s ease;
 }
 .toast.show{opacity:1;top:24px;}
-.link-btn{background:none;border:none;color:var(--curry);font-weight:700;font-size:12.5px;padding:0;}
+.link-btn{background:none;border:none;color:var(--curry-deep);font-weight:700;font-size:12.5px;padding:0;}
 .small-note{font-size:11px;color:var(--ink-faint);margin-top:4px;}
 </style>
 </head>
@@ -483,10 +483,10 @@ table.a-table th{color:#8F8878;font-weight:700;text-transform:uppercase;font-siz
   <div class="topbar">
     <div class="topbar-row">
       <div class="brand">
-        <div class="brand-mark">米</div>
+        <div class="brand-mark">練</div>
         <div class="brand-text">
-          <h1>Kome Seebach</h1>
-          <div class="sub" id="brandSub">Japanese Food — Seebach, Zürich</div>
+          <h1>練馬の秘密の台所</h1>
+          <div class="sub" id="brandSub">Hausgemachte Japanische Küche — Seebach, Zürich</div>
           <div class="status-pill" id="statusPill"></div>
         </div>
       </div>
@@ -511,7 +511,7 @@ table.a-table th{color:#8F8878;font-weight:700;text-transform:uppercase;font-siz
   <div class="wave-divider" style="margin-top:32px;"></div>
   <div class="contact-section">
     <div class="contact-card">
-      <h3 id="contactTitle">Kome Seebach</h3>
+      <h3 id="contactTitle">練馬の秘密の台所</h3>
       <p id="contactDesc" style="color:var(--ink-dim);font-size:13px;margin:0;"></p>
       <div class="contact-grid" id="contactGrid"></div>
     </div>
@@ -558,7 +558,7 @@ table.a-table th{color:#8F8878;font-weight:700;text-transform:uppercase;font-siz
   </div>
   <div class="admin-shell" id="adminShell" style="display:none;">
     <div class="admin-header">
-      <div class="a-title">🍱 Kome Seebach — Admin</div>
+      <div class="a-title">🍱 練馬の秘密の台所 — Admin</div>
       <div style="display:flex;gap:8px;">
         <button class="a-btn ghost" id="adminViewShop">View shop</button>
         <button class="a-btn ghost" id="adminLogout">Logout</button>
@@ -710,34 +710,34 @@ const CATEGORY_LABELS = {
 
 const ABOUT_CONTENT = {
   de:{
-    title:'Über uns', subtitle:'Unsere Geschichte',
-    p1:'Kome Seebach ist aus einer einfachen Idee entstanden: das ehrliche, wärmende Essen zu teilen, das man in kleinen Küchen in ganz Japan findet — Curry, das stundenlang köchelt, Yakisoba direkt von der heissen Platte, Bento-Boxen, liebevoll für unterwegs gepackt.',
-    p2:'Wir kochen jeden Tag frisch, in kleinen Mengen, mit Zutaten von Händlern hier in Zürich. Kein Fliessband, kein Aufwärmen von gestern — wenn ein Gericht ausverkauft ist, ist es das für heute. Seebach ist unsere Nachbarschaft, und wir freuen uns, Sie hier willkommen zu heissen.'
+    title:'練馬の秘密の台所', subtitle:'Die Geschichte hinter dem Namen',
+    p1:'Der Name 練馬の秘密の台所 erzählt von Nerima, einem Stadtteil Tokios, in dem unsere Köche aufgewachsen sind. Dort, in einer kleinen Familienküche, lernten sie das Kochen von ihren Liebsten — geduldig, ohne Eile, mit Zutaten vom Markt um die Ecke.',
+    p2:'Dort begegneten sie auch einer kleinen Katze, die sie Nerima nannten. Sie schlich sich in die Küche — und noch mehr in ihre Herzen. Nerima ist heute nicht mehr bei uns, aber ihr Name begleitet jedes Gericht, das wir hier in Seebach zubereiten: eine stille Erinnerung an Zuhause.'
   },
   en:{
-    title:'About us', subtitle:'Our story',
-    p1:"Kome Seebach grew out of a simple idea: to share the honest, comforting food found in small kitchens across Japan — curry simmered low and slow, yakisoba straight off the hot griddle, bento boxes packed with care for people on the go.",
-    p2:"We cook fresh every day, in small batches, with ingredients sourced here in Zürich. No conveyor belt, no reheating yesterday's food — once a dish sells out, it's done for the day. Seebach is our neighbourhood, and we're glad to have you at our table."
+    title:'練馬の秘密の台所', subtitle:'The story behind the name',
+    p1:'The name 練馬の秘密の台所 comes from Nerima, a neighbourhood in Tokyo where our chefs grew up. It was there, in a small family kitchen, that they learned to cook from the people they loved — unhurried, patient, with ingredients from the corner market.',
+    p2:"It's also where they met a little cat they named Nerima. She wandered into the kitchen, and further into their hearts. Nerima isn't with us anymore, but her name travels with every dish we cook here in Seebach — a quiet reminder of home."
   },
   es:{
-    title:'Sobre nosotros', subtitle:'Nuestra historia',
-    p1:'Kome Seebach nació de una idea sencilla: compartir la comida honesta y reconfortante que se encuentra en las pequeñas cocinas de todo Japón — curry cocinado a fuego lento durante horas, yakisoba recién salido de la plancha, cajas bento preparadas con cariño para llevar.',
-    p2:'Cocinamos fresco cada día, en pequeñas cantidades, con ingredientes que compramos aquí en Zúrich. Nada de cadenas de montaje ni de recalentar lo de ayer: cuando un plato se agota, se acabó por hoy. Seebach es nuestro barrio, y nos alegra tenerte en nuestra mesa.'
+    title:'練馬の秘密の台所', subtitle:'La historia detrás del nombre',
+    p1:'El nombre 練馬の秘密の台所 viene de Nerima, un barrio de Tokio donde crecieron nuestros chefs. Fue allí, en una pequeña cocina familiar, donde aprendieron a cocinar de quienes más querían — con calma, sin prisa, con ingredientes del mercado de la esquina.',
+    p2:'Allí también conocieron a una gatita a la que llamaron Nerima. Se coló en la cocina, y todavía más en sus corazones. Nerima ya no está con nosotros, pero su nombre acompaña cada plato que cocinamos aquí en Seebach: un recuerdo silencioso de casa.'
   },
   fr:{
-    title:'À propos', subtitle:'Notre histoire',
-    p1:"Kome Seebach est né d'une idée simple : partager la cuisine sincère et réconfortante que l'on trouve dans les petites cuisines du Japon — un curry mijoté longuement, des yakisoba tout juste sortis de la plaque, des bentos préparés avec soin pour la route.",
-    p2:"Nous cuisinons frais chaque jour, en petites quantités, avec des ingrédients achetés ici, à Zurich. Pas de chaîne de production, pas de plat de la veille réchauffé : une fois un plat épuisé, c'est terminé pour la journée. Seebach est notre quartier, et nous sommes heureux de vous accueillir à notre table."
+    title:'練馬の秘密の台所', subtitle:'L\u2019histoire derrière le nom',
+    p1:'Le nom 練馬の秘密の台所 vient de Nerima, un quartier de Tokyo où nos chefs ont grandi. C\u2019est là, dans une petite cuisine familiale, qu\u2019ils ont appris à cuisiner auprès de leurs proches — sans hâte, avec patience, avec des ingrédients du marché du coin.',
+    p2:'C\u2019est aussi là qu\u2019ils ont rencontré une petite chatte qu\u2019ils ont appelée Nerima. Elle s\u2019est glissée dans la cuisine, et plus encore dans leurs cœurs. Nerima n\u2019est plus parmi nous, mais son nom accompagne chaque plat que nous cuisinons ici à Seebach — un doux rappel de la maison.'
   },
   it:{
-    title:'Chi siamo', subtitle:'La nostra storia',
-    p1:'Kome Seebach nasce da un\u2019idea semplice: condividere il cibo sincero e confortante delle piccole cucine di tutto il Giappone — curry cotto lentamente per ore, yakisoba appena tolto dalla piastra calda, bento preparati con cura per chi è di fretta.',
-    p2:'Cuciniamo fresco ogni giorno, in piccole quantità, con ingredienti acquistati qui a Zurigo. Niente catena di montaggio, niente piatti di ieri riscaldati: quando un piatto finisce, è finito per la giornata. Seebach è il nostro quartiere, e siamo felici di avervi al nostro tavolo.'
+    title:'練馬の秘密の台所', subtitle:'La storia dietro il nome',
+    p1:'Il nome 練馬の秘密の台所 viene da Nerima, un quartiere di Tokyo dove sono cresciuti i nostri chef. È lì, in una piccola cucina di famiglia, che hanno imparato a cucinare da chi amavano — con calma, senza fretta, con ingredienti del mercato dietro l\u2019angolo.',
+    p2:'È anche lì che hanno conosciuto una gattina che chiamarono Nerima. Si intrufolò in cucina, e ancora di più nei loro cuori. Nerima non è più con noi, ma il suo nome accompagna ogni piatto che cuciniamo qui a Seebach — un ricordo silenzioso di casa.'
   },
   ja:{
-    title:'私たちについて', subtitle:'私たちの物語',
-    p1:'Kome Seebach（コメ・ゼーバッハ）は、日本各地の小さな台所にあるような、飾らない優しい味を届けたいという想いから生まれました。じっくり煮込んだカレー、熱い鉄板から届く焼きそば、心を込めて詰めたお弁当。',
-    p2:'私たちは毎日、少量ずつ新鮮に調理しています。チューリッヒで仕入れた食材を使い、前日の作り置きはいたしません。売り切れたメニューはその日は終了です。ここゼーバッハが私たちの街。皆様のご来店を心よりお待ちしております。'
+    title:'練馬の秘密の台所', subtitle:'名前に込めた物語',
+    p1:'「練馬の秘密の台所」という名前は、私たちシェフが育った東京・練馬に由来しています。小さな家庭の台所で、大切な人たちから料理を教わりました — 急がず、丁寧に、近所の市場で買った食材を使って。',
+    p2:'そこで出会ったのが、ネリマと名付けた一匹の猫でした。彼女は台所に、そして私たちの心にそっと入り込みました。ネリマは今はもういませんが、その名前はここゼーバッハで作るすべての料理と共にあります — ふるさとを思い出す、静かな記憶として。'
   }
 };
 
@@ -829,7 +829,7 @@ function defaultProducts(){
 
 function defaultSettings(){
   return {
-    restaurantName:'Kome Seebach',
+    restaurantName:'練馬の秘密の台所 – Hausgemachte Japanische Küche',
     address:'Wallisellenstrasse 12, 8052 Zürich (Seebach)',
     phone:'+41 44 000 00 00',
     whatsapp:'41780000000',
@@ -1018,7 +1018,6 @@ function cartLineTotal(line){
 function cartSubtotal(){ return CART.reduce((sum,l)=>sum+cartLineTotal(l),0); }
 function cartCount(){ return CART.reduce((sum,l)=>sum+l.qty,0); }
 function currentDeliveryFee(type){
-  if(type==='pickup') return 0;
   if(cartSubtotal() >= SETTINGS.freeDeliveryThreshold) return 0;
   return SETTINGS.deliveryFee;
 }
@@ -1287,10 +1286,7 @@ function openCheckoutModal(){
     <h2>${t('checkout')}</h2>
     <div class="field">
       <label>${t('order_type')}</label>
-      <div class="radio-group">
-        <button class="radio-opt selected" data-type="delivery">🚴 ${t('delivery')}</button>
-        <button class="radio-opt" data-type="pickup">🏠 ${t('pickup')}</button>
-      </div>
+      <div class="radio-opt selected" style="cursor:default;">🚴 ${t('delivery')}</div>
     </div>
     <div id="addressFields">
       <div class="field"><label>${t('street')} *</label><input id="f_street"></div>
@@ -1324,15 +1320,6 @@ function openCheckoutModal(){
   PENDING_CHECKOUT_TYPE = 'delivery';
   let payMethod = SETTINGS.paymentMethods.cash ? 'cash' : 'card';
 
-  modal.querySelectorAll('[data-type]').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      modal.querySelectorAll('[data-type]').forEach(b=>b.classList.remove('selected'));
-      btn.classList.add('selected');
-      PENDING_CHECKOUT_TYPE = btn.dataset.type;
-      document.getElementById('addressFields').style.display = PENDING_CHECKOUT_TYPE==='pickup' ? 'none' : 'block';
-      updateConfirmTotal();
-    });
-  });
   modal.querySelectorAll('[data-pay]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       modal.querySelectorAll('[data-pay]').forEach(b=>b.classList.remove('selected'));
@@ -1351,20 +1338,15 @@ function openCheckoutModal(){
   modal.querySelector('#btnConfirmOrder').addEventListener('click', async ()=>{
     const name = modal.querySelector('#f_name').value.trim();
     const phone = modal.querySelector('#f_phone').value.trim();
-    let street='', postcode='', city='', floor='';
-    if(PENDING_CHECKOUT_TYPE==='delivery'){
-      street = modal.querySelector('#f_street').value.trim();
-      postcode = modal.querySelector('#f_postcode').value.trim();
-      city = modal.querySelector('#f_city').value.trim();
-      floor = modal.querySelector('#f_floor').value.trim();
-      if(!name||!phone||!street||!postcode||!city){ showToast(t('required')); return; }
-    }else{
-      if(!name||!phone){ showToast(t('required')); return; }
-    }
+    const street = modal.querySelector('#f_street').value.trim();
+    const postcode = modal.querySelector('#f_postcode').value.trim();
+    const city = modal.querySelector('#f_city').value.trim();
+    const floor = modal.querySelector('#f_floor').value.trim();
+    if(!name||!phone||!street||!postcode||!city){ showToast(t('required')); return; }
     const timeChoice = modal.querySelector('#f_time').value;
     const scheduleTime = timeChoice==='schedule' ? modal.querySelector('#f_schedule_time').value : null;
     const instructions = modal.querySelector('#f_instructions').value.trim();
-    await confirmAndPlaceOrder({name, phone, street, postcode, city, floor, instructions, timeChoice, scheduleTime, payMethod, type:PENDING_CHECKOUT_TYPE});
+    await confirmAndPlaceOrder({name, phone, street, postcode, city, floor, instructions, timeChoice, scheduleTime, payMethod, type:'delivery'});
   });
   document.getElementById('checkoutBackdrop').classList.add('open');
 }
@@ -1441,7 +1423,7 @@ function showOrderConfirmation(order){
       <div class="cart-totals-row grand"><span>${t('total')}</span><span>${fmt(order.total)}</span></div>
     </div>
     <p style="font-size:13px;color:#5A4B32;margin-top:10px;">
-      ${order.type==='delivery' ? '🚴 '+t('delivery')+': '+order.customer.street+', '+order.customer.postcode+' '+order.customer.city : '🏠 '+t('pickup')}<br>
+      🚴 ${t('delivery')}: ${order.customer.street}, ${order.customer.postcode} ${order.customer.city}<br>
       💳 ${order.payment==='cash'?t('cash'):t('card')}
     </p>
     <button class="btn-checkout" data-close-confirm>${t('close')}</button>
@@ -1475,7 +1457,7 @@ function buildOrderText(){
   });
   msg += `\n${t('delivery_fee')}: ${fmt(deliveryFee)}`;
   msg += `\n${t('total').toUpperCase()}: ${fmt(subtotal+deliveryFee)}`;
-  msg += `\n\n${t('name')}: \n${t('phone')}: \n${t('delivery')}/${t('pickup')}: \n${t('pref_time')}: \n${t('payment')}: `;
+  msg += `\n\n${t('name')}: \n${t('phone')}: \n${t('street')}: \n${t('postcode')} / ${t('city')}: \n${t('pref_time')}: \n${t('payment')}: `;
   return msg;
 }
 function renderPromoBanner(){
@@ -1742,7 +1724,7 @@ function adminOrdersHTML(){
         ${o.items.map(it=>`${it.qty}x ${lf(it.name)}${it.extras.length? ' ('+it.extras.map(e=>lf(e.name)).join(', ')+')':''}`).join('<br>')}
       </div>
       <div class="small-note" style="margin-top:6px;">
-        ${o.type==='delivery' ? '🚴 '+o.customer.street+', '+o.customer.postcode+' '+o.customer.city : '🏠 Pickup'} · ${o.customer.name} · ${o.customer.phone} · ${o.payment.toUpperCase()}
+        🚴 ${o.customer.street}, ${o.customer.postcode} ${o.customer.city} · ${o.customer.name} · ${o.customer.phone} · ${o.payment.toUpperCase()}
       </div>
       <div class="a-row" style="margin-top:10px;">
         <strong style="font-family:var(--font-mono);">${fmt(o.total)}</strong>
