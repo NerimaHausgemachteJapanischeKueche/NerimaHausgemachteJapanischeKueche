@@ -88,10 +88,12 @@ a{color:inherit;}
 .bowl-gauge svg{display:block;}
 
 /* ---------- Top bar ---------- */
-.topbar{
+.sticky-header{
   position:sticky; top:0; z-index:40;
   background:rgba(247,241,227,0.92);
   backdrop-filter:blur(10px);
+}
+.topbar{
   padding:10px 0 0;
 }
 .topbar-row{
@@ -125,8 +127,7 @@ a{color:inherit;}
 
 /* ---------- Category tabs ---------- */
 .cat-bar{
-  position:sticky; top:66px; z-index:35;
-  background:var(--bg);
+  background:transparent;
   border-bottom:1px solid var(--border);
   padding:10px 16px;
   overflow-x:auto; white-space:nowrap;
@@ -500,23 +501,25 @@ table.a-table th{color:#8F8878;font-weight:700;text-transform:uppercase;font-siz
 
   <div class="promo-banner hidden" id="promoBanner"></div>
 
-  <div class="topbar">
-    <div class="topbar-row">
-      <div class="brand">
-        <div class="brand-mark">練</div>
-        <div class="brand-text">
-          <h1>練馬の秘密の台所</h1>
-          <div class="sub" id="brandSub">Hausgemachte Japanische Küche — Seebach, Zürich</div>
-          <div class="status-pill" id="statusPill"></div>
+  <div class="sticky-header">
+    <div class="topbar">
+      <div class="topbar-row">
+        <div class="brand">
+          <div class="brand-mark">練</div>
+          <div class="brand-text">
+            <h1>練馬の秘密の台所</h1>
+            <div class="sub" id="brandSub">Hausgemachte Japanische Küche — Seebach, Zürich</div>
+            <div class="status-pill" id="statusPill"></div>
+          </div>
         </div>
+        <div class="lang-switch" id="langSwitch"></div>
       </div>
-      <div class="lang-switch" id="langSwitch"></div>
+      <div class="wave-divider"></div>
     </div>
-    <div class="wave-divider"></div>
-  </div>
 
-  <div class="cat-bar">
-    <div class="cat-inner" id="catBar"></div>
+    <div class="cat-bar">
+      <div class="cat-inner" id="catBar"></div>
+    </div>
   </div>
 
   <div class="layout">
@@ -820,12 +823,12 @@ function defaultProducts(){
       desc:{de:'Weiches Milchbrot mit cremigem japanischem Eisalat.',en:'Soft milk bread with creamy Japanese egg salad.',es:'Pan de leche suave con cremosa ensalada de huevo japonesa.',fr:'Pain au lait moelleux et salade d’œufs japonaise crémeuse.',it:'Pane al latte morbido con insalata di uova giapponese cremosa.',ja:'柔らかい食パンとクリーミーな卵サラダ。'},
       allergens:['gluten','egg','milk'], image:'https://images.unsplash.com/photo-1626804475297-411f0a389fdd?q=80&w=800&auto=format&fit=crop',
       extras:[]},
-    {id:'p_onigiri_tuna',category:'onigiri',price:4.90,stockToday:30,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+    {id:'p_onigiri_tuna',category:'onigiri',price:5.85,stockToday:30,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
       name:{de:'Onigiri Thunfisch-Mayo',en:'Tuna Mayo Onigiri',es:'Onigiri de Atún con Mayonesa',fr:'Onigiri Thon Mayonnaise',it:'Onigiri Tonno e Maionese',ja:'ツナマヨおにぎり'},
       desc:{de:'Handgeformter Reisball mit Thunfisch-Mayo-Füllung, in Nori-Blatt gewickelt.',en:'Hand-shaped rice ball filled with tuna mayo, wrapped in nori seaweed.',es:'Bola de arroz moldeada a mano rellena de atún con mayonesa, envuelta en alga nori.',fr:'Boule de riz façonnée à la main, garnie de thon mayonnaise, enveloppée d’algue nori.',it:'Palla di riso modellata a mano con ripieno di tonno e maionese, avvolta in alga nori.',ja:'手作りおにぎり。ツナマヨネーズ入り、海苔巻き。'},
       allergens:['fish','egg','soy'], image:'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?q=80&w=800&auto=format&fit=crop',
       extras:[]},
-    {id:'p_onigiri_salmon',category:'onigiri',price:4.50,stockToday:30,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+    {id:'p_onigiri_salmon',category:'onigiri',price:5.85,stockToday:30,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
       name:{de:'Onigiri Lachs',en:'Salmon Onigiri',es:'Onigiri de Salmón',fr:'Onigiri Saumon',it:'Onigiri Salmone',ja:'鮭おにぎり'},
       desc:{de:'Handgeformter Reisball mit gegrilltem Lachs, in Nori-Blatt gewickelt.',en:'Hand-shaped rice ball filled with grilled salmon, wrapped in nori seaweed.',es:'Bola de arroz moldeada a mano rellena de salmón a la parrilla, envuelta en alga nori.',fr:'Boule de riz façonnée à la main, garnie de saumon grillé, enveloppée d’algue nori.',it:'Palla di riso modellata a mano con salmone grigliato, avvolta in alga nori.',ja:'手作りおにぎり。焼き鮭入り、海苔巻き。'},
       allergens:['fish'], image:'https://images.unsplash.com/photo-1553621042-f6e147245754?q=80&w=800&auto=format&fit=crop',
