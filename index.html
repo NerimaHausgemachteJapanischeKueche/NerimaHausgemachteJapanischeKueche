@@ -247,7 +247,7 @@ a{color:inherit;}
 
 /* ---------- Daily promotion banner ---------- */
 .promo-banner{
-  max-width:1180px; margin:12px auto 0; padding:0 16px;
+  max-width:1180px; margin:14px auto 0; padding:0 16px;
 }
 .promo-banner.hidden{display:none;}
 .promo-card{
@@ -359,18 +359,36 @@ a{color:inherit;}
 .about-card{
   position:relative; overflow:hidden;
   background:linear-gradient(160deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+  background-image:linear-gradient(160deg, var(--indigo) 0%, var(--indigo-deep) 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cg fill='none' stroke='%23F4ECDD' stroke-opacity='0.05' stroke-width='1'%3E%3Cpath d='M28 0 L56 16 L56 50 L28 66 L0 50 L0 16 Z'/%3E%3Cpath d='M28 0 L28 33'/%3E%3Cpath d='M0 16 L28 33 L56 16'/%3E%3Cpath d='M0 50 L28 33 L56 50'/%3E%3Cpath d='M28 66 L28 100'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:auto, 56px 100px;
   border:1px solid rgba(201,162,75,0.35); border-radius:18px;
-  padding:28px 22px;
+  padding:30px 24px;
+  display:grid; grid-template-columns:1fr; gap:22px;
+}
+@media(min-width:760px){
+  .about-card{grid-template-columns:1.5fr 1fr; padding:34px;}
 }
 .about-card .kanji-watermark{
-  font-size:180px; right:-20px; top:-40px; color:rgba(244,236,221,0.06);
+  font-size:190px; right:-25px; top:-45px; color:rgba(244,236,221,0.055);
 }
-.about-head{display:flex; align-items:center; gap:12px; margin-bottom:14px; position:relative; z-index:1;}
+.about-head{display:flex; align-items:center; gap:12px; margin-bottom:16px; position:relative; z-index:1;}
 .about-eyebrow{font-family:var(--font-mono); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold);}
-.about-card h2{font-family:var(--font-display); font-weight:700; font-size:22px; margin:2px 0 0; color:var(--paper);}
-.about-body{position:relative; z-index:1; max-width:680px;}
-.about-body p{font-size:13.5px; line-height:1.7; color:rgba(244,236,221,0.82); margin:0 0 12px;}
+.about-card h2{font-family:var(--font-display); font-weight:700; font-size:21px; margin:2px 0 0; color:var(--paper); letter-spacing:0.3px;}
+.about-body{position:relative; z-index:1;}
+.about-body p{font-size:13.5px; line-height:1.8; color:rgba(244,236,221,0.85); margin:0 0 13px;}
 .about-body p:last-child{margin-bottom:0;}
+.about-art{
+  position:relative; z-index:1; border:1px solid rgba(201,162,75,0.3); border-radius:14px;
+  background:rgba(244,236,221,0.04); display:flex; align-items:center; justify-content:center;
+  padding:18px; min-height:180px;
+}
+.about-art svg{width:100%; max-width:190px; height:auto;}
+.about-vertical-tag{
+  position:absolute; top:14px; right:14px; z-index:1;
+  writing-mode:vertical-rl; font-family:var(--font-display); font-weight:700;
+  font-size:13px; letter-spacing:4px; color:rgba(201,162,75,0.55);
+}
 
 /* ---------- Contact section ---------- */
 .contact-section{
@@ -480,6 +498,8 @@ table.a-table th{color:#8F8878;font-weight:700;text-transform:uppercase;font-siz
 <!-- ============ SHOP VIEW ============ -->
 <div id="shopRoot">
 
+  <div class="promo-banner hidden" id="promoBanner"></div>
+
   <div class="topbar">
     <div class="topbar-row">
       <div class="brand">
@@ -494,8 +514,6 @@ table.a-table th{color:#8F8878;font-weight:700;text-transform:uppercase;font-siz
     </div>
     <div class="wave-divider"></div>
   </div>
-
-  <div class="promo-banner hidden" id="promoBanner"></div>
 
   <div class="cat-bar">
     <div class="cat-inner" id="catBar"></div>
@@ -617,7 +635,7 @@ const UI = {
       contact:'Contact',opening_hours:'Opening hours',delivery_areas:'Delivery areas',paused_msg:'WE ARE TEMPORARILY NOT ACCEPTING NEW ORDERS.',
       stock_left:'left',just_sold_out:'Sorry, this product has just sold out.',min_order_msg:'Minimum order not reached',
       required:'Please fill in all required fields.',asap:'As soon as possible',schedule:'Schedule for later',
-      new:'New',special:"Today's special",allergens:'Allergens',ready_in:'Ready in approx.',min:'min',promo_title:"Today's Special Offer",promo_pick:'Hand-picked for today',
+      new:'New',special:"Today's special",allergens:'Allergens',ready_in:'Ready in approx.',min:'min',promo_title:'Offer of the Day',promo_pick:'Hand-picked for today',
       closed_no_schedule:'We are currently closed. Ordering is not available right now.',order_type:'Order type',
       view_menu:'View menu',remove:'Remove',each:'ea.'},
   es:{nav_menu:'Menú',cart:'Carrito',today_menu:'MENÚ DE HOY',open_now:'Abierto ahora',closed:'Cerrado',opens_at:'Abre a las',
@@ -633,7 +651,7 @@ const UI = {
       contact:'Contacto',opening_hours:'Horario',delivery_areas:'Zonas de entrega',paused_msg:'ACTUALMENTE NO ACEPTAMOS NUEVOS PEDIDOS.',
       stock_left:'restantes',just_sold_out:'Lo sentimos, este producto se acaba de agotar.',min_order_msg:'No se alcanzó el pedido mínimo',
       required:'Por favor complete todos los campos obligatorios.',asap:'Lo antes posible',schedule:'Programar para más tarde',
-      new:'Novedad',special:'Especial del día',allergens:'Alérgenos',ready_in:'Listo en aprox.',min:'min',promo_title:'Promoción del Día',promo_pick:'Elegida especialmente para hoy',
+      new:'Novedad',special:'Especial del día',allergens:'Alérgenos',ready_in:'Listo en aprox.',min:'min',promo_title:'Oferta del Día',promo_pick:'Elegida especialmente para hoy',
       closed_no_schedule:'Actualmente estamos cerrados. No es posible realizar pedidos ahora.',order_type:'Tipo de pedido',
       view_menu:'Ver menú',remove:'Quitar',each:'c/u'},
   fr:{nav_menu:'Menu',cart:'Panier',today_menu:"MENU DU JOUR",open_now:'Ouvert',closed:'Fermé',opens_at:'Ouvre à',
@@ -697,11 +715,12 @@ const ALLERGEN_LABELS = {
   fish:{de:'Fisch',en:'Fish',es:'Pescado',fr:'Poisson',it:'Pesce',ja:'魚'},
   peanuts:{de:'Erdnuss',en:'Peanuts',es:'Cacahuete',fr:'Arachide',it:'Arachidi',ja:'ピーナッツ'}
 };
-const CATEGORIES = ['curry','yakisoba','bento','karaage_full','sando','sides','drinks'];
+const CATEGORIES = ['curry','yakisoba','bento','onigiri','karaage_full','sando','sides','drinks'];
 const CATEGORY_LABELS = {
   curry:{de:'Japanisches Curry',en:'Japanese Curry',es:'Curry Japonés',fr:'Curry Japonais',it:'Curry Giapponese',ja:'カレーライス'},
   yakisoba:{de:'Yakisoba',en:'Yakisoba',es:'Yakisoba',fr:'Yakisoba',it:'Yakisoba',ja:'焼きそば'},
   bento:{de:'Bento',en:'Bento',es:'Bento',fr:'Bento',it:'Bento',ja:'弁当'},
+  onigiri:{de:'Onigiri (Reisbällchen)',en:'Onigiri (Rice Balls)',es:'Onigiri (Bolas de Arroz)',fr:'Onigiri (Boules de Riz)',it:'Onigiri (Polpette di Riso)',ja:'おにぎり'},
   karaage_full:{de:'Karaage Hähnchen (Ganz)',en:'Karaage Whole Chicken',es:'Pollo Karaage Completo',fr:'Poulet Karaage Entier',it:'Pollo Karaage Intero',ja:'唐揚げチキン（丸ごと）'},
   sando:{de:'Japanische Sandwiches',en:'Japanese Sandwiches',es:'Sándwiches Japoneses',fr:'Sandwichs Japonais',it:'Panini Giapponesi',ja:'サンド'},
   sides:{de:'Beilagen',en:'Sides',es:'Acompañamientos',fr:'Accompagnements',it:'Contorni',ja:'サイドメニュー'},
@@ -711,33 +730,39 @@ const CATEGORY_LABELS = {
 const ABOUT_CONTENT = {
   de:{
     title:'練馬の秘密の台所', subtitle:'Die Geschichte hinter dem Namen',
-    p1:'Der Name 練馬の秘密の台所 erzählt von Nerima, einem Stadtteil Tokios, in dem unsere Köche aufgewachsen sind. Dort, in einer kleinen Familienküche, lernten sie das Kochen von ihren Liebsten — geduldig, ohne Eile, mit Zutaten vom Markt um die Ecke.',
-    p2:'Dort begegneten sie auch einer kleinen Katze, die sie Nerima nannten. Sie schlich sich in die Küche — und noch mehr in ihre Herzen. Nerima ist heute nicht mehr bei uns, aber ihr Name begleitet jedes Gericht, das wir hier in Seebach zubereiten: eine stille Erinnerung an Zuhause.'
+    p1:'Der Name 練馬の秘密の台所 erzählt von Nerima, einem ruhigen Stadtteil im Westen Tokios, in dem unsere Köche aufgewachsen sind. Zwischen engen Gassen und kleinen Nachbarschaftsläden stand die Küche zu Hause nie still.',
+    p2:'Von den Grosseltern lernten sie, Curry stundenlang köcheln zu lassen, bis es dunkel und tief im Geschmack wird, Reis exakt auf den Punkt zu kochen und ein Bento so zu packen, dass es auch kalt noch glücklich macht. Genau diese Geduld bringen wir jeden Tag in unsere kleine Küche in Seebach — nichts wird vorbereitet, um Zeit zu sparen, und wenn etwas ausverkauft ist, war es einfach ein guter Tag.',
+    p3:'In Nerima begegneten sie auch einer kleinen streunenden Katze, die sie ebenfalls Nerima nannten. Sie schlich sich in die Küche — und noch mehr in ihre Herzen. Nerima ist heute nicht mehr bei uns, aber ihr Name steht über unserer Tür und begleitet jedes Gericht, das wir hier zubereiten: eine stille, warme Erinnerung an Zuhause. Wir freuen uns, Sie an unseren Tisch einzuladen.'
   },
   en:{
     title:'練馬の秘密の台所', subtitle:'The story behind the name',
-    p1:'The name 練馬の秘密の台所 comes from Nerima, a neighbourhood in Tokyo where our chefs grew up. It was there, in a small family kitchen, that they learned to cook from the people they loved — unhurried, patient, with ingredients from the corner market.',
-    p2:"It's also where they met a little cat they named Nerima. She wandered into the kitchen, and further into their hearts. Nerima isn't with us anymore, but her name travels with every dish we cook here in Seebach — a quiet reminder of home."
+    p1:'The name 練馬の秘密の台所 comes from Nerima, a quiet neighbourhood on the west side of Tokyo where our chefs grew up. Between narrow lanes and small family-run shops, the kitchen at home was never still.',
+    p2:"From their grandparents they learned how to let curry simmer for hours until it turns dark and deep, how to cook rice until it's exactly right, and how to pack a bento so it still feels like a treat even cold. That same patience is what we bring to our small kitchen in Seebach every day — nothing is pre-made to save time, and when something sells out, it simply meant it was a good day.",
+    p3:"It's also in Nerima that they met a small stray cat they came to call Nerima too. She wandered into the kitchen, and further into their hearts. Nerima isn't with us anymore, but her name sits above our door and travels with every dish we cook here — a quiet, warm reminder of home. We're glad to have you at our table."
   },
   es:{
     title:'練馬の秘密の台所', subtitle:'La historia detrás del nombre',
-    p1:'El nombre 練馬の秘密の台所 viene de Nerima, un barrio de Tokio donde crecieron nuestros chefs. Fue allí, en una pequeña cocina familiar, donde aprendieron a cocinar de quienes más querían — con calma, sin prisa, con ingredientes del mercado de la esquina.',
-    p2:'Allí también conocieron a una gatita a la que llamaron Nerima. Se coló en la cocina, y todavía más en sus corazones. Nerima ya no está con nosotros, pero su nombre acompaña cada plato que cocinamos aquí en Seebach: un recuerdo silencioso de casa.'
+    p1:'El nombre 練馬の秘密の台所 viene de Nerima, un barrio tranquilo al oeste de Tokio donde crecieron nuestros chefs. Entre callejones estrechos y pequeñas tiendas de barrio, la cocina de casa nunca dejaba de estar en marcha.',
+    p2:'De sus abuelos aprendieron a dejar el curry cocinándose a fuego lento durante horas, hasta que se vuelve oscuro y profundo de sabor, a cocinar el arroz en su punto exacto, y a preparar un bento que siga siendo un placer incluso frío. Esa misma paciencia es la que traemos cada día a nuestra pequeña cocina de Seebach — nada se prepara de antemano para ahorrar tiempo, y cuando algo se agota, simplemente fue un buen día.',
+    p3:'También en Nerima conocieron a una gatita callejera a la que llamaron igual: Nerima. Se coló en la cocina, y todavía más en sus corazones. Nerima ya no está con nosotros, pero su nombre está sobre nuestra puerta y acompaña cada plato que cocinamos aquí — un recuerdo silencioso y cálido de casa. Nos alegra tenerte en nuestra mesa.'
   },
   fr:{
     title:'練馬の秘密の台所', subtitle:'L\u2019histoire derrière le nom',
-    p1:'Le nom 練馬の秘密の台所 vient de Nerima, un quartier de Tokyo où nos chefs ont grandi. C\u2019est là, dans une petite cuisine familiale, qu\u2019ils ont appris à cuisiner auprès de leurs proches — sans hâte, avec patience, avec des ingrédients du marché du coin.',
-    p2:'C\u2019est aussi là qu\u2019ils ont rencontré une petite chatte qu\u2019ils ont appelée Nerima. Elle s\u2019est glissée dans la cuisine, et plus encore dans leurs cœurs. Nerima n\u2019est plus parmi nous, mais son nom accompagne chaque plat que nous cuisinons ici à Seebach — un doux rappel de la maison.'
+    p1:'Le nom 練馬の秘密の台所 vient de Nerima, un quartier tranquille à l\u2019ouest de Tokyo où nos chefs ont grandi. Entre ruelles étroites et petites échoppes de quartier, la cuisine familiale ne s\u2019arrêtait jamais.',
+    p2:'De leurs grands-parents, ils ont appris à laisser mijoter le curry pendant des heures jusqu\u2019à ce qu\u2019il devienne sombre et profond en saveur, à cuire le riz à la perfection, et à préparer un bento qui reste un plaisir même froid. C\u2019est cette même patience que nous apportons chaque jour à notre petite cuisine de Seebach — rien n\u2019est préparé à l\u2019avance pour gagner du temps, et quand un plat est épuisé, c\u2019est simplement qu\u2019il a fait une bonne journée.',
+    p3:'C\u2019est aussi à Nerima qu\u2019ils ont rencontré une petite chatte errante qu\u2019ils ont appelée, elle aussi, Nerima. Elle s\u2019est glissée dans la cuisine, et plus encore dans leurs cœurs. Nerima n\u2019est plus parmi nous, mais son nom est inscrit au-dessus de notre porte et accompagne chaque plat que nous cuisinons ici — un doux et chaleureux rappel de la maison. Nous sommes heureux de vous accueillir à notre table.'
   },
   it:{
     title:'練馬の秘密の台所', subtitle:'La storia dietro il nome',
-    p1:'Il nome 練馬の秘密の台所 viene da Nerima, un quartiere di Tokyo dove sono cresciuti i nostri chef. È lì, in una piccola cucina di famiglia, che hanno imparato a cucinare da chi amavano — con calma, senza fretta, con ingredienti del mercato dietro l\u2019angolo.',
-    p2:'È anche lì che hanno conosciuto una gattina che chiamarono Nerima. Si intrufolò in cucina, e ancora di più nei loro cuori. Nerima non è più con noi, ma il suo nome accompagna ogni piatto che cuciniamo qui a Seebach — un ricordo silenzioso di casa.'
+    p1:'Il nome 練馬の秘密の台所 viene da Nerima, un quartiere tranquillo a ovest di Tokyo dove sono cresciuti i nostri chef. Tra viuzze strette e piccoli negozi di quartiere, la cucina di casa non si fermava mai.',
+    p2:'Dai loro nonni hanno imparato a lasciar sobbollire il curry per ore, finché non diventa scuro e profondo di sapore, a cuocere il riso al punto giusto, e a preparare un bento che resti un piacere anche freddo. Portiamo la stessa pazienza ogni giorno nella nostra piccola cucina di Seebach — niente viene preparato in anticipo per risparmiare tempo, e quando qualcosa finisce, significa solo che è stata una buona giornata.',
+    p3:'È sempre a Nerima che hanno incontrato una gattina randagia che hanno chiamato anche lei Nerima. Si è intrufolata in cucina, e ancora di più nei loro cuori. Nerima non è più con noi, ma il suo nome è sopra la nostra porta e accompagna ogni piatto che cuciniamo qui — un ricordo silenzioso e caldo di casa. Siamo felici di avervi al nostro tavolo.'
   },
   ja:{
     title:'練馬の秘密の台所', subtitle:'名前に込めた物語',
-    p1:'「練馬の秘密の台所」という名前は、私たちシェフが育った東京・練馬に由来しています。小さな家庭の台所で、大切な人たちから料理を教わりました — 急がず、丁寧に、近所の市場で買った食材を使って。',
-    p2:'そこで出会ったのが、ネリマと名付けた一匹の猫でした。彼女は台所に、そして私たちの心にそっと入り込みました。ネリマは今はもういませんが、その名前はここゼーバッハで作るすべての料理と共にあります — ふるさとを思い出す、静かな記憶として。'
+    p1:'「練馬の秘密の台所」という名前は、私たちシェフが育った東京西部の静かな街、練馬に由来しています。細い路地と小さな商店が並ぶこの町で、実家の台所はいつも賑やかでした。',
+    p2:'祖父母から教わったのは、カレーを何時間もじっくり煮込んで深い味わいに仕上げること、ご飯をちょうど良い加減に炊き上げること、そして冷めてもおいしいお弁当の詰め方でした。その同じ丁寧さを、私たちは毎日ここゼーバッハの小さな台所で大切にしています。時間短縮のための仕込みはせず、メニューが売り切れた日は、それだけ良い一日だったということです。',
+    p3:'練馬で出会ったのが、同じくネリマと名付けた一匹の野良猫でした。彼女は台所に、そして私たちの心にそっと入り込みました。ネリマは今はもういませんが、その名前は私たちの店の扉の上に掲げられ、ここで作るすべての料理と共にあります — ふるさとを思い出す、静かで温かな記憶として。皆様のご来店を心よりお待ちしております。'
   }
 };
 
@@ -795,11 +820,16 @@ function defaultProducts(){
       desc:{de:'Weiches Milchbrot mit cremigem japanischem Eisalat.',en:'Soft milk bread with creamy Japanese egg salad.',es:'Pan de leche suave con cremosa ensalada de huevo japonesa.',fr:'Pain au lait moelleux et salade d’œufs japonaise crémeuse.',it:'Pane al latte morbido con insalata di uova giapponese cremosa.',ja:'柔らかい食パンとクリーミーな卵サラダ。'},
       allergens:['gluten','egg','milk'], image:'https://images.unsplash.com/photo-1626804475297-411f0a389fdd?q=80&w=800&auto=format&fit=crop',
       extras:[]},
-    {id:'p9b',category:'sando',price:12.90,stockToday:20,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
-      name:{de:'Katsu Sando',en:'Katsu Sando',es:'Sando de Katsu',fr:'Sando Katsu',it:'Sando Katsu',ja:'カツサンド'},
-      desc:{de:'Knuspriges Schnitzel, Katsu-Sauce, weiches Milchbrot.',en:'Crispy pork cutlet, katsu sauce, soft milk bread.',es:'Chuleta crujiente, salsa katsu, pan de leche suave.',fr:'Escalope croustillante, sauce katsu, pain au lait moelleux.',it:'Cotoletta croccante, salsa katsu, pane al latte morbido.',ja:'サクサクのカツ、カツソース、柔らかい食パン。'},
-      allergens:['gluten','egg'], image:'https://images.unsplash.com/photo-1550507992-eb63ffee0847?q=80&w=800&auto=format&fit=crop',
-      extras:[EX_SAUCE]},
+    {id:'p_onigiri_tuna',category:'onigiri',price:4.90,stockToday:30,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Onigiri Thunfisch-Mayo',en:'Tuna Mayo Onigiri',es:'Onigiri de Atún con Mayonesa',fr:'Onigiri Thon Mayonnaise',it:'Onigiri Tonno e Maionese',ja:'ツナマヨおにぎり'},
+      desc:{de:'Handgeformter Reisball mit Thunfisch-Mayo-Füllung, in Nori-Blatt gewickelt.',en:'Hand-shaped rice ball filled with tuna mayo, wrapped in nori seaweed.',es:'Bola de arroz moldeada a mano rellena de atún con mayonesa, envuelta en alga nori.',fr:'Boule de riz façonnée à la main, garnie de thon mayonnaise, enveloppée d’algue nori.',it:'Palla di riso modellata a mano con ripieno di tonno e maionese, avvolta in alga nori.',ja:'手作りおにぎり。ツナマヨネーズ入り、海苔巻き。'},
+      allergens:['fish','egg','soy'], image:'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?q=80&w=800&auto=format&fit=crop',
+      extras:[]},
+    {id:'p_onigiri_salmon',category:'onigiri',price:4.50,stockToday:30,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Onigiri Lachs',en:'Salmon Onigiri',es:'Onigiri de Salmón',fr:'Onigiri Saumon',it:'Onigiri Salmone',ja:'鮭おにぎり'},
+      desc:{de:'Handgeformter Reisball mit gegrilltem Lachs, in Nori-Blatt gewickelt.',en:'Hand-shaped rice ball filled with grilled salmon, wrapped in nori seaweed.',es:'Bola de arroz moldeada a mano rellena de salmón a la parrilla, envuelta en alga nori.',fr:'Boule de riz façonnée à la main, garnie de saumon grillé, enveloppée d’algue nori.',it:'Palla di riso modellata a mano con salmone grigliato, avvolta in alga nori.',ja:'手作りおにぎり。焼き鮭入り、海苔巻き。'},
+      allergens:['fish'], image:'https://images.unsplash.com/photo-1553621042-f6e147245754?q=80&w=800&auto=format&fit=crop',
+      extras:[]},
     {id:'p10',category:'sides',price:5.50,stockToday:60,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
       name:{de:'Edamame',en:'Edamame',es:'Edamame',fr:'Edamame',it:'Edamame',ja:'枝豆'},
       desc:{de:'Gedämpfte Sojabohnen mit Meersalz.',en:'Steamed soybeans with sea salt.',es:'Judías de soja al vapor con sal marina.',fr:'Fèves de soja vapeur au sel de mer.',it:'Fagioli di soia al vapore con sale marino.',ja:'塩茹での枝豆。'},
@@ -848,7 +878,7 @@ function defaultSettings(){
     deliveryAreas:['8052 Zürich','Seebach','Oerlikon','Affoltern','Glattbrugg'],
     deliveryFee:3.00,
     minOrder:20.00,
-    freeDeliveryThreshold:45.00,
+    freeDeliveryThreshold:30.00,
     estDeliveryTimeMin:35,
     paymentMethods:{cash:true, card:true, twint:false, visa:false, mastercard:false, applepay:false, googlepay:false},
     ordersPaused:false,
@@ -1489,16 +1519,37 @@ function renderAboutSection(){
   el.innerHTML = `
     <div class="about-card">
       <span class="kanji-watermark">和</span>
-      <div class="about-head">
-        <div class="hanko-seal">米</div>
-        <div>
-          <div class="about-eyebrow">${content.subtitle}</div>
-          <h2>${content.title}</h2>
+      <span class="about-vertical-tag">ネリマ</span>
+      <div>
+        <div class="about-head">
+          <div class="hanko-seal">練</div>
+          <div>
+            <div class="about-eyebrow">${content.subtitle}</div>
+            <h2>${content.title}</h2>
+          </div>
+        </div>
+        <div class="about-body">
+          <p>${content.p1}</p>
+          <p>${content.p2}</p>
+          <p>${content.p3}</p>
         </div>
       </div>
-      <div class="about-body">
-        <p>${content.p1}</p>
-        <p>${content.p2}</p>
+      <div class="about-art">
+        <svg viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#C9A24B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M40 20 Q52 2 62 22 Q70 8 74 26" stroke-opacity="0.55"/>
+          <circle cx="45" cy="16" r="3" fill="#C9A24B" stroke="none" opacity="0.55"/>
+          <circle cx="64" cy="10" r="2.4" fill="#C9A24B" stroke="none" opacity="0.5"/>
+          <circle cx="73" cy="22" r="2" fill="#C9A24B" stroke="none" opacity="0.45"/>
+          <g stroke-opacity="0.85">
+            <path d="M55 150 Q40 150 38 132 Q36 108 48 96 L44 78 Q43 68 52 66 Q56 65 60 68 L66 76 Q78 72 90 76 L96 68 Q100 65 104 66 Q113 68 112 78 L108 96 Q120 108 118 132 Q116 150 101 150 Z"/>
+            <path d="M52 66 L48 52 L62 64"/>
+            <path d="M104 66 L108 52 L94 64"/>
+            <circle cx="66" cy="90" r="2.6" fill="#C9A24B" stroke="none"/>
+            <circle cx="90" cy="90" r="2.6" fill="#C9A24B" stroke="none"/>
+            <path d="M74 98 Q78 101 82 98"/>
+            <path d="M112 128 Q128 122 126 104 Q125 92 116 88" stroke-opacity="0.55"/>
+          </g>
+        </svg>
       </div>
     </div>
   `;
