@@ -24,6 +24,9 @@
   --curry:#E4A339;
   --curry-deep:#C0821F;
   --green:#748C63;
+  --indigo:#2A4759;
+  --indigo-deep:#1B303D;
+  --gold:#C9A24B;
   --border:rgba(244,236,221,0.10);
   --border-strong:rgba(244,236,221,0.20);
   --shadow:0 8px 30px rgba(0,0,0,0.45);
@@ -34,6 +37,25 @@
 }
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
+
+/* ---------- Japanese decorative motifs ---------- */
+.wave-divider{
+  height:14px; width:100%;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='14' viewBox='0 0 60 14'%3E%3Cpath d='M0 14 Q7.5 0 15 14 T30 14 T45 14 T60 14' fill='none' stroke='%23C9A24B' stroke-opacity='0.55' stroke-width='1.4'/%3E%3C/svg%3E");
+  background-repeat:repeat-x; background-size:60px 14px;
+  opacity:0.7;
+}
+.kanji-watermark{
+  position:absolute; font-family:var(--font-display); font-weight:900;
+  color:rgba(244,236,221,0.045); pointer-events:none; user-select:none; line-height:1;
+  z-index:0;
+}
+.hanko-seal{
+  width:46px; height:46px; border:2.5px solid var(--red); border-radius:4px;
+  display:flex; align-items:center; justify-content:center; flex:0 0 auto;
+  font-family:var(--font-display); font-weight:900; color:var(--red); font-size:19px;
+  transform:rotate(-3deg); background:rgba(193,57,43,0.06);
+}
 body{
   background:var(--bg);
   color:var(--ink);
@@ -70,12 +92,11 @@ a{color:inherit;}
   position:sticky; top:0; z-index:40;
   background:rgba(21,17,14,0.92);
   backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--border);
-  padding:10px 16px;
+  padding:10px 0 0;
 }
 .topbar-row{
   display:flex; align-items:center; justify-content:space-between; gap:10px;
-  max-width:1180px; margin:0 auto;
+  max-width:1180px; margin:0 auto; padding:0 16px 10px;
 }
 .brand{display:flex;align-items:center;gap:10px;}
 .brand-mark{
@@ -104,7 +125,7 @@ a{color:inherit;}
 
 /* ---------- Category tabs ---------- */
 .cat-bar{
-  position:sticky; top:60px; z-index:35;
+  position:sticky; top:66px; z-index:35;
   background:var(--bg);
   border-bottom:1px solid var(--border);
   padding:10px 16px;
@@ -331,6 +352,26 @@ a{color:inherit;}
 /* ---------- Confirmation ---------- */
 .confirm-icon{width:56px;height:56px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:28px;color:#152012;}
 
+/* ---------- About Us section ---------- */
+.about-section{
+  max-width:1180px; margin:36px auto 0; padding:0 16px;
+}
+.about-card{
+  position:relative; overflow:hidden;
+  background:linear-gradient(160deg, var(--indigo) 0%, var(--indigo-deep) 100%);
+  border:1px solid rgba(201,162,75,0.35); border-radius:18px;
+  padding:28px 22px;
+}
+.about-card .kanji-watermark{
+  font-size:180px; right:-20px; top:-40px; color:rgba(244,236,221,0.06);
+}
+.about-head{display:flex; align-items:center; gap:12px; margin-bottom:14px; position:relative; z-index:1;}
+.about-eyebrow{font-family:var(--font-mono); font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold);}
+.about-card h2{font-family:var(--font-display); font-weight:700; font-size:22px; margin:2px 0 0; color:var(--paper);}
+.about-body{position:relative; z-index:1; max-width:680px;}
+.about-body p{font-size:13.5px; line-height:1.7; color:rgba(244,236,221,0.82); margin:0 0 12px;}
+.about-body p:last-child{margin-bottom:0;}
+
 /* ---------- Contact section ---------- */
 .contact-section{
   max-width:1180px;margin:30px auto 0;padding:16px;
@@ -451,6 +492,7 @@ table.a-table th{color:#8F8878;font-weight:700;text-transform:uppercase;font-siz
       </div>
       <div class="lang-switch" id="langSwitch"></div>
     </div>
+    <div class="wave-divider"></div>
   </div>
 
   <div class="promo-banner hidden" id="promoBanner"></div>
@@ -464,6 +506,9 @@ table.a-table th{color:#8F8878;font-weight:700;text-transform:uppercase;font-siz
     <div class="cart-panel" id="cartPanelDesktop"></div>
   </div>
 
+  <div class="about-section" id="aboutSection"></div>
+
+  <div class="wave-divider" style="margin-top:32px;"></div>
   <div class="contact-section">
     <div class="contact-card">
       <h3 id="contactTitle">Kome Seebach</h3>
@@ -661,6 +706,39 @@ const CATEGORY_LABELS = {
   sando:{de:'Japanische Sandwiches',en:'Japanese Sandwiches',es:'Sándwiches Japoneses',fr:'Sandwichs Japonais',it:'Panini Giapponesi',ja:'サンド'},
   sides:{de:'Beilagen',en:'Sides',es:'Acompañamientos',fr:'Accompagnements',it:'Contorni',ja:'サイドメニュー'},
   drinks:{de:'Getränke',en:'Drinks',es:'Bebidas',fr:'Boissons',it:'Bevande',ja:'ドリンク'}
+};
+
+const ABOUT_CONTENT = {
+  de:{
+    title:'Über uns', subtitle:'Unsere Geschichte',
+    p1:'Kome Seebach ist aus einer einfachen Idee entstanden: das ehrliche, wärmende Essen zu teilen, das man in kleinen Küchen in ganz Japan findet — Curry, das stundenlang köchelt, Yakisoba direkt von der heissen Platte, Bento-Boxen, liebevoll für unterwegs gepackt.',
+    p2:'Wir kochen jeden Tag frisch, in kleinen Mengen, mit Zutaten von Händlern hier in Zürich. Kein Fliessband, kein Aufwärmen von gestern — wenn ein Gericht ausverkauft ist, ist es das für heute. Seebach ist unsere Nachbarschaft, und wir freuen uns, Sie hier willkommen zu heissen.'
+  },
+  en:{
+    title:'About us', subtitle:'Our story',
+    p1:"Kome Seebach grew out of a simple idea: to share the honest, comforting food found in small kitchens across Japan — curry simmered low and slow, yakisoba straight off the hot griddle, bento boxes packed with care for people on the go.",
+    p2:"We cook fresh every day, in small batches, with ingredients sourced here in Zürich. No conveyor belt, no reheating yesterday's food — once a dish sells out, it's done for the day. Seebach is our neighbourhood, and we're glad to have you at our table."
+  },
+  es:{
+    title:'Sobre nosotros', subtitle:'Nuestra historia',
+    p1:'Kome Seebach nació de una idea sencilla: compartir la comida honesta y reconfortante que se encuentra en las pequeñas cocinas de todo Japón — curry cocinado a fuego lento durante horas, yakisoba recién salido de la plancha, cajas bento preparadas con cariño para llevar.',
+    p2:'Cocinamos fresco cada día, en pequeñas cantidades, con ingredientes que compramos aquí en Zúrich. Nada de cadenas de montaje ni de recalentar lo de ayer: cuando un plato se agota, se acabó por hoy. Seebach es nuestro barrio, y nos alegra tenerte en nuestra mesa.'
+  },
+  fr:{
+    title:'À propos', subtitle:'Notre histoire',
+    p1:"Kome Seebach est né d'une idée simple : partager la cuisine sincère et réconfortante que l'on trouve dans les petites cuisines du Japon — un curry mijoté longuement, des yakisoba tout juste sortis de la plaque, des bentos préparés avec soin pour la route.",
+    p2:"Nous cuisinons frais chaque jour, en petites quantités, avec des ingrédients achetés ici, à Zurich. Pas de chaîne de production, pas de plat de la veille réchauffé : une fois un plat épuisé, c'est terminé pour la journée. Seebach est notre quartier, et nous sommes heureux de vous accueillir à notre table."
+  },
+  it:{
+    title:'Chi siamo', subtitle:'La nostra storia',
+    p1:'Kome Seebach nasce da un\u2019idea semplice: condividere il cibo sincero e confortante delle piccole cucine di tutto il Giappone — curry cotto lentamente per ore, yakisoba appena tolto dalla piastra calda, bento preparati con cura per chi è di fretta.',
+    p2:'Cuciniamo fresco ogni giorno, in piccole quantità, con ingredienti acquistati qui a Zurigo. Niente catena di montaggio, niente piatti di ieri riscaldati: quando un piatto finisce, è finito per la giornata. Seebach è il nostro quartiere, e siamo felici di avervi al nostro tavolo.'
+  },
+  ja:{
+    title:'私たちについて', subtitle:'私たちの物語',
+    p1:'Kome Seebach（コメ・ゼーバッハ）は、日本各地の小さな台所にあるような、飾らない優しい味を届けたいという想いから生まれました。じっくり煮込んだカレー、熱い鉄板から届く焼きそば、心を込めて詰めたお弁当。',
+    p2:'私たちは毎日、少量ずつ新鮮に調理しています。チューリッヒで仕入れた食材を使い、前日の作り置きはいたしません。売り切れたメニューはその日は終了です。ここゼーバッハが私たちの街。皆様のご来店を心よりお待ちしております。'
+  }
 };
 
 function extra(name, price){ return {id:'ex_'+Math.random().toString(36).slice(2,9), name, price}; }
@@ -1423,6 +1501,27 @@ function renderPromoBanner(){
   `;
 }
 
+function renderAboutSection(){
+  const el = document.getElementById('aboutSection');
+  const content = ABOUT_CONTENT[LANG] || ABOUT_CONTENT.en;
+  el.innerHTML = `
+    <div class="about-card">
+      <span class="kanji-watermark">和</span>
+      <div class="about-head">
+        <div class="hanko-seal">米</div>
+        <div>
+          <div class="about-eyebrow">${content.subtitle}</div>
+          <h2>${content.title}</h2>
+        </div>
+      </div>
+      <div class="about-body">
+        <p>${content.p1}</p>
+        <p>${content.p2}</p>
+      </div>
+    </div>
+  `;
+}
+
 /* ---------------- Contact section ---------------- */
 function renderContact(){
   document.getElementById('contactTitle').textContent = SETTINGS.restaurantName;
@@ -1476,6 +1575,7 @@ function renderAll(){
   renderCartViews();
   renderBottomBar();
   renderContact();
+  renderAboutSection();
   if(SETTINGS.ordersPaused){
     // no-op visual; message shown at checkout attempt
   }
@@ -2123,7 +2223,7 @@ if(sb){
   sb.channel('public-settings-changes')
     .on('postgres_changes', {event:'*', schema:'public', table:'settings'}, async (payload)=>{
       if(payload.new && payload.new.data) SETTINGS = Object.assign(defaultSettings(), payload.new.data);
-      if(document.getElementById('shopRoot').style.display!=='none'){ renderStatus(); renderContact(); renderPromoBanner(); renderCartViews(); }
+      if(document.getElementById('shopRoot').style.display!=='none'){ renderStatus(); renderContact(); renderAboutSection(); renderPromoBanner(); renderCartViews(); }
       if(ADMIN_LOGGED_IN) renderAdminTab(ADMIN_TAB);
     })
     .subscribe();
