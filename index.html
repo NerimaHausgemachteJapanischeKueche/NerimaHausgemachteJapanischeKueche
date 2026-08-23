@@ -156,6 +156,7 @@ a{color:inherit;}
   margin:0 0 12px; padding-left:2px; display:flex; align-items:baseline; gap:8px;
 }
 .category-title .count{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);font-weight:500;}
+.category-note{font-size:11px;color:var(--ink-faint);margin:-6px 0 10px;padding-left:2px;line-height:1.4;}
 .product-grid{display:grid;grid-template-columns:1fr;gap:8px;}
 @media(min-width:720px){.product-grid{grid-template-columns:1fr 1fr;}}
 
@@ -402,49 +403,50 @@ a{color:inherit;}
 .contact-grid a{color:var(--curry-deep);font-weight:700;text-decoration:none;}
 
 /* ---------- Admin ---------- */
-#adminRoot{display:none;min-height:100vh;background:#101010;color:#EDEAE4;}
-.admin-login{max-width:340px;margin:80px auto;padding:26px;background:var(--surface);border-radius:16px;border:1px solid var(--border);}
+#adminRoot{display:none;min-height:100vh;background:#18130F;color:#F1E8D9;}
+.admin-login{max-width:340px;margin:80px auto;padding:26px;background:#221B15;border-radius:16px;border:1px solid rgba(244,236,221,0.10);}
 .admin-login h2{font-family:var(--font-display);margin-top:0;}
 .admin-shell{display:flex;flex-direction:column;min-height:100vh;}
 .admin-header{
-  position:sticky;top:0;z-index:10;background:#151515;border-bottom:1px solid #2A2A2A;
-  padding:10px 16px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:10;background:#1D1712;border-bottom:1px solid rgba(244,236,221,0.08);
+  padding:12px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;
 }
-.admin-header .a-title{font-family:var(--font-display);font-weight:700;font-size:15px;}
-.admin-nav{display:flex;gap:4px;overflow-x:auto;padding:8px 16px;background:#161616;border-bottom:1px solid #2A2A2A;scrollbar-width:none;}
+.admin-header .a-title{font-family:var(--font-display);font-weight:700;font-size:15px;display:flex;align-items:center;gap:10px;}
+.admin-header .a-mark{width:30px;height:30px;border-radius:8px;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:900;color:#FBEFE9;font-size:14px;flex:0 0 auto;}
+.admin-nav{display:flex;gap:6px;overflow-x:auto;padding:10px 18px;background:#1A1511;border-bottom:1px solid rgba(244,236,221,0.08);scrollbar-width:none;}
 .admin-nav::-webkit-scrollbar{display:none;}
-.a-tab{flex:0 0 auto;background:#232323;border:1px solid #333;color:#B8B2A6;font-size:12.5px;font-weight:700;padding:8px 13px;border-radius:8px;white-space:nowrap;}
+.a-tab{flex:0 0 auto;background:#241D17;border:1px solid rgba(244,236,221,0.10);color:#B3A891;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:20px;white-space:nowrap;font-family:var(--font-display);}
 .a-tab.active{background:var(--curry);color:#1a1410;border-color:var(--curry);}
-.admin-body{padding:16px;max-width:1080px;margin:0 auto;width:100%;}
-.a-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.admin-body{padding:20px;max-width:1080px;margin:0 auto;width:100%;}
+.a-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
 @media(min-width:720px){.a-grid{grid-template-columns:repeat(4,1fr);}}
-.a-stat{background:#1D1D1D;border:1px solid #2E2E2E;border-radius:12px;padding:14px;}
-.a-stat .label{font-size:11px;color:#8F8878;text-transform:uppercase;letter-spacing:0.4px;font-weight:700;}
-.a-stat .val{font-family:var(--font-mono);font-size:22px;font-weight:700;margin-top:4px;}
-.a-section-title{font-family:var(--font-display);font-size:15px;font-weight:700;margin:22px 0 10px;}
-.a-card{background:#1D1D1D;border:1px solid #2E2E2E;border-radius:12px;padding:14px;margin-bottom:10px;}
+.a-stat{background:#221B15;border:1px solid rgba(244,236,221,0.09);border-radius:14px;padding:16px;}
+.a-stat .label{font-size:10.5px;color:#9C8E76;text-transform:uppercase;letter-spacing:0.6px;font-weight:700;}
+.a-stat .val{font-family:var(--font-mono);font-size:24px;font-weight:700;margin-top:6px;color:var(--curry);}
+.a-section-title{font-family:var(--font-display);font-size:15px;font-weight:700;margin:26px 0 12px;color:#F1E8D9;}
+.a-card{background:#221B15;border:1px solid rgba(244,236,221,0.09);border-radius:14px;padding:16px;margin-bottom:12px;}
 .a-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
-.a-btn{background:#2C2C2C;border:1px solid #3C3C3C;color:#EDEAE4;padding:7px 12px;border-radius:8px;font-size:12.5px;font-weight:700;}
+.a-btn{background:#2E261D;border:1px solid rgba(244,236,221,0.14);color:#F1E8D9;padding:8px 14px;border-radius:9px;font-size:12.5px;font-weight:700;font-family:var(--font-body);}
 .a-btn.primary{background:var(--curry);color:#1a1410;border-color:var(--curry);}
 .a-btn.danger{background:var(--red);color:#FBEFE9;border-color:var(--red);}
 .a-btn.ghost{background:transparent;}
 .a-btn:disabled{opacity:0.4;}
-.a-input, .a-select, .a-textarea{background:#111;border:1px solid #333;color:#EDEAE4;padding:8px 10px;border-radius:7px;font-size:13px;font-family:inherit;width:100%;}
+.a-input, .a-select, .a-textarea{background:#15110D;border:1px solid rgba(244,236,221,0.14);color:#F1E8D9;padding:9px 11px;border-radius:8px;font-size:13px;font-family:inherit;width:100%;}
 .a-field{margin-bottom:10px;}
-.a-field label{display:block;font-size:11px;color:#8F8878;margin-bottom:4px;font-weight:700;text-transform:uppercase;}
-.a-order-badge{font-family:var(--font-mono);font-weight:700;font-size:12px;padding:3px 8px;border-radius:6px;}
+.a-field label{display:block;font-size:11px;color:#9C8E76;margin-bottom:4px;font-weight:700;text-transform:uppercase;}
+.a-order-badge{font-family:var(--font-mono);font-weight:700;font-size:12px;padding:3px 9px;border-radius:20px;}
 .st-new{background:#3A2E1A;color:#E4A339;}
 .st-accepted{background:#243A2A;color:#8FCB9E;}
 .st-preparing{background:#2A2A3A;color:#9EA8E0;}
 .st-ready{background:#3A2A38;color:#E09EC9;}
 .st-out{background:#1A3A3A;color:#7FD9D9;}
-.st-completed{background:#222;color:#888;}
+.st-completed{background:#2A251E;color:#9C8E76;}
 .st-rejected{background:#3A1A1A;color:#E48282;}
 table.a-table{width:100%;border-collapse:collapse;font-size:12.5px;}
-table.a-table th, table.a-table td{padding:8px 8px;border-bottom:1px solid #2A2A2A;text-align:left;}
-table.a-table th{color:#8F8878;font-weight:700;text-transform:uppercase;font-size:10.5px;}
+table.a-table th, table.a-table td{padding:9px 8px;border-bottom:1px solid rgba(244,236,221,0.08);text-align:left;}
+table.a-table th{color:#9C8E76;font-weight:700;text-transform:uppercase;font-size:10.5px;}
 .lang-tabs{display:flex;gap:4px;margin-bottom:8px;}
-.lang-tab-btn{background:#232323;border:1px solid #333;color:#B8B2A6;font-size:11px;font-weight:700;padding:5px 9px;border-radius:6px;}
+.lang-tab-btn{background:#241D17;border:1px solid rgba(244,236,221,0.12);color:#B3A891;font-size:11px;font-weight:700;padding:5px 9px;border-radius:6px;}
 .lang-tab-btn.active{background:#3D3320;color:var(--curry);border-color:var(--curry);}
 .hidden{display:none !important;}
 .lang-modal-backdrop{
@@ -579,7 +581,7 @@ table.a-table th{color:#8F8878;font-weight:700;text-transform:uppercase;font-siz
   </div>
   <div class="admin-shell" id="adminShell" style="display:none;">
     <div class="admin-header">
-      <div class="a-title">🍱 練馬の秘密の台所 — Admin</div>
+      <div class="a-title"><span class="a-mark">練</span> 練馬の秘密の台所 — Admin</div>
       <div style="display:flex;gap:8px;">
         <button class="a-btn ghost" id="adminViewShop">View shop</button>
         <button class="a-btn ghost" id="adminLogout">Logout</button>
@@ -718,16 +720,18 @@ const ALLERGEN_LABELS = {
   fish:{de:'Fisch',en:'Fish',es:'Pescado',fr:'Poisson',it:'Pesce',ja:'魚'},
   peanuts:{de:'Erdnuss',en:'Peanuts',es:'Cacahuete',fr:'Arachide',it:'Arachidi',ja:'ピーナッツ'}
 };
-const CATEGORIES = ['curry','yakisoba','bento','onigiri','karaage_full','sando','sides','drinks'];
+const CATEGORIES = ['curry','yakisoba','bento','onigiri','karaage_full','sando','family','sides','drinks','drinks_alcohol'];
 const CATEGORY_LABELS = {
   curry:{de:'Japanisches Curry',en:'Japanese Curry',es:'Curry Japonés',fr:'Curry Japonais',it:'Curry Giapponese',ja:'カレーライス'},
   yakisoba:{de:'Yakisoba',en:'Yakisoba',es:'Yakisoba',fr:'Yakisoba',it:'Yakisoba',ja:'焼きそば'},
   bento:{de:'Bento',en:'Bento',es:'Bento',fr:'Bento',it:'Bento',ja:'弁当'},
   onigiri:{de:'Onigiri (Reisbällchen)',en:'Onigiri (Rice Balls)',es:'Onigiri (Bolas de Arroz)',fr:'Onigiri (Boules de Riz)',it:'Onigiri (Polpette di Riso)',ja:'おにぎり'},
-  karaage_full:{de:'Karaage Hähnchen (Ganz)',en:'Karaage Whole Chicken',es:'Pollo Karaage Completo',fr:'Poulet Karaage Entier',it:'Pollo Karaage Intero',ja:'唐揚げチキン（丸ごと）'},
+  karaage_full:{de:'Karaage Hähnchen',en:'Karaage Chicken',es:'Pollo Karaage',fr:'Poulet Karaage',it:'Pollo Karaage',ja:'唐揚げチキン'},
   sando:{de:'Japanische Sandwiches',en:'Japanese Sandwiches',es:'Sándwiches Japoneses',fr:'Sandwichs Japonais',it:'Panini Giapponesi',ja:'サンド'},
+  family:{de:'Für 4 Personen',en:'For 4 People',es:'Para 4 Personas',fr:'Pour 4 Personnes',it:'Per 4 Persone',ja:'4人前'},
   sides:{de:'Beilagen',en:'Sides',es:'Acompañamientos',fr:'Accompagnements',it:'Contorni',ja:'サイドメニュー'},
-  drinks:{de:'Getränke',en:'Drinks',es:'Bebidas',fr:'Boissons',it:'Bevande',ja:'ドリンク'}
+  drinks:{de:'Getränke',en:'Drinks',es:'Bebidas',fr:'Boissons',it:'Bevande',ja:'ドリンク'},
+  drinks_alcohol:{de:'Alkoholische Getränke',en:'Alcoholic Drinks',es:'Bebidas Alcohólicas',fr:'Boissons Alcoolisées',it:'Bevande Alcoliche',ja:'アルコール飲料'}
 };
 
 const ABOUT_CONTENT = {
@@ -813,15 +817,35 @@ function defaultProducts(){
       desc:{de:'Gegrillter Lachs mit Teriyaki-Sauce, Reis und Gemüse.',en:'Grilled salmon with teriyaki sauce, rice and vegetables.',es:'Salmón a la parrilla con salsa teriyaki, arroz y verduras.',fr:'Saumon grillé sauce teriyaki, riz et légumes.',it:'Salmone alla griglia con salsa teriyaki, riso e verdure.',ja:'照り焼きソースの焼き鮭、ライスと野菜。'},
       allergens:['fish','soy','sesame'], image:'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?q=80&w=800&auto=format&fit=crop',
       extras:[EX_RICE]},
+    {id:'p8a',category:'karaage_full',price:14.90,stockToday:25,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Karaage 3 Stück',en:'Karaage 3 Pieces',es:'Karaage 3 Piezas',fr:'Karaage 3 Pièces',it:'Karaage 3 Pezzi',ja:'唐揚げ3個'},
+      desc:{de:'3 Stück knuspriges japanisches Brathähnchen mit Sauce.',en:'3 pieces of crispy Japanese-style fried chicken, served with sauce.',es:'3 piezas de pollo frito japonés crujiente, con salsa.',fr:'3 morceaux de poulet frit japonais croustillant, avec sauce.',it:'3 pezzi di pollo fritto giapponese croccante, con salsa.',ja:'カリッと揚げた唐揚げ3個、タレ付き。'},
+      allergens:['gluten','soy'], image:'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop',
+      extras:[EX_SAUCE,EX_RICE]},
+    {id:'p8b',category:'karaage_full',price:22.90,stockToday:20,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Karaage 5 Stück',en:'Karaage 5 Pieces',es:'Karaage 5 Piezas',fr:'Karaage 5 Pièces',it:'Karaage 5 Pezzi',ja:'唐揚げ5個'},
+      desc:{de:'5 Stück knuspriges japanisches Brathähnchen mit Sauce.',en:'5 pieces of crispy Japanese-style fried chicken, served with sauce.',es:'5 piezas de pollo frito japonés crujiente, con salsa.',fr:'5 morceaux de poulet frit japonais croustillant, avec sauce.',it:'5 pezzi di pollo fritto giapponese croccante, con salsa.',ja:'カリッと揚げた唐揚げ5個、タレ付き。'},
+      allergens:['gluten','soy'], image:'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop',
+      extras:[EX_SAUCE,EX_RICE]},
     {id:'p8',category:'karaage_full',price:30.00,stockToday:15,sold:0,soldOut:false,soldOutTime:null,label:'special',archived:false,
       name:{de:'Karaage Hähnchen — Ganz',en:'Karaage Whole Chicken',es:'Pollo Karaage Completo',fr:'Poulet Karaage Entier',it:'Pollo Karaage Intero',ja:'唐揚げチキン丸ごと1羽'},
-      desc:{de:'Ein ganzes, knusprig frittiertes Hähnchen nach japanischer Karaage-Art, ideal zum Teilen. Serviert mit Sauce.',en:'A whole crispy Japanese-style fried chicken, perfect for sharing. Served with dipping sauce.',es:'Un pollo entero frito y crujiente al estilo japonés karaage, ideal para compartir. Servido con salsa.',fr:'Un poulet entier frit et croustillant façon karaage japonais, idéal à partager. Servi avec sa sauce.',it:'Un pollo intero fritto e croccante in stile karaage giapponese, perfetto da condividere. Servito con salsa.',ja:'シェアにぴったりの、丸ごと1羽のカリッと揚げた唐揚げチキン。タレ付き。'},
+      desc:{de:'Ein ganzes, knusprig frittiertes Hähnchen (ca. 12 Stück) nach japanischer Karaage-Art, ideal zum Teilen — deutlich mehr Fleisch pro Franken als bei den kleineren Portionen. Serviert mit Sauce.',en:'A whole crispy Japanese-style fried chicken (about 12 pieces), perfect for sharing — noticeably better value per piece than the smaller portions. Served with dipping sauce.',es:'Un pollo entero frito y crujiente al estilo japonés karaage (unas 12 piezas), ideal para compartir — mucho mejor relación cantidad-precio que las porciones más pequeñas. Servido con salsa.',fr:'Un poulet entier frit et croustillant façon karaage japonais (environ 12 morceaux), idéal à partager — un bien meilleur rapport quantité-prix que les petites portions. Servi avec sa sauce.',it:'Un pollo intero fritto e croccante in stile karaage giapponese (circa 12 pezzi), perfetto da condividere — un rapporto quantità-prezzo nettamente migliore delle porzioni più piccole. Servito con salsa.',ja:'シェアにぴったりの、丸ごと1羽のカリッと揚げた唐揚げチキン（約12個分）。小さいサイズより断然お得です。タレ付き。'},
       allergens:['gluten','soy'], image:'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?q=80&w=800&auto=format&fit=crop',
       extras:[EX_SAUCE,EX_RICE]},
     {id:'p9',category:'sando',price:8.90,stockToday:25,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
       name:{de:'Ei Sando',en:'Egg Sando',es:'Sando de Huevo',fr:'Sando à l’Œuf',it:'Sando all’Uovo',ja:'たまごサンド'},
       desc:{de:'Weiches Milchbrot mit cremigem japanischem Eisalat.',en:'Soft milk bread with creamy Japanese egg salad.',es:'Pan de leche suave con cremosa ensalada de huevo japonesa.',fr:'Pain au lait moelleux et salade d’œufs japonaise crémeuse.',it:'Pane al latte morbido con insalata di uova giapponese cremosa.',ja:'柔らかい食パンとクリーミーな卵サラダ。'},
       allergens:['gluten','egg','milk'], image:'https://images.unsplash.com/photo-1626804475297-411f0a389fdd?q=80&w=800&auto=format&fit=crop',
+      extras:[]},
+    {id:'p_family_friedrice',category:'family',price:30.00,stockToday:10,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Ei-Bratreis für 4 Personen',en:'Egg Fried Rice for 4',es:'Arroz Frito con Huevo para 4 Personas',fr:'Riz Frit à l’Œuf pour 4 Personnes',it:'Riso Fritto all’Uovo per 4 Persone',ja:'たまごチャーハン（4人前）'},
+      desc:{de:'Grosse Portion gebratener Reis mit Ei — reicht für 4 Personen. Ideal zum Teilen.',en:'A large batch of egg fried rice — serves about 4 people. Great for sharing.',es:'Una gran ración de arroz frito con huevo, para unas 4 personas. Ideal para compartir.',fr:'Une grande portion de riz frit à l’œuf, pour environ 4 personnes. Idéal à partager.',it:'Una grande porzione di riso fritto all’uovo, per circa 4 persone. Ideale da condividere.',ja:'たまごチャーハンの大盛り。約4人前、シェアにぴったりです。'},
+      allergens:['egg','soy'], image:'https://images.unsplash.com/photo-1603133872878-684f208fb84b?q=80&w=800&auto=format&fit=crop',
+      extras:[]},
+    {id:'p_family_yakisoba',category:'family',price:32.00,stockToday:10,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Yakisoba für 4 Personen',en:'Yakisoba for 4',es:'Yakisoba para 4 Personas',fr:'Yakisoba pour 4 Personnes',it:'Yakisoba per 4 Persone',ja:'焼きそば（4人前）'},
+      desc:{de:'Grosse Portion gebratene Nudeln — reicht für 4 Personen. Ideal zum Teilen.',en:'A large batch of stir-fried noodles — serves about 4 people. Great for sharing.',es:'Una gran ración de fideos salteados, para unas 4 personas. Ideal para compartir.',fr:'Une grande portion de nouilles sautées, pour environ 4 personnes. Idéal à partager.',it:'Una grande porzione di noodle saltati, per circa 4 persone. Ideale da condividere.',ja:'焼きそばの大盛り。約4人前、シェアにぴったりです。'},
+      allergens:['gluten','soy','sesame'], image:'https://images.unsplash.com/photo-1552611052-33e04de081de?q=80&w=800&auto=format&fit=crop',
       extras:[]},
     {id:'p_onigiri_tuna',category:'onigiri',price:5.85,stockToday:30,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
       name:{de:'Onigiri Thunfisch-Mayo',en:'Tuna Mayo Onigiri',es:'Onigiri de Atún con Mayonesa',fr:'Onigiri Thon Mayonnaise',it:'Onigiri Tonno e Maionese',ja:'ツナマヨおにぎり'},
@@ -856,7 +880,31 @@ function defaultProducts(){
     {id:'p15',category:'drinks',price:2.50,stockToday:80,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
       name:{de:'Wasser',en:'Water',es:'Agua',fr:'Eau',it:'Acqua',ja:'お水'},
       desc:{de:'Stilles oder mit Kohlensäure, 0.5l.',en:'Still or sparkling, 0.5l.',es:'Con o sin gas, 0,5l.',fr:'Plate ou gazeuse, 0,5l.',it:'Naturale o frizzante, 0,5l.',ja:'炭酸有り無し、0.5リットル。'},
-      allergens:[], image:'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?q=80&w=800&auto=format&fit=crop', extras:[]}
+      allergens:[], image:'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?q=80&w=800&auto=format&fit=crop', extras:[]},
+    {id:'p16',category:'drinks',price:4.90,stockToday:25,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Hausgemachter Bitter-Matcha',en:'Homemade Bitter Matcha',es:'Té Matcha Casero (Amargo)',fr:'Matcha Maison Amer',it:'Matcha Amaro Fatto in Casa',ja:'自家製抹茶（無糖）'},
+      desc:{de:'Traditionell aufgeschlagener Matcha, ungesüsst und kräftig im Geschmack.',en:'Traditionally whisked matcha, unsweetened and full-bodied.',es:'Matcha batido de forma tradicional, sin azúcar y de sabor intenso.',fr:'Matcha fouetté à la manière traditionnelle, non sucré et corsé.',it:'Matcha sbattuto in modo tradizionale, non zuccherato e dal sapore intenso.',ja:'伝統的な点て方で仕上げた、無糖でしっかりとした味わいの抹茶。'},
+      allergens:[], image:'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?q=80&w=800&auto=format&fit=crop', extras:[]},
+    {id:'p_beer_asahi',category:'drinks_alcohol',price:6.50,stockToday:40,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Asahi Super Dry',en:'Asahi Super Dry',es:'Asahi Super Dry',fr:'Asahi Super Dry',it:'Asahi Super Dry',ja:'アサヒスーパードライ'},
+      desc:{de:'Japanisches Bier, knackig trocken, 0.33l.',en:'Crisp, dry Japanese lager, 0.33l.',es:'Cerveza japonesa seca y refrescante, 0,33l.',fr:'Bière japonaise sèche et rafraîchissante, 0,33l.',it:'Birra giapponese secca e rinfrescante, 0,33l.',ja:'キレのある辛口の日本のビール、0.33リットル。'},
+      allergens:['gluten'], image:'https://images.unsplash.com/photo-1608270586620-248524c67de9?q=80&w=800&auto=format&fit=crop', extras:[]},
+    {id:'p_beer_sapporo',category:'drinks_alcohol',price:6.50,stockToday:40,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Sapporo Premium',en:'Sapporo Premium',es:'Sapporo Premium',fr:'Sapporo Premium',it:'Sapporo Premium',ja:'サッポロプレミアム'},
+      desc:{de:'Japanisches Bier mit vollem Geschmack, 0.33l.',en:'Full-flavoured Japanese lager, 0.33l.',es:'Cerveza japonesa de sabor intenso, 0,33l.',fr:'Bière japonaise pleine de saveur, 0,33l.',it:'Birra giapponese dal sapore pieno, 0,33l.',ja:'コクのある日本のビール、0.33リットル。'},
+      allergens:['gluten'], image:'https://images.unsplash.com/photo-1618183479302-1e0aa382c36b?q=80&w=800&auto=format&fit=crop', extras:[]},
+    {id:'p_beer_kirin',category:'drinks_alcohol',price:6.50,stockToday:40,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Kirin Ichiban',en:'Kirin Ichiban',es:'Kirin Ichiban',fr:'Kirin Ichiban',it:'Kirin Ichiban',ja:'キリン一番搾り'},
+      desc:{de:'Japanisches Bier aus der ersten Würze, mild und rein im Geschmack, 0.33l.',en:'Japanese lager brewed from first-press wort, mild and clean, 0.33l.',es:'Cerveza japonesa de primera prensa, suave y limpia, 0,33l.',fr:'Bière japonaise de première pression, douce et pure, 0,33l.',it:'Birra giapponese di prima spremitura, delicata e pulita, 0,33l.',ja:'一番搾り麦汁だけを使った、すっきりとした味わいの日本のビール、0.33リットル。'},
+      allergens:['gluten'], image:'https://images.unsplash.com/photo-1600788907416-456578634209?q=80&w=800&auto=format&fit=crop', extras:[]},
+    {id:'p_beer_quollfrisch',category:'drinks_alcohol',price:5.50,stockToday:35,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Quöllfrisch Naturtrüb',en:'Quöllfrisch Naturtrüb',es:'Quöllfrisch Naturtrüb',fr:'Quöllfrisch Naturtrüb',it:'Quöllfrisch Naturtrüb',ja:'クヴェルフリッシュ（スイス産）'},
+      desc:{de:'Naturtrübes Schweizer Bier aus Appenzell, 0.33l.',en:'Unfiltered Swiss beer from Appenzell, 0.33l.',es:'Cerveza suiza sin filtrar de Appenzell, 0,33l.',fr:'Bière suisse non filtrée d’Appenzell, 0,33l.',it:'Birra svizzera non filtrata di Appenzello, 0,33l.',ja:'スイス・アッペンツェル産の無濾過ビール、0.33リットル。'},
+      allergens:['gluten'], image:'https://images.unsplash.com/photo-1535958636474-b021ee887b13?q=80&w=800&auto=format&fit=crop', extras:[]},
+    {id:'p_beer_feldschloss',category:'drinks_alcohol',price:5.00,stockToday:35,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Feldschlösschen Original',en:'Feldschlösschen Original',es:'Feldschlösschen Original',fr:'Feldschlösschen Original',it:'Feldschlösschen Original',ja:'フェルトシュロッセン（スイス産）'},
+      desc:{de:'Klassisches Schweizer Lagerbier, 0.33l.',en:'Classic Swiss lager, 0.33l.',es:'Cerveza suiza clásica tipo lager, 0,33l.',fr:'Bière blonde suisse classique, 0,33l.',it:'Classica birra lager svizzera, 0,33l.',ja:'スイスの定番ラガービール、0.33リットル。'},
+      allergens:['gluten'], image:'https://images.unsplash.com/photo-1614313511387-1436a4480ebb?q=80&w=800&auto=format&fit=crop', extras:[]}
   ];
 }
 
@@ -1188,6 +1236,10 @@ function productCardHTML(p){
   </div>`;
 }
 
+const CATEGORY_NOTES = {
+  drinks_alcohol:{de:'Verkauf von Alkohol nur an Personen ab 16 Jahren (Bier/Wein) bzw. 18 Jahren (Spirituosen), gemäss Schweizer Recht.',en:'Alcohol is sold only to persons aged 16+ (beer/wine) or 18+ (spirits), per Swiss law.',es:'La venta de alcohol solo está permitida a mayores de 16 años (cerveza/vino) o 18 años (licores), según la ley suiza.',fr:'La vente d’alcool est réservée aux personnes de 16 ans et plus (bière/vin) ou 18 ans et plus (spiritueux), conformément au droit suisse.',it:'La vendita di alcolici è consentita solo a persone di almeno 16 anni (birra/vino) o 18 anni (superalcolici), secondo la legge svizzera.',ja:'スイスの法律に基づき、アルコールの販売はビール・ワインは16歳以上、蒸留酒は18歳以上の方に限らせていただきます。'}
+};
+
 function renderMenu(){
   const el = document.getElementById('menuCol');
   const visible = PRODUCTS.filter(p=>!p.archived);
@@ -1197,6 +1249,7 @@ function renderMenu(){
     if(!items.length) return;
     html += `<div class="category-block" id="cat-${cat}">
       <h2 class="category-title">${lf(CATEGORY_LABELS[cat])} <span class="count">${items.length}</span></h2>
+      ${CATEGORY_NOTES[cat] ? `<p class="category-note">${lf(CATEGORY_NOTES[cat])}</p>` : ''}
       <div class="product-grid">${items.map(productCardHTML).join('')}</div>
     </div>`;
   });
