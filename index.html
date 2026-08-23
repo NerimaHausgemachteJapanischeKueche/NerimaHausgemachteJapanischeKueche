@@ -150,7 +150,7 @@ a{color:inherit;}
   body{padding-bottom:24px;}
 }
 .menu-col{min-width:0;}
-.category-block{margin-bottom:26px;}
+.category-block{margin-bottom:26px;scroll-margin-top:130px;}
 .category-title{
   font-family:var(--font-display); font-weight:700; font-size:20px;
   margin:0 0 12px; padding-left:2px; display:flex; align-items:baseline; gap:8px;
@@ -718,18 +718,22 @@ const ALLERGEN_LABELS = {
   sesame:{de:'Sesam',en:'Sesame',es:'Sésamo',fr:'Sésame',it:'Sesamo',ja:'ごま'},
   milk:{de:'Milch',en:'Milk',es:'Leche',fr:'Lait',it:'Latte',ja:'乳'},
   fish:{de:'Fisch',en:'Fish',es:'Pescado',fr:'Poisson',it:'Pesce',ja:'魚'},
-  peanuts:{de:'Erdnuss',en:'Peanuts',es:'Cacahuete',fr:'Arachide',it:'Arachidi',ja:'ピーナッツ'}
+  peanuts:{de:'Erdnuss',en:'Peanuts',es:'Cacahuete',fr:'Arachide',it:'Arachidi',ja:'ピーナッツ'},
+  molluscs:{de:'Weichtiere',en:'Molluscs',es:'Moluscos',fr:'Mollusques',it:'Molluschi',ja:'軟体動物'}
 };
-const CATEGORIES = ['curry','yakisoba','bento','onigiri','karaage_full','sando','family','sides','drinks','drinks_alcohol'];
+const CATEGORIES = ['curry','yakisoba','bento','onigiri','karaage_full','street_food','sando','family','sides','soup','sauces','drinks','drinks_alcohol'];
 const CATEGORY_LABELS = {
   curry:{de:'Japanisches Curry',en:'Japanese Curry',es:'Curry Japonés',fr:'Curry Japonais',it:'Curry Giapponese',ja:'カレーライス'},
   yakisoba:{de:'Yakisoba',en:'Yakisoba',es:'Yakisoba',fr:'Yakisoba',it:'Yakisoba',ja:'焼きそば'},
   bento:{de:'Bento',en:'Bento',es:'Bento',fr:'Bento',it:'Bento',ja:'弁当'},
   onigiri:{de:'Onigiri (Reisbällchen)',en:'Onigiri (Rice Balls)',es:'Onigiri (Bolas de Arroz)',fr:'Onigiri (Boules de Riz)',it:'Onigiri (Polpette di Riso)',ja:'おにぎり'},
   karaage_full:{de:'Karaage Hähnchen',en:'Karaage Chicken',es:'Pollo Karaage',fr:'Poulet Karaage',it:'Pollo Karaage',ja:'唐揚げチキン'},
+  street_food:{de:'Japanisches Street Food',en:'Japanese Street Food',es:'Comida Callejera Japonesa',fr:'Street Food Japonaise',it:'Street Food Giapponese',ja:'屋台グルメ'},
   sando:{de:'Japanische Sandwiches',en:'Japanese Sandwiches',es:'Sándwiches Japoneses',fr:'Sandwichs Japonais',it:'Panini Giapponesi',ja:'サンド'},
   family:{de:'Für 4 Personen',en:'For 4 People',es:'Para 4 Personas',fr:'Pour 4 Personnes',it:'Per 4 Persone',ja:'4人前'},
   sides:{de:'Beilagen',en:'Sides',es:'Acompañamientos',fr:'Accompagnements',it:'Contorni',ja:'サイドメニュー'},
+  soup:{de:'Suppe',en:'Soup',es:'Sopa',fr:'Soupe',it:'Zuppa',ja:'スープ'},
+  sauces:{de:'Saucen',en:'Sauces',es:'Salsas',fr:'Sauces',it:'Salse',ja:'ソース'},
   drinks:{de:'Getränke',en:'Drinks',es:'Bebidas',fr:'Boissons',it:'Bevande',ja:'ドリンク'},
   drinks_alcohol:{de:'Alkoholische Getränke',en:'Alcoholic Drinks',es:'Bebidas Alcohólicas',fr:'Boissons Alcoolisées',it:'Bevande Alcoliche',ja:'アルコール飲料'}
 };
@@ -857,15 +861,50 @@ function defaultProducts(){
       desc:{de:'Handgeformter Reisball mit gegrilltem Lachs, in Nori-Blatt gewickelt.',en:'Hand-shaped rice ball filled with grilled salmon, wrapped in nori seaweed.',es:'Bola de arroz moldeada a mano rellena de salmón a la parrilla, envuelta en alga nori.',fr:'Boule de riz façonnée à la main, garnie de saumon grillé, enveloppée d’algue nori.',it:'Palla di riso modellata a mano con salmone grigliato, avvolta in alga nori.',ja:'手作りおにぎり。焼き鮭入り、海苔巻き。'},
       allergens:['fish'], image:'https://images.unsplash.com/photo-1553621042-f6e147245754?q=80&w=800&auto=format&fit=crop',
       extras:[]},
+    {id:'p_onigiri_grilled',category:'onigiri',price:5.50,stockToday:25,sold:0,soldOut:false,soldOutTime:null,label:'new',archived:false,
+      name:{de:'Yaki Onigiri (Gegrillt)',en:'Grilled Onigiri (Yaki Onigiri)',es:'Onigiri a la Parrilla (Yaki Onigiri)',fr:'Onigiri Grillé (Yaki Onigiri)',it:'Onigiri alla Griglia (Yaki Onigiri)',ja:'焼きおにぎり'},
+      desc:{de:'Reisball ohne Füllung, gegrillt und mit süss-salziger Sojaglasur bestrichen — knusprig aussen, weich innen.',en:'Plain rice ball, grilled and brushed with a sweet-savoury soy glaze — crisp outside, soft inside.',es:'Bola de arroz sin relleno, a la parrilla y pincelada con un glaseado de soja agridulce — crujiente por fuera, tierna por dentro.',fr:'Boule de riz nature, grillée et badigeonnée d’un glaçage au soja sucré-salé — croustillante à l’extérieur, moelleuse à l’intérieur.',it:'Palla di riso semplice, grigliata e spennellata con una glassa di soia agrodolce — croccante fuori, morbida dentro.',ja:'具なしのおにぎりを焼いて、甘辛い醤油だれを塗りました。外はカリッと、中はもちもち。'},
+      allergens:['soy','gluten'], image:'https://images.unsplash.com/photo-1604908177522-402ee14a9eb8?q=80&w=800&auto=format&fit=crop',
+      extras:[]},
     {id:'p10',category:'sides',price:5.50,stockToday:60,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
       name:{de:'Edamame',en:'Edamame',es:'Edamame',fr:'Edamame',it:'Edamame',ja:'枝豆'},
       desc:{de:'Gedämpfte Sojabohnen mit Meersalz.',en:'Steamed soybeans with sea salt.',es:'Judías de soja al vapor con sal marina.',fr:'Fèves de soja vapeur au sel de mer.',it:'Fagioli di soia al vapore con sale marino.',ja:'塩茹での枝豆。'},
       allergens:['soy'], image:'https://images.unsplash.com/photo-1622480916113-9000ac49b79d?q=80&w=800&auto=format&fit=crop', extras:[]},
-    {id:'p11',category:'sides',price:8.50,stockToday:40,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
-      name:{de:'Gyoza (5 Stk.)',en:'Gyoza (5 pc.)',es:'Gyoza (5 uds.)',fr:'Gyoza (5 pièces)',it:'Gyoza (5 pz.)',ja:'餃子（5個）'},
-      desc:{de:'Gebratene Teigtaschen mit Hähnchen und Gemüse.',en:'Pan-fried dumplings with chicken and vegetables.',es:'Empanadillas fritas con pollo y verduras.',fr:'Raviolis poêlés au poulet et légumes.',it:'Ravioli saltati con pollo e verdure.',ja:'鶏肉と野菜の焼き餃子。'},
+    {id:'p11',category:'sides',price:10.90,stockToday:35,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Gyoza Schwein (5 Stk.)',en:'Pork Gyoza (5 pc.)',es:'Gyoza de Cerdo (5 uds.)',fr:'Gyoza au Porc (5 pièces)',it:'Gyoza di Maiale (5 pz.)',ja:'豚肉餃子（5個）'},
+      desc:{de:'Gebratene Teigtaschen mit Schweinefleisch und Gemüse.',en:'Pan-fried dumplings with pork and vegetables.',es:'Empanadillas fritas con cerdo y verduras.',fr:'Raviolis poêlés au porc et légumes.',it:'Ravioli saltati con maiale e verdure.',ja:'豚肉と野菜の焼き餃子。'},
       allergens:['gluten','soy'], image:'https://images.unsplash.com/photo-1541696490-8744a5dc0228?q=80&w=800&auto=format&fit=crop', extras:[EX_SAUCE]},
-    {id:'p12',category:'sides',price:4.50,stockToday:45,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+    {id:'p11b',category:'sides',price:10.90,stockToday:30,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Gyoza Gemüse (5 Stk.)',en:'Vegetable Gyoza (5 pc.)',es:'Gyoza Vegetariana (5 uds.)',fr:'Gyoza Végétarienne (5 pièces)',it:'Gyoza Vegetariana (5 pz.)',ja:'野菜餃子（5個）'},
+      desc:{de:'Gebratene Teigtaschen mit Kohl und Gemüse. Vegetarisch.',en:'Pan-fried dumplings with cabbage and vegetables. Vegetarian.',es:'Empanadillas fritas con col y verduras. Vegetariana.',fr:'Raviolis poêlés au chou et légumes. Végétarien.',it:'Ravioli saltati con cavolo e verdure. Vegetariano.',ja:'キャベツと野菜の焼き餃子。ベジタリアン。'},
+      allergens:['gluten','soy'], image:'https://images.unsplash.com/photo-1625938144755-652e08e359b7?q=80&w=800&auto=format&fit=crop', extras:[EX_SAUCE]},
+    {id:'p_takoyaki',category:'street_food',price:9.90,stockToday:25,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Takoyaki (6 Stk.)',en:'Takoyaki (6 pc.)',es:'Takoyaki (6 uds.)',fr:'Takoyaki (6 pièces)',it:'Takoyaki (6 pz.)',ja:'たこ焼き（6個）'},
+      desc:{de:'Gebackene Teigbällchen mit Oktopusstückchen, Takoyaki-Sauce, Mayo und Bonitoflocken.',en:'Batter balls with octopus, topped with takoyaki sauce, mayo and bonito flakes.',es:'Bolitas de masa con trozos de pulpo, cubiertas de salsa takoyaki, mayonesa y copos de bonito.',fr:'Boulettes de pâte au poulpe, nappées de sauce takoyaki, mayonnaise et copeaux de bonite.',it:'Palline di pastella con polpo, con salsa takoyaki, maionese e fiocchi di bonito.',ja:'たこ入りの生地を焼き、たこ焼きソース・マヨネーズ・かつお節をのせました。'},
+      allergens:['gluten','egg','fish','molluscs','soy'], image:'https://images.unsplash.com/photo-1615361200098-9e2c7b5a6e0f?q=80&w=800&auto=format&fit=crop',
+      extras:[EX_SAUCE]},
+    {id:'p_okonomiyaki',category:'street_food',price:16.90,stockToday:18,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Okonomiyaki',en:'Okonomiyaki',es:'Okonomiyaki',fr:'Okonomiyaki',it:'Okonomiyaki',ja:'お好み焼き'},
+      desc:{de:'Herzhafter Kohlpfannkuchen mit Schweinefleisch, Okonomiyaki-Sauce, Mayo und Bonitoflocken.',en:'Savoury cabbage pancake with pork, topped with okonomiyaki sauce, mayo and bonito flakes.',es:'Tortita salada de col con cerdo, cubierta de salsa okonomiyaki, mayonesa y copos de bonito.',fr:'Galette de chou salée au porc, nappée de sauce okonomiyaki, mayonnaise et copeaux de bonite.',it:'Frittella salata di cavolo con maiale, con salsa okonomiyaki, maionese e fiocchi di bonito.',ja:'豚肉入りのキャベツ焼き。お好み焼きソース・マヨネーズ・かつお節をのせました。'},
+      allergens:['gluten','egg','fish','soy'], image:'https://images.unsplash.com/photo-1615361200141-f45961d5b90c?q=80&w=800&auto=format&fit=crop',
+      extras:[]},
+    {id:'p_sauce_curry',category:'sauces',price:2.00,stockToday:50,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Curry-Sauce (Extra)',en:'Curry Sauce (Extra)',es:'Salsa de Curry (Extra)',fr:'Sauce Curry (Extra)',it:'Salsa al Curry (Extra)',ja:'追加カレーソース'},
+      desc:{de:'Ein Becher unserer hausgemachten Curry-Sauce zum Dazubestellen.',en:'A cup of our house-made curry sauce, to add to any order.',es:'Un vaso de nuestra salsa de curry casera, para añadir a cualquier pedido.',fr:'Un pot de notre sauce curry maison, à ajouter à toute commande.',it:'Una coppetta della nostra salsa al curry fatta in casa, da aggiungere a qualsiasi ordine.',ja:'自家製カレーソースを追加でどうぞ。'},
+      allergens:['gluten','soy'], image:'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?q=80&w=800&auto=format&fit=crop', extras:[]},
+    {id:'p_sauce_teriyaki',category:'sauces',price:1.50,stockToday:50,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Teriyaki-Sauce (Extra)',en:'Teriyaki Sauce (Extra)',es:'Salsa Teriyaki (Extra)',fr:'Sauce Teriyaki (Extra)',it:'Salsa Teriyaki (Extra)',ja:'追加照り焼きソース'},
+      desc:{de:'Ein Becher süss-salzige Teriyaki-Sauce zum Dazubestellen.',en:'A cup of sweet-savoury teriyaki sauce, to add to any order.',es:'Un vaso de salsa teriyaki agridulce, para añadir a cualquier pedido.',fr:'Un pot de sauce teriyaki sucrée-salée, à ajouter à toute commande.',it:'Una coppetta di salsa teriyaki agrodolce, da aggiungere a qualsiasi ordine.',ja:'甘辛い照り焼きソースを追加でどうぞ。'},
+      allergens:['soy','gluten'], image:'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?q=80&w=800&auto=format&fit=crop', extras:[]},
+    {id:'p_sauce_katsu',category:'sauces',price:1.50,stockToday:50,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Katsu-Sauce (Extra)',en:'Katsu Sauce (Extra)',es:'Salsa Katsu (Extra)',fr:'Sauce Katsu (Extra)',it:'Salsa Katsu (Extra)',ja:'追加カツソース'},
+      desc:{de:'Ein Becher würzige Katsu-Sauce zum Dazubestellen.',en:'A cup of tangy katsu sauce, to add to any order.',es:'Un vaso de salsa katsu especiada, para añadir a cualquier pedido.',fr:'Un pot de sauce katsu relevée, à ajouter à toute commande.',it:'Una coppetta di salsa katsu speziata, da aggiungere a qualsiasi ordine.',ja:'コクのあるカツソースを追加でどうぞ。'},
+      allergens:['gluten','soy'], image:'https://images.unsplash.com/photo-1550507992-eb63ffee0847?q=80&w=800&auto=format&fit=crop', extras:[]},
+    {id:'p_sauce_karaage',category:'sauces',price:1.50,stockToday:50,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
+      name:{de:'Karaage-Dip (Mayo-Ponzu, Extra)',en:'Karaage Dip (Mayo-Ponzu, Extra)',es:'Salsa para Karaage (Mayo-Ponzu, Extra)',fr:'Sauce Karaage (Mayo-Ponzu, Extra)',it:'Salsa per Karaage (Mayo-Ponzu, Extra)',ja:'追加からあげ用マヨポン酢'},
+      desc:{de:'Ein Becher cremiger Mayo-Ponzu-Dip zum Dazubestellen.',en:'A cup of creamy mayo-ponzu dip, to add to any order.',es:'Un vaso de salsa cremosa de mayonesa y ponzu, para añadir a cualquier pedido.',fr:'Un pot de sauce crémeuse mayo-ponzu, à ajouter à toute commande.',it:'Una coppetta di salsa cremosa mayo-ponzu, da aggiungere a qualsiasi ordine.',ja:'まろやかなマヨポン酢を追加でどうぞ。'},
+      allergens:['egg','soy'], image:'https://images.unsplash.com/photo-1601050690597-df0568f70950?q=80&w=800&auto=format&fit=crop', extras:[]},
+    {id:'p12',category:'soup',price:5.90,stockToday:45,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
       name:{de:'Miso-Suppe',en:'Miso Soup',es:'Sopa de Miso',fr:'Soupe Miso',it:'Zuppa di Miso',ja:'味噌汁'},
       desc:{de:'Klassische Miso-Suppe mit Tofu und Wakame.',en:'Classic miso soup with tofu and wakame.',es:'Sopa de miso clásica con tofu y wakame.',fr:'Soupe miso classique au tofu et wakamé.',it:'Zuppa di miso classica con tofu e wakame.',ja:'豆腐とわかめの味噌汁。'},
       allergens:['soy'], image:'https://images.unsplash.com/photo-1607301405390-d831c242f59b?q=80&w=800&auto=format&fit=crop', extras:[]},
@@ -904,7 +943,11 @@ function defaultProducts(){
     {id:'p_beer_feldschloss',category:'drinks_alcohol',price:5.00,stockToday:35,sold:0,soldOut:false,soldOutTime:null,label:null,archived:false,
       name:{de:'Feldschlösschen Original',en:'Feldschlösschen Original',es:'Feldschlösschen Original',fr:'Feldschlösschen Original',it:'Feldschlösschen Original',ja:'フェルトシュロッセン（スイス産）'},
       desc:{de:'Klassisches Schweizer Lagerbier, 0.33l.',en:'Classic Swiss lager, 0.33l.',es:'Cerveza suiza clásica tipo lager, 0,33l.',fr:'Bière blonde suisse classique, 0,33l.',it:'Classica birra lager svizzera, 0,33l.',ja:'スイスの定番ラガービール、0.33リットル。'},
-      allergens:['gluten'], image:'https://images.unsplash.com/photo-1614313511387-1436a4480ebb?q=80&w=800&auto=format&fit=crop', extras:[]}
+      allergens:['gluten'], image:'https://images.unsplash.com/photo-1614313511387-1436a4480ebb?q=80&w=800&auto=format&fit=crop', extras:[]},
+    {id:'p_beer_duo_promo',category:'drinks_alcohol',price:10.00,stockToday:40,sold:0,soldOut:false,soldOutTime:null,label:'special',archived:false,
+      name:{de:'2 Japanische Biere — Aktion',en:'2 Japanese Beers — Deal',es:'2 Cervezas Japonesas — Oferta',fr:'2 Bières Japonaises — Offre',it:'2 Birre Giapponesi — Offerta',ja:'日本のビール2本セット（お得）'},
+      desc:{de:'2 Flaschen japanisches Bier (Asahi, Sapporo oder Kirin — nach Verfügbarkeit) zum Aktionspreis. Wunsch bitte in den Lieferhinweisen angeben.',en:'2 bottles of Japanese beer (Asahi, Sapporo or Kirin — subject to availability) at a special price. Please note your preference in the delivery instructions.',es:'2 botellas de cerveza japonesa (Asahi, Sapporo o Kirin, según disponibilidad) a precio especial. Indica tu preferencia en las instrucciones de entrega.',fr:'2 bouteilles de bière japonaise (Asahi, Sapporo ou Kirin, selon disponibilité) à prix spécial. Merci d’indiquer votre préférence dans les instructions de livraison.',it:'2 bottiglie di birra giapponese (Asahi, Sapporo o Kirin, in base alla disponibilità) a prezzo speciale. Indica la tua preferenza nelle istruzioni di consegna.',ja:'日本のビール2本（アサヒ・サッポロ・キリンよりご用意状況に応じて）をお得な価格で。ご希望があれば配達メモにご記入ください。'},
+      allergens:['gluten'], image:'https://images.unsplash.com/photo-1608270586620-248524c67de9?q=80&w=800&auto=format&fit=crop', extras:[]}
   ];
 }
 
@@ -937,7 +980,7 @@ function defaultSettings(){
     autoReactivateNextDay:true,
     lastResetDate: isoDateOnly(),
     dailySpecials:[
-      {id:'d1', name:{de:'',en:'',es:'',fr:'',it:'',ja:''}, desc:{de:'',en:'',es:'',fr:'',it:'',ja:''}, price:0},
+      {id:'d1', name:{de:'2 Japanische Biere — Aktion',en:'2 Japanese Beers — Deal',es:'2 Cervezas Japonesas — Oferta',fr:'2 Bières Japonaises — Offre',it:'2 Birre Giapponesi — Offerta',ja:'日本のビール2本セット'}, desc:{de:'2 Flaschen japanisches Bier zum Aktionspreis.',en:'2 bottles of Japanese beer at a special price.',es:'2 botellas de cerveza japonesa a precio especial.',fr:'2 bouteilles de bière japonaise à prix spécial.',it:'2 bottiglie di birra giapponese a prezzo speciale.',ja:'日本のビール2本をお得な価格で。'}, price:10.00},
       {id:'d2', name:{de:'',en:'',es:'',fr:'',it:'',ja:''}, desc:{de:'',en:'',es:'',fr:'',it:'',ja:''}, price:0},
       {id:'d3', name:{de:'',en:'',es:'',fr:'',it:'',ja:''}, desc:{de:'',en:'',es:'',fr:'',it:'',ja:''}, price:0}
     ],
@@ -1874,7 +1917,11 @@ function adminStockHTML(){
 }
 
 function adminProductsHTML(){
-  return `<button class="a-btn primary" id="btnNewProduct" style="margin-bottom:12px;">+ Add product</button>
+  return `<div class="a-row" style="margin-bottom:12px;gap:8px;">
+      <button class="a-btn primary" id="btnNewProduct">+ Add product</button>
+      <button class="a-btn danger" id="btnResetMenu">↻ Reset menu to latest defaults</button>
+    </div>
+    <p class="small-note" style="margin:-6px 0 14px;">"Reset menu" wipes ALL products and reloads the starter menu built into the site's code — use this after Claude updates the menu for you, instead of asking for SQL. Any custom stock numbers or manual edits will be lost.</p>
     ${PRODUCTS.map(p=>`
     <div class="a-card">
       <div class="a-row">
@@ -2214,6 +2261,19 @@ function wireAdminTab(tabId){
     });
   }
   if(tabId==='products'){
+    const resetBtn = document.getElementById('btnResetMenu');
+    if(resetBtn) resetBtn.addEventListener('click', async ()=>{
+      if(!confirm('This will delete ALL current products and reload the starter menu from the site\'s code. Any custom stock levels or edits will be lost. Continue?')) return;
+      const {error: delErr} = await sb.from('products').delete().neq('id', '__none__');
+      if(delErr){ showToast('Failed to clear products: '+delErr.message); return; }
+      const fresh = defaultProducts();
+      const {error: insErr} = await sb.from('products').insert(fresh.map(productToDb));
+      if(insErr){ showToast('Failed to insert new menu: '+insErr.message); return; }
+      PRODUCTS = fresh;
+      showToast('Menu reset to latest defaults.');
+      renderAdminTab('products');
+      renderMenu();
+    });
     const newBtn = document.getElementById('btnNewProduct');
     if(newBtn) newBtn.addEventListener('click', ()=>{
       PRODUCT_DRAFT = emptyProductDraft();
