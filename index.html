@@ -477,6 +477,31 @@ table.a-table th{color:#9C8E76;font-weight:700;text-transform:uppercase;font-siz
 .toast.show{opacity:1;top:24px;}
 .link-btn{background:none;border:none;color:var(--curry-deep);font-weight:700;font-size:12.5px;padding:0;}
 .small-note{font-size:11px;color:var(--ink-faint);margin-top:4px;}
+
+/* ---------- Coming soon gate ---------- */
+#comingSoonRoot{
+  display:none; min-height:100vh; background:var(--bg); color:var(--ink);
+  align-items:center; justify-content:center; padding:24px; text-align:center;
+  position:relative; overflow:hidden;
+}
+#comingSoonRoot .cs-watermark{
+  position:absolute; font-family:var(--font-display); font-weight:900; font-size:320px;
+  color:rgba(51,40,33,0.04); top:-60px; right:-60px; line-height:1; pointer-events:none;
+}
+.cs-card{position:relative; z-index:1; max-width:480px;}
+.cs-mark{
+  width:64px;height:64px;border-radius:16px;background:var(--red);margin:0 auto 18px;
+  display:flex;align-items:center;justify-content:center;font-family:var(--font-display);
+  font-weight:900;color:var(--paper);font-size:28px;
+}
+.cs-eyebrow{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--curry-deep);font-weight:700;}
+.cs-title{font-family:var(--font-display);font-weight:700;font-size:24px;margin:6px 0 22px;}
+.cs-wave{margin:0 auto 22px;max-width:220px;}
+.cs-message{font-size:16px;line-height:1.7;margin:0 0 10px;font-weight:600;}
+.cs-message .cs-ja{font-size:17px;display:block;margin-top:4px;}
+.cs-sub{font-size:12.5px;color:var(--ink-dim);margin:18px 0 0;}
+.cs-sub a{color:var(--curry-deep);font-weight:700;text-decoration:none;}
+#comingSoonRoot .link-btn{opacity:0.35;margin-top:26px;display:inline-block;}
 </style>
 </head>
 <body>
@@ -495,6 +520,23 @@ table.a-table th{color:#9C8E76;font-weight:700;text-transform:uppercase;font-siz
       <button class="lang-option" data-pick-lang="it"><span class="flag">🇮🇹</span>Italiano</button>
       <button class="lang-option" data-pick-lang="ja"><span class="flag">🇯🇵</span>日本語</button>
     </div>
+  </div>
+</div>
+
+<!-- ============ COMING SOON GATE ============ -->
+<div id="comingSoonRoot">
+  <span class="cs-watermark">練</span>
+  <div class="cs-card">
+    <div class="cs-mark">練</div>
+    <div class="cs-eyebrow">練馬の秘密の台所</div>
+    <h1 class="cs-title">Hausgemachte Japanische Küche — Seebach, Zürich</h1>
+    <div class="wave-divider cs-wave"></div>
+    <p class="cs-message">
+      Wir eröffnen im September — bleiben Sie gespannt!
+      <span class="cs-ja">9月オープン予定です。お楽しみに！</span>
+    </p>
+    <p class="cs-sub">Seebach, Zürich · <a href="mailto:hallo@kome-seebach.ch">hallo@kome-seebach.ch</a></p>
+    <button class="link-btn" id="openAdminLinkComingSoon">Admin</button>
   </div>
 </div>
 
@@ -984,7 +1026,8 @@ function defaultSettings(){
       {id:'d2', name:{de:'',en:'',es:'',fr:'',it:'',ja:''}, desc:{de:'',en:'',es:'',fr:'',it:'',ja:''}, price:0},
       {id:'d3', name:{de:'',en:'',es:'',fr:'',it:'',ja:''}, desc:{de:'',en:'',es:'',fr:'',it:'',ja:''}, price:0}
     ],
-    activeDailySpecial:null
+    activeDailySpecial:null,
+    comingSoonMode:true
   };
 }
 
@@ -1742,11 +1785,11 @@ document.getElementById('openAdminLink').addEventListener('click', async ()=>{
 });
 document.getElementById('backToShop').addEventListener('click', ()=>{
   document.getElementById('adminRoot').style.display='none';
-  document.getElementById('shopRoot').style.display='block';
+  applyComingSoonGate();
 });
 document.getElementById('adminViewShop').addEventListener('click', ()=>{
   document.getElementById('adminRoot').style.display='none';
-  document.getElementById('shopRoot').style.display='block';
+  applyComingSoonGate();
 });
 document.getElementById('adminLogout').addEventListener('click', async ()=>{
   if(sb) await sb.auth.signOut();
@@ -2197,6 +2240,11 @@ function adminSettingsHTML(){
       ${Object.keys(s.paymentMethods).map(k=>`<label style="font-size:12.5px;display:flex;align-items:center;gap:6px;margin-bottom:4px;"><input type="checkbox" data-pay-method="${k}" ${s.paymentMethods[k]?'checked':''}> ${k}</label>`).join('')}
       <p class="small-note">Cash and card on delivery are always available to the customer as the primary methods; the others are placeholders ready to be wired up to a real payment provider.</p>
     </div>
+    <div class="a-card" style="border-color:var(--curry);">
+      <div class="a-section-title" style="margin-top:0;">Coming Soon page</div>
+      <p class="small-note" style="margin-bottom:10px;">While this is ON, visitors see a "we open in September" page instead of the shop — nobody can order. Turn it OFF when you're ready to launch.</p>
+      <button class="a-btn ${s.comingSoonMode?'danger':'primary'}" id="btnToggleComingSoon">${s.comingSoonMode ? '🚀 Launch the site now (turn off Coming Soon)' : '⏸ Turn Coming Soon back on'}</button>
+    </div>
     <div class="a-card">
       <div class="a-section-title" style="margin-top:0;">Operations</div>
       <label style="font-size:12.5px;display:flex;align-items:center;gap:6px;margin-bottom:6px;"><input type="checkbox" id="s_autoreset" ${s.autoReactivateNextDay?'checked':''}> Automatically reactivate sold-out products next business day</label>
@@ -2313,6 +2361,13 @@ function wireAdminTab(tabId){
       renderAdminTab('settings');
       showToast(SETTINGS.ordersPaused ? 'Orders paused.' : 'Orders resumed.');
     });
+    const comingSoonBtn = document.getElementById('btnToggleComingSoon');
+    if(comingSoonBtn) comingSoonBtn.addEventListener('click', async ()=>{
+      SETTINGS.comingSoonMode = !SETTINGS.comingSoonMode;
+      await saveSettingsToDb();
+      renderAdminTab('settings');
+      showToast(SETTINGS.comingSoonMode ? 'Coming Soon page is back on.' : '🚀 Site is live — Coming Soon page turned off.');
+    });
     document.getElementById('btnSaveSettings').addEventListener('click', async ()=>{
       SETTINGS.restaurantName = document.getElementById('s_name').value;
       SETTINGS.address = document.getElementById('s_address').value;
@@ -2375,6 +2430,7 @@ if(sb){
   sb.channel('public-settings-changes')
     .on('postgres_changes', {event:'*', schema:'public', table:'settings'}, async (payload)=>{
       if(payload.new && payload.new.data) SETTINGS = Object.assign(defaultSettings(), payload.new.data);
+      if(!ADMIN_LOGGED_IN) applyComingSoonGate();
       if(document.getElementById('shopRoot').style.display!=='none'){ renderStatus(); renderContact(); renderAboutSection(); renderPromoBanner(); renderCartViews(); }
       if(ADMIN_LOGGED_IN) renderAdminTab(ADMIN_TAB);
     })
@@ -2389,6 +2445,9 @@ if(sb){
 setInterval(async ()=>{
   if(!sb) return;
   await refreshProductsFromServer();
+  const {data: settingsRow} = await sb.from('settings').select('data').eq('id', 1).maybeSingle();
+  if(settingsRow) SETTINGS = Object.assign(defaultSettings(), settingsRow.data);
+  if(!ADMIN_LOGGED_IN) applyComingSoonGate();
   if(document.getElementById('shopRoot').style.display!=='none'){ renderMenu(); renderStatus(); renderCartViews(); }
   await checkDailyReset();
 }, 30000);
@@ -2411,8 +2470,29 @@ document.querySelectorAll('[data-pick-lang]').forEach(btn=>{
 });
 document.getElementById('langModalBackdrop').addEventListener('click', ()=>{ /* modal is intentionally not dismissible without a choice */ });
 
+function applyComingSoonGate(){
+  const gate = document.getElementById('comingSoonRoot');
+  const shop = document.getElementById('shopRoot');
+  if(SETTINGS.comingSoonMode){
+    gate.style.display = 'flex';
+    shop.style.display = 'none';
+  }else{
+    gate.style.display = 'none';
+    if(document.getElementById('adminRoot').style.display !== 'block'){
+      shop.style.display = 'block';
+    }
+  }
+}
+document.getElementById('openAdminLinkComingSoon').addEventListener('click', async ()=>{
+  document.getElementById('comingSoonRoot').style.display = 'none';
+  document.getElementById('shopRoot').style.display = 'none';
+  document.getElementById('adminRoot').style.display = 'block';
+  await checkExistingAdminSession();
+});
+
 (async function init(){
   await loadAll();
+  applyComingSoonGate();
   const savedLang = localGet('preferredLang');
   if(savedLang && LANGS.includes(savedLang)){
     LANG = savedLang;
@@ -2420,7 +2500,7 @@ document.getElementById('langModalBackdrop').addEventListener('click', ()=>{ /* 
   }else{
     // Render the shop underneath in a sensible default language while the person chooses.
     renderAll();
-    showLanguageModal();
+    if(!SETTINGS.comingSoonMode) showLanguageModal();
   }
 })();
 </script>
